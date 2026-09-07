@@ -1,0 +1,868 @@
+/* =========================================================================
+   GOOGLE MAGENTA — LANDING PAGE
+   -------------------------------------------------------------------------
+   ÍNDICE
+     1.  Variables globales (tokens de diseño)
+     2.  Reset y estilos base
+     3.  Utilidades compartidas (contenedor, botones, tags, espacios de imagen)
+     4.  Encabezado (header / nav)
+     5.  Hero
+     6.  Sección "intro" (la pregunta + qué es Magenta)
+     7.  Sección "timeline" (una década de evolución)
+     8.  Sección "realtime" (gráfico comparativo, sección propia)
+     9.  Sección "cómo funciona" (MIDI con tooltip + piano vs. Piano Genie)
+     10. Sección "cómo interactúa" (video + Piano Genie)
+     11. Footer
+     12. Animaciones y accesibilidad de movimiento
+     13. Responsive (tablet / mobile)
+   -------------------------------------------------------------------------
+   DOS TRUCOS QUE SE REPITEN EN TODO EL ARCHIVO (léase antes que el resto):
+
+   1) VARIABLE --c: muchos elementos (los hitos de la línea de tiempo, los
+      "tags" de color, los botones de Piano Genie) usan la MISMA regla de
+      CSS pero se ven de distinto color. Eso se logra así: la regla dice
+      "background: var(--c)", y cada elemento en particular define su
+      propio --c en el atributo style del HTML, por ejemplo
+      style="--c:var(--magenta)". Es una forma de no repetir 7 veces la
+      misma regla de CSS cambiando solo el color.
+
+   2) clamp(mínimo, preferido, máximo): se usa en varios font-size y
+      medidas. Quiere decir "usá el valor preferido, pero nunca bajes del
+      mínimo ni te pases del máximo". Sirve para que el texto se achique
+      o agrande solo según el ancho de la pantalla, sin escribir un montón
+      de media queries.
+   ========================================================================= */
+
+
+/* -------------------------------------------------------------------------
+   1. VARIABLES GLOBALES
+   ------------------------------------------------------------------------- */
+:root{
+  /* superficies */
+  --bg:            #0a0a0f;
+  --bg-soft:       #121119;
+  --bg-panel:      #17151f;
+  --line:          rgba(255,255,255,.09);
+
+  /* texto */
+  --ink:           #f5f4f8;
+  --ink-dim:       #a9a7b8;
+  --ink-faint:     #726f82;
+
+  /* paleta "de voces MIDI": se reutiliza a lo largo de todo el sitio
+     (línea de tiempo, botones de Piano Genie, tags) */
+  --magenta:       #fd3db5;
+  --cyan:          #26c3d1;
+  --green:         #70fd3d;
+  --orange:        #fd7105;
+  --yellow:        #faf25f;
+  --blue:          #2655e2;
+  --purple:        #8a38f5;
+  --coral:         #ff5a5d;
+
+  /* paleta específica de la grilla de secuencias MIDI (tonos más mate) */
+  --midi-1:        #a1408c;
+  --midi-2:        #2f9e93;
+  --midi-3:        #b2a53f;
+  --midi-4:        #5a9c3a;
+  --midi-5:        #b5651d;
+  --midi-6:        #5c3f97;
+  --midi-7:        #2b3e8f;
+
+  /* tipografía */
+  --font-display:  'Jersey 10', ui-sans-serif, sans-serif;
+  --font-pixel:    'Silkscreen', ui-monospace, monospace;
+  --font-body:     'Roboto Condensed', ui-sans-serif, sans-serif;
+
+  /* layout */
+  --container:     1180px;
+  --radius-lg:     26px;
+  --radius-md:     16px;
+  --ease:          cubic-bezier(.22,.9,.25,1);
+}
+
+/* -------------------------------------------------------------------------
+   2. RESET Y ESTILOS BASE
+   ------------------------------------------------------------------------- */
+*, *::before, *::after{ box-sizing:border-box; }
+html{
+  scroll-behavior:smooth;
+  -webkit-font-smoothing:antialiased;
+}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:var(--font-body);
+  font-size:17px;
+  line-height:1.6;
+  overflow-x:hidden;
+}
+h1,h2,h3,p,ul{ margin:0; }
+ul{ padding:0; list-style:none; }
+img,svg{ display:block; max-width:100%; }
+a{ color:inherit; text-decoration:none; }
+button{ font:inherit; }
+
+/* estado de foco visible (accesibilidad) en toda la página */
+a:focus-visible,
+button:focus-visible{
+  outline:2px solid var(--cyan);
+  outline-offset:3px;
+  border-radius:4px;
+}
+
+/* -------------------------------------------------------------------------
+   3. UTILIDADES COMPARTIDAS
+   ------------------------------------------------------------------------- */
+
+/* contenedor centrado que usan casi todas las secciones */
+.wrap{
+  width:100%;
+  max-width:var(--container);
+  margin-inline:auto;
+  padding-inline:clamp(24px, 5vw, 48px);
+}
+
+.skip-link{
+  position:absolute; left:-999px; top:auto;
+  background:var(--cyan); color:#04171a; padding:12px 18px; border-radius:8px; font-weight:700;
+}
+.skip-link:focus{ left:24px; top:24px; z-index:999; }
+
+.icon{
+  width:20px; height:20px;
+  stroke:currentColor;
+  fill:none;
+  stroke-width:1.8;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+  flex-shrink:0;
+}
+.icon-sm{ width:15px; height:15px; }
+.icon-lg{ width:40px; height:40px; }
+.icon-fill{ fill:currentColor; stroke:none; }
+
+/* "tag" chico de color: se usa para "Piano Genie", "2025", "2026", etc.
+   El color se define desde el HTML con --c (ver la explicación arriba). */
+.tag{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  font-family:var(--font-body);
+  padding:6px 12px;
+  border-radius:999px;
+  color:var(--c, var(--magenta));
+  border:1px solid var(--c, var(--magenta));
+  background:rgba(255,255,255,.08);
+}
+
+.btn{
+  display:inline-flex;
+  align-items:center;
+  gap:9px;
+  padding:13px 24px;
+  border-radius:999px;
+  font-family:var(--font-body);
+  font-weight:700;
+  font-size:.95rem;
+  border:2px solid var(--cyan);
+  color:var(--cyan);
+  background:transparent;
+  cursor:pointer;
+  transition:background .2s var(--ease), color .2s var(--ease), transform .2s var(--ease);
+}
+.btn:hover{ background:var(--cyan); color:#04171a; transform:translateY(-1px); }
+
+.section-title{
+  font-family:var(--font-display);
+  font-weight:400;
+  font-size:clamp(2.4rem, 5vw, 4rem);
+  letter-spacing:.01em;
+  color:var(--ink);
+}
+.section-lede{
+  margin-top:14px;
+  max-width:640px;
+  color:var(--ink-dim);
+  font-size:1.15rem;
+}
+.section-head{
+  text-align:center;
+  margin-bottom:56px;
+}
+.section-head .section-lede{ margin-inline:auto; }
+
+.section-pad{ padding-block:120px; }
+
+/* espacio reservado para una imagen que todavía no está: un simple recuadro
+   punteado con una etiqueta. Reemplazalo por tu <img> cuando quieras. */
+.img-slot{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  border:1.5px dashed var(--line);
+  border-radius:var(--radius-md);
+  color:var(--ink-faint);
+  font-family:var(--font-body);
+  font-size:.78rem;
+  letter-spacing:.02em;
+  background:rgba(255,255,255,.02);
+}
+
+
+/* -------------------------------------------------------------------------
+   4. ENCABEZADO
+   ------------------------------------------------------------------------- */
+.site-header{
+  position:sticky;
+  top:0;
+  z-index:100;
+  backdrop-filter:blur(14px);
+  background:rgba(10,10,15,.72);
+  border-bottom:1px solid var(--line);
+}
+.header-inner{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  height:78px;
+}
+.logo{
+  font-family:var(--font-display);
+  font-size:1.7rem;
+  color:var(--ink);
+  display:flex;
+  gap:6px;
+}
+.logo span{
+  background:linear-gradient(90deg, var(--cyan), var(--magenta));
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+}
+.main-nav{
+  display:flex;
+  align-items:center;
+  gap:36px;
+  font-size:1rem;
+  font-weight:500;
+}
+.main-nav a{
+  color:var(--ink-dim);
+  transition:color .2s;
+  padding-block:6px;
+}
+.main-nav a:hover{ color:var(--ink); }
+.nav-external{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  color:var(--cyan) !important;
+}
+.nav-toggle{
+  display:none;
+  background:none;
+  border:none;
+  color:var(--ink);
+  cursor:pointer;
+  padding:8px;
+}
+
+/* -------------------------------------------------------------------------
+   5. HERO
+   ------------------------------------------------------------------------- */
+.hero{
+  position:relative;
+  min-height:88vh;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  overflow:hidden;
+  padding:78px 0 60px;
+}
+
+/* fondo decorativo: la imagen se pone con background-image directo en el
+   HTML (mirá el <div class="hero-bg-slot" style="..."> del index.html).
+   Acá solo decimos CÓMO se acomoda esa imagen dentro de la sección. */
+.hero-bg-slot{
+  position:absolute;
+  inset:0;                 /* ocupa todo el alto y ancho del hero */
+  z-index:0;                /* queda atrás del texto */
+  pointer-events:none;      /* que no moleste al hacer clic */
+  background-size:cover;
+  background-position:center;
+  background-repeat:no-repeat;
+  opacity:.7;
+}
+
+.hero-inner{ position:relative; z-index:1; }
+
+.hero-eyebrow{
+  font-family:var(--font-body);
+  font-weight:500;
+  font-size:clamp(.95rem, 1.4vw, 1.15rem);
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:var(--ink-dim);
+}
+.hero-eyebrow .accent{ color:var(--magenta); }
+
+.hero-title{
+  margin-top:18px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  font-family:var(--font-display);
+  font-weight:400;
+  font-size:clamp(2.6rem, 7vw, 5.6rem);
+  line-height:1.05;
+  color:var(--ink);
+}
+
+/* espacio para el teclado superpuesto: el margen negativo hace que se
+   solape un poco con el texto de arriba y de abajo, a propósito */
+.hero-keyboard-slot{
+  width:min(560px, 70%);
+  height:clamp(90px, 13vw, 160px);
+  margin:-8px 0;
+}
+
+.hero-tags{
+  margin-top:40px;
+  display:flex;
+  justify-content:center;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:0;
+  color:var(--ink-dim);
+  font-weight:500;
+  font-size:1.05rem;
+}
+/* el puntito rosa entre palabras (COMPONER • PRODUCIR • ...) */
+.hero-tags li:not(:last-child)::after{
+  content:'';
+  display:inline-block;
+  width:6px; height:6px;
+  margin-left:26px;
+  border-radius:50%;
+  background:var(--magenta);
+  vertical-align:middle;
+}
+.hero-tags li{ padding-right:26px; }
+
+.scroll-cue{
+  position:relative;
+  z-index:1;
+  margin-top:56px;
+  display:inline-block;
+  color:var(--cyan);
+  font-size:.8rem;
+  font-weight:600;
+  letter-spacing:.08em;
+  animation:bob 2.2s ease-in-out infinite;
+}
+
+
+/* -------------------------------------------------------------------------
+   6. SECCIÓN INTRO
+   ------------------------------------------------------------------------- */
+.intro{ padding-block:130px; }
+.intro-inner{ max-width:880px; margin-inline:auto; text-align:center; }
+.intro-question{
+  font-family:var(--font-display);
+  font-weight:400;
+  font-size:clamp(1.8rem, 3.4vw, 2.7rem);
+  line-height:1.35;
+  color:var(--ink);
+}
+.intro-body{
+  margin-top:28px;
+  font-size:1.2rem;
+  color:var(--ink-dim);
+  max-width:680px;
+  margin-inline:auto;
+}
+.intro-body strong{ color:var(--ink); font-weight:700; }
+
+
+/* -------------------------------------------------------------------------
+   7. SECCIÓN TIMELINE — "Una década de evolución"
+   -------------------------------------------------------------------------
+   Es un slider de un solo hito a la vez. Los 7 hitos (.tl-slide) están
+   todos superpuestos uno arriba del otro con position:absolute. Por
+   defecto están ocultos (opacity:0). El que tiene la clase .is-active
+   es el único que se ve. El JavaScript (ver index.html) se encarga de
+   sacarle esa clase al hito anterior y ponérsela al nuevo — como nunca
+   hay dos con la clase al mismo tiempo, no se pueden superponer.
+   El JavaScript solo cambia la clase; no hay ninguna animación (ni en el
+   texto ni en la imagen), el cambio de hito es instantáneo.
+   ------------------------------------------------------------------------- */
+.timeline-section{
+  padding-block:120px;
+  background:var(--bg-soft);
+  border-block:1px solid var(--line);
+}
+.timeline-head{ text-align:center; }
+.timeline-head .section-lede{ margin-inline:auto; }
+
+.tl-wrap{
+  margin-top:44px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:18px;
+}
+.tl-slider{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:clamp(8px, 4vw, 32px);
+  width:100%;
+}
+.tl-arrow{
+  flex-shrink:0;
+  width:52px; height:52px;
+  border-radius:50%;
+  border:none;
+  background:transparent;
+  color:var(--magenta);
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  transition:color .2s, transform .2s, opacity .2s;
+}
+.tl-arrow:hover{ color:var(--cyan); transform:scale(1.12); }
+/* cuando el botón está deshabilitado (primer o último hito) lo hacemos
+   invisible en vez de mostrarlo "grisado" */
+.tl-arrow:disabled{ opacity:0; pointer-events:none; }
+
+.tl-stage{
+  position:relative;
+  flex:1 1 auto;
+  max-width:480px;
+  min-height:700px; /* le sobra lugar de sobra al cuadro de 500px + texto,
+                       incluso cuando la descripción ocupa dos renglones */
+}
+.tl-slide{
+  position:absolute;
+  inset:0;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  text-align:center;
+  opacity:0;
+  visibility:hidden;
+  /* sin transition: el cambio de hito es instantáneo, sin animación */
+}
+.tl-slide.is-active{
+  opacity:1;
+  visibility:visible;
+}
+
+/* Marco de imagen: un cuadrado simple de tamaño fijo. Lo que pegues
+   adentro (.tl-art-img) se ve completo, sin recortes, gracias a
+   object-fit:contain (achica o agranda la imagen para que entre entera,
+   sin deformarla). */
+.tl-art{
+  width:500px;
+  height:500px;
+  flex-shrink:0; /* nunca se achica, pase lo que pase con el texto de abajo */
+  border-radius:var(--radius-md);
+  margin:0 auto 18px;
+  overflow:hidden;
+}
+.tl-art .img-slot{
+  width:100%;
+  height:100%;
+  border-radius:var(--radius-md);
+}
+.tl-art-img{
+  display:block;
+  width:100%;
+  height:100%;
+  object-fit:contain;
+}
+
+.timeline-year{
+  font-family:var(--font-pixel);
+  font-size:1rem;
+  color:white;
+}
+.tl-slide h3{
+  margin-top:10px;
+  font-size:1.3rem;
+  font-weight:700;
+}
+.tl-slide p{
+  margin-top:10px;
+  max-width:360px;
+  color:var(--ink-dim);
+  font-size:1rem;
+  line-height:1.55;
+}
+.tl-counter{
+  font-family:var(--font-pixel);
+  font-size:.8rem;
+  color:var(--ink-faint);
+}
+
+
+/* -------------------------------------------------------------------------
+   8. SECCIÓN REALTIME — gráfico comparativo (sección propia)
+   -------------------------------------------------------------------------
+   El dibujo (la línea, los puntos, el texto "-93%") se anima con GSAP +
+   ScrollTrigger a medida que scrolleás. Toda esa animación está en el
+   JavaScript de index.html (buscá "activarGraficoDeLatencia"); acá en el
+   CSS solo definimos cómo se ve cada parte.
+   ------------------------------------------------------------------------- */
+.chart-card{
+  margin-top:56px;
+  max-width:760px;
+  margin-inline:auto;
+  background:var(--bg-panel);
+  border:1px solid var(--line);
+  border-radius:var(--radius-lg);
+  padding:36px;
+}
+.chart{ width:100%; height:auto; overflow:visible; }
+.chart-axis{ stroke:var(--ink-faint); stroke-width:1; }
+.chart-gridline{ stroke:var(--line); stroke-width:1; stroke-dasharray:4 4; }
+.chart-tick{ font-family:var(--font-body); font-size:13px; fill:var(--ink-faint); text-anchor:end; }
+.chart-tick-x{ text-anchor:middle; font-size:14px; font-weight:600; fill:var(--ink-dim); }
+.chart-line{ fill:none; stroke:url(#chartGrad); stroke-width:3; stroke-linecap:round; }
+/* transform-box/transform-origin: para que el "scale" de la animación
+   crezca desde el centro de cada punto, y no desde la esquina del SVG */
+.chart-point{ transform-box:fill-box; transform-origin:center; }
+.chart-value{ font-family:var(--font-display); font-size:26px; text-anchor:middle; }
+.chart-caption{ font-family:var(--font-body); font-size:12px; fill:var(--ink-dim); text-anchor:middle; }
+.chart-annotation{ font-family:var(--font-pixel); font-size:14px; fill:var(--ink); text-anchor:middle; }
+
+.chart-footnotes{ margin-top:26px; display:flex; flex-direction:column; gap:12px; }
+.chart-footnotes p{ display:flex; gap:8px; align-items:flex-start; font-size:.88rem; color:var(--ink-dim); }
+
+
+/* -------------------------------------------------------------------------
+   9. SECCIÓN CÓMO FUNCIONA — MIDI (con tooltip) + piano vs. Piano Genie
+   ------------------------------------------------------------------------- */
+.midi-block{ margin-top:48px; text-align:center; }
+.midi-label{
+  display:block;
+  margin-bottom:16px;
+  font-size:.85rem;
+  color:var(--ink-dim);
+  font-weight:600;
+}
+
+.midi-grid{
+  display:grid;
+  grid-template-columns:repeat(7, 1fr);
+  gap:14px;
+  max-width:620px;
+  margin-inline:auto;
+}
+.midi-cell{
+  position:relative; /* necesario para poder ubicar la burbuja de info */
+  aspect-ratio:1;
+  border:none;
+  border-radius:10px;
+  background:var(--c);
+  cursor:pointer;
+  padding:0;
+}
+
+/* -------------------------------------------------------------------------
+   Truco de "tooltip" solo con CSS, sin nada de JavaScript:
+   - ::after dibuja la burbuja con el texto (el texto sale de
+     data-tip="..." gracias a content:attr(data-tip))
+   - ::before dibuja el triangulito que apunta hacia el botón
+   - los dos arrancan con opacity:0 (invisibles) y pasan a opacity:1
+     cuando el mouse está encima (:hover) o cuando se navega con
+     teclado y el botón queda enfocado (:focus-visible)
+   ------------------------------------------------------------------------- */
+.midi-cell::after{
+  content:attr(data-tip);
+  position:absolute;
+  bottom:calc(100% + 10px);
+  left:50%;
+  transform:translateX(-50%);
+  background:var(--ink);
+  color:var(--bg);
+  font-family:var(--font-body);
+  font-size:.72rem;
+  font-weight:700;
+  padding:6px 10px;
+  border-radius:8px;
+  white-space:nowrap;
+  opacity:0;
+  pointer-events:none;
+  transition:opacity .15s;
+  z-index:5;
+}
+.midi-cell::before{
+  content:'';
+  position:absolute;
+  bottom:calc(100% + 4px);
+  left:50%;
+  transform:translateX(-50%);
+  border:6px solid transparent;
+  border-top-color:var(--ink);
+  opacity:0;
+  transition:opacity .15s;
+  pointer-events:none;
+  z-index:5;
+}
+.midi-cell:hover::after, .midi-cell:hover::before,
+.midi-cell:focus-visible::after, .midi-cell:focus-visible::before{
+  opacity:1;
+}
+
+.genie-visual{
+  margin-top:64px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:28px;
+}
+.genie-before, .genie-after{
+  flex:1;
+  background:#ecdcf2;
+  border-radius:var(--radius-lg);
+  padding:28px 22px;
+  text-align:center;
+}
+.genie-number{
+  display:block;
+  font-family:var(--font-display);
+  font-size:3.4rem;
+  line-height:1;
+  color:#1a1a22;
+}
+.piano-strip{ margin:18px auto; width:100%; max-width:280px; }
+.piano-strip rect.white-key{ fill:#ffffff; stroke:#0a0a0f; stroke-width:1; }
+.piano-strip rect.black-key{ fill:#0a0a0f; }
+
+.genie-buttons{
+  margin:20px auto 0;
+  display:grid;
+  grid-template-columns:repeat(4, 1fr);
+  gap:10px;
+  max-width:220px;
+}
+.genie-buttons span{
+  aspect-ratio:1;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-family:var(--font-pixel);
+  font-size:.85rem;
+  color:#0a0a0f;
+  font-weight:700;
+}
+
+.genie-caption{
+  display:block;
+  margin-top:16px;
+  color:#4a4750;
+  font-size:.9rem;
+  letter-spacing:.02em;
+}
+.genie-arrow{ color:var(--ink-faint); flex-shrink:0; }
+
+
+/* -------------------------------------------------------------------------
+   10. SECCIÓN CÓMO INTERACTÚA — video + Piano Genie
+   ------------------------------------------------------------------------- */
+.how-interacts{
+  background:var(--bg-soft);
+  border-block:1px solid var(--line);
+}
+.interacts-grid{
+  margin-top:56px;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:40px 56px;
+  align-items:center;
+}
+.genie-copy p{
+  margin-top:18px;
+  font-size:1.08rem;
+  color:var(--ink-dim);
+}
+.genie-copy .btn{ margin-top:28px; }
+
+/* -------------------------------------------------------------------------
+   Tarjeta de video de YouTube: al cargar la página se ve solo una
+   miniatura con un botón de play. El <iframe> real (el reproductor de
+   YouTube de verdad) recién se crea cuando la persona hace clic — así la
+   página no tiene que cargar YouTube entero de entrada. Todo ese
+   intercambio lo hace el JavaScript (buscá "activarVideoDeYouTube").
+   ------------------------------------------------------------------------- */
+.video-card{
+  position:relative;
+  aspect-ratio:16/9;
+  border-radius:var(--radius-lg);
+  overflow:hidden;
+  background:#000;
+  border:1px solid var(--line);
+}
+.video-play{
+  position:absolute; inset:0;
+  width:100%; height:100%;
+  border:none; padding:0;
+  background:#000;
+  cursor:pointer;
+}
+.video-thumb{ width:100%; height:100%; object-fit:cover; opacity:.7; }
+.video-play-icon{
+  position:absolute; inset:0;
+  display:flex; align-items:center; justify-content:center;
+  color:#fff;
+}
+.video-play-icon .icon{
+  width:64px; height:64px;
+  filter:drop-shadow(0 4px 16px rgba(0,0,0,.55));
+  transition:transform .2s;
+}
+.video-play:hover .icon{ transform:scale(1.1); }
+.video-meta{
+  position:absolute; left:0; right:0; bottom:0;
+  padding:16px 18px;
+  background:linear-gradient(0deg, rgba(0,0,0,.8), transparent);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  pointer-events:none;
+}
+.video-title{ font-weight:700; font-size:.95rem; color:#fff; }
+.video-channel{ display:flex; align-items:center; gap:6px; font-size:.8rem; color:#ddd; flex-shrink:0; }
+.video-iframe{ width:100%; height:100%; border:0; display:block; }
+
+/* banner ancho con el fondo de teclas — lo pegás vos */
+.keyboard-banner{
+  margin-top:56px;
+  width:100%;
+  aspect-ratio:3.5/1;
+}
+
+.interacts-close{
+  margin-top:56px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:16px;
+  color:var(--ink-faint);
+}
+.close-logo{
+  width:130px;
+  height:130px;
+  border-radius:50%;
+}
+
+
+/* -------------------------------------------------------------------------
+   11. FOOTER — simple: una fila con logo + nav + redes, y los links
+   legales debajo, chiquitos.
+   ------------------------------------------------------------------------- */
+.site-footer{
+  padding-block:48px 28px;
+  background:var(--bg-soft);
+  border-top:1px solid var(--line);
+}
+.footer-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  gap:20px;
+}
+.footer-nav{
+  display:flex;
+  gap:28px;
+  font-size:.92rem;
+}
+.footer-nav a{ color:var(--ink-dim); }
+.footer-nav a:hover{ color:var(--ink); }
+
+.footer-social{ display:flex; align-items:center; gap:18px; }
+.footer-social a{ color:var(--ink-dim); transition:color .2s; }
+.footer-social a:first-child{ color:var(--magenta); }
+.footer-social a:hover{ color:var(--ink); }
+
+.footer-legal{
+  margin-top:20px;
+  display:flex;
+  gap:22px;
+  font-size:.78rem;
+  color:var(--ink-faint);
+}
+.footer-legal a:hover{ color:var(--ink-dim); }
+
+
+/* -------------------------------------------------------------------------
+   12. ANIMACIONES Y ACCESIBILIDAD DE MOVIMIENTO
+   ------------------------------------------------------------------------- */
+@keyframes bob{
+  0%, 100%{ transform:translateY(0); }
+  50%{ transform:translateY(6px); }
+}
+
+/* si la persona configuró su sistema para "reducir el movimiento", le
+   apagamos casi todas las animaciones y transiciones del sitio */
+@media (prefers-reduced-motion: reduce){
+  html{ scroll-behavior:auto; }
+  *, *::before, *::after{
+    animation-duration:.001ms !important;
+    animation-iteration-count:1 !important;
+    transition-duration:.001ms !important;
+  }
+}
+
+
+/* -------------------------------------------------------------------------
+   13. RESPONSIVE
+   ------------------------------------------------------------------------- */
+@media (max-width:980px){
+  .interacts-grid{ grid-template-columns:1fr; }
+  .genie-visual{ flex-direction:column; }
+  .genie-arrow{ transform:rotate(90deg); }
+  .midi-grid{ max-width:100%; }
+}
+
+@media (max-width:760px){
+  .main-nav{
+    position:absolute;
+    top:78px; left:0; right:0;
+    background:var(--bg-soft);
+    border-bottom:1px solid var(--line);
+    flex-direction:column;
+    align-items:flex-start;
+    gap:0;
+    padding:8px clamp(24px,5vw,48px) 20px;
+    transform:translateY(-8px);
+    opacity:0;
+    pointer-events:none;
+    transition:opacity .2s var(--ease), transform .2s var(--ease);
+  }
+  .main-nav a{ width:100%; padding-block:12px; border-bottom:1px solid var(--line); }
+  .main-nav.is-open{ opacity:1; transform:translateY(0); pointer-events:auto; }
+  .nav-toggle{ display:block; }
+
+  .hero-tags{ flex-direction:column; gap:10px; }
+  .hero-tags li:not(:last-child)::after{ display:none; }
+  .hero-tags li{ padding-right:0; }
+
+  .tl-arrow{ width:40px; height:40px; }
+  .tl-art{ width:120px; height:120px; }
+  .tl-stage{ min-height:380px; }
+
+  .midi-grid{ gap:8px; }
+
+  .footer-row{ flex-direction:column; align-items:flex-start; }
+}

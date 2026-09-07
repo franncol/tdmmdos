@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Magenta — ¿Puede una IA ser tu colaborador creativo?</title>
+<meta name="description" content="Un recorrido por Magenta, el proyecto de código abierto de Google Brain que explora la inteligencia artificial aplicada a la música y la creatividad.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Jersey+10&family=Silkscreen:wght@400;700&family=Roboto+Condensed:wght@300..900&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+<!-- =====================================================================
+     SPRITE DE ÍCONOS (oculto — se referencia con <use> en todo el sitio)
+     ===================================================================== -->
+<svg style="display:none" aria-hidden="true">
+  <symbol id="icon-arrow-right" viewBox="0 0 24 24"><path d="M4 12h16M13 5l7 7-7 7"/></symbol>
+  <symbol id="icon-arrow-down" viewBox="0 0 24 24"><path d="M12 3v17M5 13l7 7 7-7"/></symbol>
+  <symbol id="icon-external" viewBox="0 0 24 24"><path d="M9 5h10v10"/><path d="M19 5 6 18"/><path d="M8 5H6a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2v-2"/></symbol>
+  <symbol id="icon-menu" viewBox="0 0 24 24"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></symbol>
+  <symbol id="icon-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+  <symbol id="icon-chevron-double-left" viewBox="0 0 24 24"><path d="M18 5l-6 7 6 7"/><path d="M11 5l-6 7 6 7"/></symbol>
+  <symbol id="icon-chevron-double-right" viewBox="0 0 24 24"><path d="M6 5l6 7-6 7"/><path d="M13 5l6 7-6 7"/></symbol>
+  <symbol id="icon-play" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></symbol>
+  <symbol id="icon-instagram" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="icon-x" viewBox="0 0 24 24"><path d="M5 5l14 14M19 5 5 19"/></symbol>
+</svg>
+
+<!-- =====================================================================
+     4. ENCABEZADO
+     ===================================================================== -->
+
+
+<main id="contenido">
+
+  <!-- ===================================================================
+       5. HERO
+       Dejé dos lugares marcados para tus imágenes: el fondo de teclitas
+       (.hero-bg-slot) y el teclado superpuesto en el título (.hero-keyboard-slot).
+       =================================================================== -->
+  <section class="hero" id="inicio">
+
+    <!-- 📌 Fondo decorativo con tus notas/teclas: cambiá el nombre de archivo
+         de acá abajo por el tuyo (tiene que estar en la carpeta imagenes/). -->
+    <div class="hero-bg-slot" aria-hidden="true" style="background-image:url('imagenes/TECLITAS\ FONDO.png');"></div>
+
+    <div class="wrap hero-inner">
+      <p class="hero-eyebrow">LA <span class="accent">IA</span> ESTÁ CAMBIANDO...</p>
+
+      <h1 class="hero-title">
+        <span>LA FORMA DE</span>
+
+       
+             <img class="hero-keyboard-slot" src="imagenes/8914575-Photoroom 2.png" alt=""> 
+       
+
+        <span>HACER MÚSICA</span>
+      </h1>
+
+      <ul class="hero-tags">
+        <li>COMPONER</li>
+        <li>PRODUCIR</li>
+        <li>INNOVAR</li>
+        <li>CO-CREAR</li>
+      </ul>
+
+      <a href="#intro" class="scroll-cue">HAZ SCROLL PARA COMENZAR</a>
+    </div>
+  </section>
+
+
+  <!-- ===================================================================
+       6. INTRO — la pregunta que da origen al proyecto
+       =================================================================== -->
+  <section class="intro" id="intro">
+    <div class="wrap intro-inner">
+      <p class="intro-question">
+        ¿Puede un algoritmo convertirse en un colaborador creativo en lugar de reemplazar al músico?
+      </p>
+      <p class="intro-body">
+        Para explorar esta idea nace <strong>Magenta</strong>, un proyecto de código abierto de
+        Google Brain que usa machine learning para investigar nuevas formas de crear
+        música y arte. Su objetivo no es reemplazar al artista, sino ampliar sus posibilidades
+        creativas: explorar melodías, estructuras y ritmos de maneras que antes no eran posibles.
+      </p>
+    </div>
+  </section>
+
+
+  <!-- ===================================================================
+       7. TIMELINE — Una década de evolución
+       Slider de un solo hito a la vez: al tocar una flecha, el hito
+       anterior se apaga y el nuevo se prende (eso lo hace este JS, nada
+       más que agregando y sacando una clase). No hay ninguna animación
+       a propósito: el cambio de hito es instantáneo.
+       Cada hito tiene su propio espacio de imagen para que peques ahí
+       tu gráfico de la red neuronal.
+       =================================================================== -->
+  <section class="timeline-section" id="historia">
+    <div class="wrap timeline-head">
+      <h2 class="section-title">Una década de evolución</h2>
+      <p class="section-lede">De un laboratorio de investigación a un modelo que responde mientras tocás. Usá las flechas para recorrer los hitos.</p>
+    </div>
+
+    <!-- 📌 Cada .tl-art es un cuadrado de tamaño FIJO: metelo tu imagen
+         adentro reemplazando el <span class="tl-art-placeholder"> por:
+         <img class="tl-art-img" src="hito-1.png" alt=""> -->
+    <div class="wrap tl-wrap">
+      <div class="tl-slider" id="tlSlider" tabindex="0" aria-roledescription="carrusel" aria-label="Línea de tiempo de Magenta">
+
+        <button type="button" class="tl-arrow tl-prev" id="tlPrev" aria-label="Hito anterior">
+          <svg class="icon icon-lg"><use href="#icon-chevron-double-left"></use></svg>
+        </button>
+
+        <div class="tl-stage" aria-live="polite">
+
+          <article class="tl-slide is-active" data-index="0" style="--c:var(--magenta)" role="group" aria-roledescription="slide" aria-label="Hito 1 de 7 — 2016, Nace Magenta">
+            <div class="tl-art">
+             <img class="tl-art-img" src="imagenes/Frame 4.png" alt="">
+            </div>
+            <span class="timeline-year">2016</span>
+            <h3>Nace Magenta</h3>
+            <p>Douglas Eck funda el proyecto dentro de Google Brain para investigar el cruce entre inteligencia artificial y creatividad</p>
+          </article>
+
+          <article class="tl-slide" data-index="1" style="--c:var(--cyan)" role="group" aria-roledescription="slide" aria-label="Hito 2 de 7 — 2017, NSynth">
+            <div class="tl-art">
+              <img class="tl-art-img" src="imagenes/Frame 5.png" alt="">
+            </div>
+            <span class="timeline-year">2017</span>
+            <h3>NSynth</h3>
+            <p>Una red neuronal aprende a combinar el timbre de distintos instrumentos y genera sonidos que no existían antes</p>
+          </article>
+
+          <article class="tl-slide" data-index="2" style="--c:var(--green)" role="group" aria-roledescription="slide" aria-label="Hito 3 de 7 — 2018, Piano Genie">
+            <div class="tl-art">
+              <img class="tl-art-img" src="imagenes/Frame 6.png" alt="">
+            </div>
+            <span class="timeline-year">2018</span>
+            <h3>Piano Genie</h3>
+            <p>Ocho botones numerados bastan para improvisar en un piano completo, sin necesidad de saber tocarlo</p>
+          </article>
+
+          <article class="tl-slide" data-index="3" style="--c:var(--orange)" role="group" aria-roledescription="slide" aria-label="Hito 4 de 7 — 2019, Magenta Studio">
+            <div class="tl-art">
+              <img class="tl-art-img" src="imagenes/Frame 4.png" alt="">
+            </div>
+            <span class="timeline-year">2019</span>
+            <h3>Magenta Studio</h3>
+            <p>Los modelos salen del laboratorio en forma de plugins gratuitos para Ableton Live</p>
+          </article>
+
+          <article class="tl-slide" data-index="4" style="--c:var(--yellow)" role="group" aria-roledescription="slide" aria-label="Hito 5 de 7 — 2023, MusicLM">
+            <div class="tl-art">
+              <img class="tl-art-img" src="imagenes/Frame 7.png" alt="">
+            </div>
+            <span class="timeline-year">2023</span>
+            <h3>MusicLM</h3>
+            <p>Google explora la generación de música a partir de simples descripciones de texto</p>
+          </article>
+
+          <article class="tl-slide" data-index="5" style="--c:var(--blue)" role="group" aria-roledescription="slide" aria-label="Hito 6 de 7 — 2025, Magenta RealTime">
+            <div class="tl-art">
+              <img class="tl-art-img" src="imagenes/Frame 5.png" alt="">
+            </div>
+            <span class="timeline-year">2025</span>
+            <h3>Magenta RealTime</h3>
+            <p>Primer modelo abierto que genera audio en streaming, con unos 3 segundos de respuesta</p>
+          </article>
+
+          <article class="tl-slide" data-index="6" style="--c:var(--purple)" role="group" aria-roledescription="slide" aria-label="Hito 7 de 7 — 2026, Magenta RealTime 2">
+            <div class="tl-art">
+              <img class="tl-art-img" src="imagenes/Frame 6.png" alt="">
+            </div>
+            <span class="timeline-year">2026</span>
+            <h3>Magenta RealTime 2</h3>
+            <p>La latencia baja a 0,2 segundos y el modelo corre en dispositivos locales, como una laptop</p>
+          </article>
+
+        </div>
+
+        <button type="button" class="tl-arrow tl-next" id="tlNext" aria-label="Hito siguiente">
+          <svg class="icon icon-lg"><use href="#icon-chevron-double-right"></use></svg>
+        </button>
+      </div>
+
+      <span class="tl-counter" id="tlCounter">1 / 7</span>
+    </div>
+  </section>
+
+
+  <!-- ===================================================================
+       8. REALTIME — gráfico comparativo, en su propia sección.
+       Se dibuja a medida que se scrollea (ver JS: activarGraficoDeLatencia).
+       =================================================================== -->
+  <section class="realtime-section section-pad" id="realtime">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 class="section-title">De la espera a la interacción</h2>
+        <p class="section-lede">Así bajó la latencia de respuesta entre la primera versión de Magenta RealTime y la segunda.</p>
+      </div>
+
+      <div class="chart-card">
+        <svg class="chart" viewBox="0 0 640 320" role="img"
+             aria-label="Gráfico: la latencia de respuesta cae de 3 segundos en 2025 a 0,2 segundos en 2026">
+          <defs>
+            <linearGradient id="chartGrad" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%"   style="stop-color:var(--magenta)"/>
+              <stop offset="100%" style="stop-color:var(--green)"/>
+            </linearGradient>
+          </defs>
+
+          <g class="chart-grid">
+            <line x1="60" y1="260" x2="580" y2="260" class="chart-axis"/>
+            <line x1="60" y1="191" x2="580" y2="191" class="chart-gridline"/>
+            <line x1="60" y1="123" x2="580" y2="123" class="chart-gridline"/>
+            <line x1="60" y1="54"  x2="580" y2="54"  class="chart-gridline"/>
+            <text x="46" y="264" class="chart-tick">0 s</text>
+            <text x="46" y="195" class="chart-tick">1 s</text>
+            <text x="46" y="127" class="chart-tick">2 s</text>
+            <text x="46" y="58"  class="chart-tick">3 s</text>
+            <text x="200" y="286" class="chart-tick chart-tick-x">2025</text>
+            <text x="440" y="286" class="chart-tick chart-tick-x">2026</text>
+          </g>
+
+          <path class="chart-line" d="M200,54 C300,54 340,246 440,246"/>
+
+          <g class="chart-point chart-point-a">
+            <circle cx="200" cy="54" r="7" fill="var(--magenta)"/>
+            <text x="200" y="34"  class="chart-value" fill="var(--magenta)">3 s</text>
+            <text x="200" y="308" class="chart-caption">Magenta RealTime</text>
+          </g>
+
+          <g class="chart-point chart-point-b">
+            <circle cx="440" cy="246" r="7" fill="var(--green)"/>
+            <text x="440" y="226" class="chart-value" fill="var(--green)">0,2 s</text>
+            <text x="440" y="308" class="chart-caption">Magenta RealTime 2</text>
+          </g>
+
+          <text x="320" y="150" class="chart-drop chart-annotation">−93% de latencia</text>
+        </svg>
+
+        <div class="chart-footnotes">
+          <p><span class="tag" style="--c:var(--magenta)">2025</span> Genera audio en bloques de 2 segundos con un modelo abierto de 800 millones de parámetros: la primera vez que esto fue posible en tiempo real.</p>
+          <p><span class="tag" style="--c:var(--green)">2026</span> Responde en unos 200&nbsp;ms y corre en el propio dispositivo —hasta en una laptop— gracias a un modelo mucho más liviano.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ===================================================================
+       9. CÓMO FUNCIONA — secuencias MIDI (con tooltip al pasar el mouse)
+          y la comparación de piano tradicional vs. Piano Genie.
+       =================================================================== -->
+  <section class="how-works section-pad" id="como-funciona">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 class="section-title">¿CÓMO FUNCIONA?</h2>
+
+      </div>
+
+      <div class="midi-block">
+        <span class="midi-label">Secuencias MIDI</span>
+
+        <div class="midi-grid">
+          <button type="button" class="midi-cell" style="--c:var(--midi-1)" data-tip="Voz 1 · Paso 1" aria-label="Voz 1, paso 1"></button>
+          <button type="button" class="midi-cell" style="--c:var(--midi-2)" data-tip="Voz 2 · Paso 1" aria-label="Voz 2, paso 1"></button>
+          <button type="button" class="midi-cell" style="--c:var(--midi-3)" data-tip="Voz 3 · Paso 1" aria-label="Voz 3, paso 1"></button>
+          <button type="button" class="midi-cell" style="--c:var(--midi-4)" data-tip="Voz 4 · Paso 1" aria-label="Voz 4, paso 1"></button>
+          <button type="button" class="midi-cell" style="--c:var(--midi-5)" data-tip="Voz 5 · Paso 1" aria-label="Voz 5, paso 1"></button>
+          <button type="button" class="midi-cell" style="--c:var(--midi-6)" data-tip="Voz 6 · Paso 1" aria-label="Voz 6, paso 1"></button>
+          <button type="button" class="midi-cell" style="--c:var(--midi-7)" data-tip="Voz 7 · Paso 1" aria-label="Voz 7, paso 1"></button>
+
+          <button type="button" class="midi-cell" style="--c:var(--midi-1)" data-tip="Voz 1 · Paso 2" aria-label="Voz 1, paso 2"></button>
+          <button type="button" class="midi-cell" style="--c:var(--midi-2)" data-tip="Voz 2 · Paso 2" aria-label="Voz 2, paso 2"></button>
+          <button type="button" class="midi-cell" style="--c:var(--midi-3)" data-tip="Voz 3 · Paso 2" aria-label="Voz 3, paso 2"></button>
+          <button type="button" class="midi-cell" style="--c:var(--midi-4)" data-tip="Voz 4 · Paso 2" aria-label="Voz 4, paso 2"></button>
+          <button type="button" class="midi-cell" style="--c:var(--midi-5)" data-tip="Voz 5 · Paso 2" aria-label="Voz 5, paso 2"></button>
+          <button type="button" class="midi-cell" style="--c:var(--midi-6)" data-tip="Voz 6 · Paso 2" aria-label="Voz 6, paso 2"></button>
+          <button type="button" class="midi-cell" style="--c:var(--midi-7)" data-tip="Voz 7 · Paso 2" aria-label="Voz 7, paso 2"></button>
+
+          <button type="button" class="midi-cell" style="--c:var(--midi-1)" data-tip="Voz 1 · Paso 3" aria-label="Voz 1, paso 3"></button>
+          <button type="button" class="midi-cell" style="--c:var(--midi-2)" data-tip="Voz 2 · Paso 3" aria-label="Voz 2, paso 3"></button>
+          <button type="button" class="midi-cell" style="--c:var(--midi-3)" data-tip="Voz 3 · Paso 3" aria-label="Voz 3, paso 3"></button>
+          <button type="button" class="midi-cell" style="--c:var(--midi-4)" data-tip="Voz 4 · Paso 3" aria-label="Voz 4, paso 3"></button>
+          <button type="button" class="midi-cell" style="--c:var(--midi-5)" data-tip="Voz 5 · Paso 3" aria-label="Voz 5, paso 3"></button>
+          <button type="button" class="midi-cell" style="--c:var(--midi-6)" data-tip="Voz 6 · Paso 3" aria-label="Voz 6, paso 3"></button>
+          <button type="button" class="midi-cell" style="--c:var(--midi-7)" data-tip="Voz 7 · Paso 3" aria-label="Voz 7, paso 3"></button>
+
+          <button type="button" class="midi-cell" style="--c:var(--midi-1)" data-tip="Voz 1 · Paso 4" aria-label="Voz 1, paso 4"></button>
+          <button type="button" class="midi-cell" style="--c:var(--midi-2)" data-tip="Voz 2 · Paso 4" aria-label="Voz 2, paso 4"></button>
+          <button type="button" class="midi-cell" style="--c:var(--midi-3)" data-tip="Voz 3 · Paso 4" aria-label="Voz 3, paso 4"></button>
+          <button type="button" class="midi-cell" style="--c:var(--midi-4)" data-tip="Voz 4 · Paso 4" aria-label="Voz 4, paso 4"></button>
+          <button type="button" class="midi-cell" style="--c:var(--midi-5)" data-tip="Voz 5 · Paso 4" aria-label="Voz 5, paso 4"></button>
+          <button type="button" class="midi-cell" style="--c:var(--midi-6)" data-tip="Voz 6 · Paso 4" aria-label="Voz 6, paso 4"></button>
+          <button type="button" class="midi-cell" style="--c:var(--midi-7)" data-tip="Voz 7 · Paso 4" aria-label="Voz 7, paso 4"></button>
+
+          <button type="button" class="midi-cell" style="--c:var(--midi-1)" data-tip="Voz 1 · Paso 5" aria-label="Voz 1, paso 5"></button>
+          <button type="button" class="midi-cell" style="--c:var(--midi-2)" data-tip="Voz 2 · Paso 5" aria-label="Voz 2, paso 5"></button>
+          <button type="button" class="midi-cell" style="--c:var(--midi-3)" data-tip="Voz 3 · Paso 5" aria-label="Voz 3, paso 5"></button>
+          <button type="button" class="midi-cell" style="--c:var(--midi-4)" data-tip="Voz 4 · Paso 5" aria-label="Voz 4, paso 5"></button>
+          <button type="button" class="midi-cell" style="--c:var(--midi-5)" data-tip="Voz 5 · Paso 5" aria-label="Voz 5, paso 5"></button>
+          <button type="button" class="midi-cell" style="--c:var(--midi-6)" data-tip="Voz 6 · Paso 5" aria-label="Voz 6, paso 5"></button>
+          <button type="button" class="midi-cell" style="--c:var(--midi-7)" data-tip="Voz 7 · Paso 5" aria-label="Voz 7, paso 5"></button>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ===================================================================
+       10. CÓMO INTERACTÚA — video + Piano Genie, y espacio para el
+           banner del teclado y el logo de cierre.
+       =================================================================== -->
+  <section class="how-interacts section-pad" id="como-interactua">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 class="section-title">¿CÓMO INTERACTÚA?</h2>
+
+      </div>
+
+      <div class="interacts-grid">
+
+        <!-- Pegá acá el link completo de YouTube (o solo el ID de 11 caracteres) en el
+             atributo data-youtube. La miniatura se arma sola a partir de ese ID. -->
+        <div class="genie-video">
+          <div class="video-card" id="genieVideo" data-youtube="https://www.youtube.com/watch?v=YRb0XAnUpIk">
+            <button type="button" class="video-play" aria-label="Reproducir video de demostración de Piano Genie">
+              <img class="video-thumb" alt="" src="" />
+              <span class="video-play-icon">
+                <svg class="icon icon-fill icon-lg"><use href="#icon-play"></use></svg>
+              </span>
+            </button>
+            <div class="video-meta">
+              <span class="video-title">Piano Genie — Improvisación en vivo</span>
+              <span class="video-channel">
+                <svg class="icon icon-fill icon-sm"><use href="#icon-play"></use></svg>
+                YouTube
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="genie-copy">
+          <span class="tag" style=" color:var(--c, var(--magenta)); font-size:2rem; font-weight:800;">Piano Genie</span>
+          <p>
+            Tocar el piano tradicional requiere años de práctica para dominar una interfaz de
+            88 teclas. Piano Genie, un modelo de Magenta, actúa como traductor entre la persona
+            y el instrumento: reduce el teclado a ocho botones numerados y decide, en tiempo
+            real, qué tecla suena mejor para cada uno.
+          </p>
+          <a class="btn" target="_blank" rel="noopener" style=" font-size:0.9rem; font-weight:800;"  >
+            MÁS INFO 
+          </a>
+        </div>
+      </div>
+
+      <!-- 📌 Pegá acá tu imagen de fondo con las teclas (banner ancho), por ejemplo:-->
+           <img class="keyboard-banner" src="imagenes/Group 13.png" alt="">
+
+      <div class="interacts-close">
+        <svg class="icon icon-lg"><use href="#icon-arrow-down"></use></svg>
+        <!-- 📌 Pegá acá tu logo de cierre -->
+
+      </div>
+    </div>
+  </section>
+
+</main>
+
+
+<!-- =====================================================================
+     11. FOOTER — simple: logo, navegación y redes en una fila, y los
+         links legales debajo en chico.
+     ===================================================================== -->
+<footer class="site-footer">
+  <div class="wrap footer-row">
+    <a href="#inicio" class="logo">Google<span>Magenta</span></a>
+
+    <nav class="footer-nav">
+      <a href="#inicio">Volver al inicio</a>
+      <a href="#como-funciona">¿Cómo funciona?</a>
+      <a href="#como-interactua">¿Cómo interactúa?</a>
+    </nav>
+
+    <div class="footer-social">
+      <a href="#" aria-label="YouTube"><svg class="icon icon-fill"><use href="#icon-play"></use></svg></a>
+      <a href="#" aria-label="Instagram"><svg class="icon"><use href="#icon-instagram"></use></svg></a>
+      <a href="#" aria-label="X"><svg class="icon"><use href="#icon-x"></use></svg></a>
+    </div>
+  </div>
+
+  <div class="wrap footer-legal">
+    <a href="#">Privacidad y términos</a>
+    <a href="#">Cookies</a>
+    <a href="#">Aviso legal</a>
+  </div>
+</footer>
+
+
+<!-- =====================================================================
+     LIBRERÍAS — GSAP + ScrollTrigger, solo para el gráfico de la sección
+     "De la espera a la interacción" (la línea de tiempo ya no las necesita)
+     ===================================================================== -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+<!-- =====================================================================
+     JAVASCRIPT DEL SITIO
+
+     Está dividido en 4 funciones bien separadas, una por funcionalidad.
+     Cada función se define y, justo abajo, se "llama" (se ejecuta) una
+     sola vez. Si alguna parte del HTML no existe en la página (por
+     ejemplo, si todavía no agregaste el encabezado), la función
+     simplemente no hace nada en esa parte, en vez de romper el resto.
+     ===================================================================== -->
+<script>
+
+  // -----------------------------------------------------------------------
+  // 0. Activamos el plugin de scroll de GSAP (lo necesita la función 4)
+  // -----------------------------------------------------------------------
+  if (window.gsap && window.ScrollTrigger) {
+    gsap.registerPlugin(ScrollTrigger);
+  }
+
+
+  // -----------------------------------------------------------------------
+  // 1. MENÚ MÓVIL
+  // Abre y cierra el menú de navegación en pantallas chicas.
+  // -----------------------------------------------------------------------
+  function activarMenuMovil() {
+    const botonMenu = document.getElementById('navToggle');
+    const menu = document.getElementById('mainNav');
+
+    // si el header todavía no existe en la página, no hacemos nada más
+    if (!botonMenu || !menu) return;
+
+    botonMenu.addEventListener('click', function () {
+      const estaAbierto = menu.classList.toggle('is-open');
+      botonMenu.setAttribute('aria-expanded', estaAbierto);
+    });
+
+    // al tocar un link del menú, lo cerramos
+    const links = menu.querySelectorAll('a');
+    links.forEach(function (link) {
+      link.addEventListener('click', function () {
+        menu.classList.remove('is-open');
+        botonMenu.setAttribute('aria-expanded', 'false');
+      });
+    });
+  }
+
+  activarMenuMovil();
+
+
+  // -----------------------------------------------------------------------
+  // 2. LÍNEA DE TIEMPO (slider de un hito por vez)
+  // Muestra un solo hito a la vez y usa las flechas para moverse. Esta
+  // función solo agrega/saca la clase "is-active" — no hay ninguna
+  // animación, el cambio de hito es instantáneo.
+  // -----------------------------------------------------------------------
+  function activarLineaDeTiempo() {
+    const slides = document.querySelectorAll('.tl-slide');
+    const botonAnterior = document.getElementById('tlPrev');
+    const botonSiguiente = document.getElementById('tlNext');
+    const contador = document.getElementById('tlCounter');
+    const carrusel = document.getElementById('tlSlider');
+
+    if (slides.length === 0 || !botonAnterior || !botonSiguiente) return;
+
+    let indiceActual = 0;
+
+    // muestra el hito que corresponde a "indiceActual" y oculta el resto
+    function actualizarSlideVisible() {
+      for (let i = 0; i < slides.length; i++) {
+        if (i === indiceActual) {
+          slides[i].classList.add('is-active');
+        } else {
+          slides[i].classList.remove('is-active');
+        }
+      }
+
+      // ocultamos la flecha "anterior" en el primer hito, y la
+      // "siguiente" en el último
+      botonAnterior.disabled = (indiceActual === 0);
+      botonSiguiente.disabled = (indiceActual === slides.length - 1);
+
+      if (contador) {
+        contador.textContent = (indiceActual + 1) + ' / ' + slides.length;
+      }
+    }
+
+    function irAlHito(nuevoIndice) {
+      const estaDentroDelRango = nuevoIndice >= 0 && nuevoIndice < slides.length;
+      if (!estaDentroDelRango) return;
+
+      indiceActual = nuevoIndice;
+      actualizarSlideVisible();
+    }
+
+    botonAnterior.addEventListener('click', function () {
+      irAlHito(indiceActual - 1);
+    });
+
+    botonSiguiente.addEventListener('click', function () {
+      irAlHito(indiceActual + 1);
+    });
+
+    // también se puede navegar con las flechas del teclado
+    if (carrusel) {
+      carrusel.addEventListener('keydown', function (evento) {
+        if (evento.key === 'ArrowRight') irAlHito(indiceActual + 1);
+        if (evento.key === 'ArrowLeft') irAlHito(indiceActual - 1);
+      });
+    }
+
+    actualizarSlideVisible();
+  }
+
+  activarLineaDeTiempo();
+
+
+  // -----------------------------------------------------------------------
+  // 3. VIDEO DE YOUTUBE
+  // Arranca mostrando solo una miniatura con un botón de play. Recién
+  // cuando se hace clic, se crea el reproductor de YouTube de verdad.
+  // -----------------------------------------------------------------------
+  function activarVideoDeYouTube() {
+    const tarjeta = document.getElementById('genieVideo');
+    if (!tarjeta) return;
+
+    // busca un ID de video de 11 caracteres dentro de un link de YouTube,
+    // sea del formato que sea (youtu.be, /watch, /embed, /shorts)
+    function obtenerIdDelVideo(texto) {
+      if (!texto) return null;
+
+      const formatosDeLink = [
+        /youtu\.be\/([\w-]{11})/,
+        /youtube\.com\/watch\?v=([\w-]{11})/,
+        /youtube\.com\/embed\/([\w-]{11})/,
+        /youtube\.com\/shorts\/([\w-]{11})/
+      ];
+
+      for (let i = 0; i < formatosDeLink.length; i++) {
+        const coincidencia = texto.match(formatosDeLink[i]);
+        if (coincidencia) return coincidencia[1];
+      }
+
+      // si no era ninguno de esos links, probamos si ya es el ID solo
+      const pareceSerSoloElId = /^[\w-]{11}$/.test(texto.trim());
+      return pareceSerSoloElId ? texto.trim() : null;
+    }
+
+    const idDelVideo = obtenerIdDelVideo(tarjeta.getAttribute('data-youtube'));
+    const miniatura = tarjeta.querySelector('.video-thumb');
+    const botonPlay = tarjeta.querySelector('.video-play');
+
+    // la miniatura de YouTube se arma sola a partir del ID del video
+    if (idDelVideo && miniatura) {
+      miniatura.src = 'https://img.youtube.com/vi/' + idDelVideo + '/maxresdefault.jpg';
+    }
+
+    if (botonPlay) {
+      botonPlay.addEventListener('click', function () {
+        if (!idDelVideo) {
+          console.warn('Pegá tu link o ID de YouTube en el atributo data-youtube de #genieVideo.');
+          return;
+        }
+
+        // reemplazamos toda la tarjeta por el reproductor real de YouTube
+        const iframe = document.createElement('iframe');
+        iframe.className = 'video-iframe';
+        iframe.src = 'https://www.youtube.com/embed/' + idDelVideo + '?autoplay=1&rel=0';
+        iframe.title = 'Reproductor de YouTube';
+        iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+        iframe.allowFullscreen = true;
+
+        tarjeta.innerHTML = '';
+        tarjeta.appendChild(iframe);
+      });
+    }
+  }
+
+  activarVideoDeYouTube();
+
+
+  // -----------------------------------------------------------------------
+  // 4. GRÁFICO DE LATENCIA (RealTime vs. RealTime 2)
+  // La línea del gráfico se "dibuja" a medida que se hace scroll, usando
+  // GSAP + ScrollTrigger. Rango largo (arranca apenas asoma el gráfico,
+  // termina cuando ya está bien centrado en pantalla) para que se sienta
+  // gradual, y los elementos van apareciendo de a uno, no todos juntos.
+  // -----------------------------------------------------------------------
+  function activarGraficoDeLatencia() {
+    const linea = document.querySelector('.chart-line');
+    const estanLasLibrerias = window.gsap && window.ScrollTrigger;
+
+    if (!linea || !estanLasLibrerias) return;
+
+    // truco para "dibujar" la línea: le ponemos un guionado del mismo
+    // largo que la línea entera (así queda invisible) y después la
+    // animación va bajando ese guionado hasta 0
+    const largoDeLaLinea = linea.getTotalLength();
+    gsap.set(linea, { strokeDasharray: largoDeLaLinea, strokeDashoffset: largoDeLaLinea });
+    gsap.set('.chart-point-a, .chart-point-b', { opacity: 0, scale: 0 });
+    gsap.set('.chart-annotation', { opacity: 0, y: 10 });
+
+    const animacion = gsap.timeline({
+      scrollTrigger: {
+        trigger: '.chart-card',
+        start: 'top 90%',   // arranca apenas el gráfico asoma abajo
+        end: 'center 35%',  // termina cuando ya está bien ubicado arriba
+        scrub: 1             // atado al scroll, con un poco de suavizado
+      }
+    });
+
+    animacion
+      .fromTo('.chart-point-a', { opacity: 0, scale: 0 }, { opacity: 1, scale: 1, duration: 0.6, ease: 'power2.out' }, 0)
+      .to(linea, { strokeDashoffset: 0, duration: 2.2, ease: 'none' }, 0.3)
+      .fromTo('.chart-point-b', { opacity: 0, scale: 0 }, { opacity: 1, scale: 1, duration: 0.6, ease: 'power2.out' }, 2.2)
+      .fromTo('.chart-annotation', { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.6 }, 2.6);
+  }
+
+  activarGraficoDeLatencia();
+
+</script>
+
+</body>
+</html>
