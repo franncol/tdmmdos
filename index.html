@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Magenta</title>
+<title>Magenta — ¿Puede una IA ser tu colaborador creativo?</title>
 <meta name="description" content="Un recorrido por Magenta, el proyecto de código abierto de Google Brain que explora la inteligencia artificial aplicada a la música y la creatividad.">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -16,7 +16,7 @@
 
 <a class="skip-link" href="#contenido">Saltar al contenido</a>
 
-<!-- todos los íconos juntos y ocultos; los uso con <use href="#..."> -->
+<!-- todos los iconos juntos y ocultos; los uso con <use href="#..."> -->
 <svg style="display:none" aria-hidden="true">
   <symbol id="icon-arrow-right" viewBox="0 0 24 24"><path d="M4 12h16M13 5l7 7-7 7"/></symbol>
   <symbol id="icon-arrow-down" viewBox="0 0 24 24"><path d="M12 3v17M5 13l7 7 7-7"/></symbol>
@@ -30,13 +30,13 @@
   <symbol id="icon-x" viewBox="0 0 24 24"><path d="M5 5l14 14M19 5 5 19"/></symbol>
 </svg>
 
-<!-- (el encabezado / nav todavía no está armado) -->
+<!-- (el encabezado / nav todavia no esta armado) -->
 
 <main id="contenido">
 
   <!-- ===================================================================
-       5. HERO. Dos imágenes: el fondo (.hero-bg-slot) y el teclado que
-       va sobre el título (.hero-keyboard-slot).
+       5. hero. dos imagenes: el fondo (.hero-bg-slot) y el teclado que
+       va sobre el titulo (.hero-keyboard-slot).
        =================================================================== -->
   <section class="hero" id="inicio">
 
@@ -70,9 +70,9 @@
 
 
   <!-- ===================================================================
-       6. INTRO — la pregunta y qué es Magenta.
-       Los dos párrafos aparecen con un fade cuando llego scrolleando
-       (lo hace activarTextoDeIntro más abajo).
+       6. intro — la pregunta y que es Magenta.
+       los dos parrafos aparecen con un fade cuando llego scrolleando
+       (lo hace activarTextoDeIntro mas abajo).
        =================================================================== -->
   <section class="intro" id="intro">
     <div class="wrap intro-inner">
@@ -90,11 +90,11 @@
 
 
   <!-- ===================================================================
-       7. TIMELINE — Una década de evolución
-       Muestra un hito por vez. Con las flechas cambio el hito activo y
-       todo se anima con GSAP. Detrás de cada uno va el "vórtice": varios
+       7. timeline — una decada de evolucion
+       muestra un hito por vez. con las flechas cambio el hito activo y
+       todo se anima con GSAP. detras de cada uno va el "vortice": varios
        anillos que giran (.vortex-ring) y una imagen fija en el centro.
-       Ver activarCarruselDeLaTimeline y activarVorticeDeLaTimeline abajo.
+       ver activarCarruselDeLaTimeline y activarVorticeDeLaTimeline abajo.
        =================================================================== -->
   <section class="timeline-section" id="historia">
    <div class="section-stack-inner">
@@ -112,9 +112,9 @@
 
         <div class="tl-stage" aria-live="polite">
 
-          <!-- El vórtice está acá como <template>. El JS lo copia dentro
-               de cada hito para que gire junto con el año y el título.
-               Las Group-N.png van en cualquier orden; image_7.png es la
+          <!-- el vortice esta aca como <template>. el JS lo copia dentro
+               de cada hito para que gire junto con el año y el titulo.
+               las Group-N.png van en cualquier orden; image_7.png es la
                del centro y no gira. -->
           <template id="tlVortexTpl">
             <div class="tl-vortex" aria-hidden="true">
@@ -191,8 +191,8 @@
 
 
   <!-- ===================================================================
-       8. REALTIME — gráfico comparativo, en su propia sección.
-       Se dibuja a medida que se scrollea (ver JS: activarGraficoDeLatencia).
+       8. el grafico, en su propia seccion.
+       se dibuja a medida que scrolleo (ver JS: activarGraficoDeLatencia).
        =================================================================== -->
   <section class="realtime-section section-pad" id="realtime">
     <div class="wrap">
@@ -251,8 +251,8 @@
 
 
   <!-- ===================================================================
-       9. CÓMO FUNCIONA — la grilla de fichas MIDI y, más abajo, la
-          comparación entre el piano tradicional y Piano Genie.
+       9. como funciona — la grilla de fichas MIDI y, mas abajo, la
+          comparacion entre el piano tradicional y Piano Genie.
        =================================================================== -->
   <section class="how-works section-pad" id="como-funciona">
     <div class="wrap">
@@ -275,8 +275,8 @@
 
 
   <!-- ===================================================================
-       10. CÓMO INTERACTÚA — el video, las dos tarjetas del acordeón,
-           la comparación de teclas y el piano ancho del final.
+       10. como interactua — el video, las dos tarjetas del acordeon,
+           la comparacion de teclas y el piano ancho del final.
        =================================================================== -->
   <section class="how-interacts section-pad" id="como-interactua">
     <div class="wrap">
@@ -307,8 +307,8 @@
           </div>
         </div>
 
-        <!-- acordeón: toco la tira angosta con el nombre y se abre; si
-             toco la otra, ésta se cierra -->
+        <!-- acordeon: toco la tira angosta con el nombre y se abre; si
+             toco la otra, esta se cierra -->
         <div class="genie-accordion" id="genieAccordion">
           <button type="button" class="genie-item" data-genie="piano" style="--c:var(--magenta)" aria-expanded="false">
             <span class="genie-item-body">
@@ -328,7 +328,7 @@
         </div>
       </div>
 
-      <!-- comparación 88 teclas vs 8 botones. Aparece deslizándose al
+      <!-- comparacion 88 teclas vs 8 botones. aparece deslizandose al
            scrollear (lo hace activarComparacionDeTeclas) -->
       <div class="compare-block">
         <h3 class="compare-title">De las 88 teclas a 8: Elegí tu forma de tocar</h3>
@@ -369,9 +369,9 @@
         </div>
       </div>
 
-      <!-- piano ancho dibujado en SVG (no es una imagen). Las teclas se
+      <!-- piano ancho dibujado en SVG (no es una imagen). las teclas se
            tiñen con el mouse y suenan al click (activarPianoInteractivo).
-           Son 2 octavas de Do mayor con sus sostenidos. -->
+           son 2 octavas de Do mayor con sus sostenidos. -->
       <div class="piano-banner-wrap">
         <svg class="piano-banner piano-teclado" viewBox="0 0 980 200" role="group" aria-label="Piano — tocá una tecla para escuchar su nota">
           <rect class="white-key piano-key" x="0"   y="0" width="66" height="200" rx="7" data-freq="261.63" aria-label="Do"/>
@@ -407,7 +407,7 @@
 
 
 <!-- =====================================================================
-     11. FOOTER — simple: logo, navegación y redes en una fila, y los
+     11. footer — simple: logo, navegacion y redes en una fila, y los
          links legales debajo en chico.
      ===================================================================== -->
 <footer class="site-footer">
@@ -420,8 +420,8 @@
       <a href="#como-interactua">¿Cómo interactúa?</a>
     </nav>
 
-    <!-- las 3 imágenes de redes van en la carpeta imagenes/. Son <span>
-         a propósito, no links: no se pueden clickear -->
+    <!-- las 3 imagenes de redes van en la carpeta imagenes/. son <span>
+         a proposito, no links: no se pueden clickear -->
     <div class="footer-social">
       <span class="footer-social-icon" aria-label="YouTube"><img src="imagenes/yt.png" alt="YouTube"></span>
       <span class="footer-social-icon" aria-label="Instagram"><img src="imagenes/ig.png" alt="Instagram"></span>
@@ -437,30 +437,36 @@
 </footer>
 
 
-<!-- Librerías: GSAP + ScrollTrigger (animaciones al scroll) y Lenis (scroll suave) -->
+<!-- librerias: GSAP + ScrollTrigger (animaciones al scroll) y Lenis (scroll suave) -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.14/dist/lenis.min.js"></script>
 
 <!-- ===================================================================
-     JS del sitio. Cada cosa es una función que armo y llamo abajo.
-     Si el HTML que necesita no está, la función corta y no rompe nada.
+     JS del sitio. cada cosa es una funcion que armo y llamo abajo.
+     si el HTML que necesita no esta, la funcion corta y no rompe nada.
      =================================================================== -->
 <script>
 
+  // que la pagina siempre arranque arriba de todo: le saco el # que pueda
+  // traer la URL y le digo al navegador que no recuerde el scroll de antes
+  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+  if (location.hash) history.replaceState(null, '', location.pathname + location.search);
+  window.scrollTo(0, 0);
+
   if (window.gsap && window.ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
 
-  // guardo si el usuario pidió menos animaciones y si la pantalla es grande
+  // guardo si el usuario pidio menos animaciones y si la pantalla es grande
   const reduceMovimiento =
     window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const modoApilado = !reduceMovimiento && window.innerWidth >= 760;
 
-  // los llena la función del gráfico y los lee la del footer
+  // los llena la funcion del grafico y los lee la del footer
   let dibujoGrafico = null;
   let stRealtime = null;
 
 
-  // --- Scroll suave con Lenis ----------------------------------------
+  // --- scroll suave con Lenis --------------------------------------
   function activarScrollSuave() {
     if (!window.Lenis || !window.gsap || reduceMovimiento) return;
 
@@ -481,7 +487,7 @@
   activarScrollSuave();
 
 
-  // --- Menú móvil -----------------------------------------------------
+  // --- menu movil ------------------------------------------------
   function activarMenuMovil() {
     const boton = document.getElementById('navToggle');
     const menu = document.getElementById('mainNav');
@@ -503,9 +509,28 @@
   activarMenuMovil();
 
 
-  // --- Texto de la intro: aparece con un fade al scrollear -----------
-  // uso gsap.from: los párrafos ya se ven por defecto y la animación
-  // arranca desde invisible. El trigger es la sección entera.
+  // --- el "hace click para comenzar" del hero -------------------
+  // baja suave a la intro, pero sin dejar el #intro pegado en la URL
+  // (era lo que hacia que la pagina se reabriera desde esa seccion)
+  function activarScrollCue() {
+    const cue = document.querySelector('.scroll-cue');
+    const intro = document.getElementById('intro');
+    if (!cue || !intro) return;
+
+    cue.addEventListener('click', (e) => {
+      e.preventDefault();
+      const y = intro.getBoundingClientRect().top + window.pageYOffset;
+      if (window.__lenis) window.__lenis.scrollTo(y, { duration: 1 });
+      else window.scrollTo({ top: y, behavior: 'smooth' });
+    });
+  }
+
+  activarScrollCue();
+
+
+  // --- el texto de la intro aparece con un fade al scrollear ----
+  // uso gsap.from: los parrafos ya se ven de entrada y la animacion
+  // arranca desde invisible. el trigger es la seccion entera.
   function activarTextoDeIntro() {
     const seccion = document.getElementById('intro');
     if (!seccion || !window.gsap || !window.ScrollTrigger) return;
@@ -518,7 +543,7 @@
       y: 24,
       duration: 0.8,
       ease: 'power2.out',
-      stagger: 0.15, // el segundo párrafo aparece un toque después
+      stagger: 0.15, // el segundo parrafo aparece un toque despues
       scrollTrigger: {
         trigger: seccion,
         start: 'top 75%',
@@ -530,10 +555,10 @@
   activarTextoDeIntro();
 
 
-  // --- Timeline: carrusel de hitos con loop infinito ----------------
+  // --- timeline: carrusel de hitos con loop infinito -----------
   // al tocar una flecha muevo todas las cards: la activa al centro, las
-  // de al lado más chicas y giradas, y las lejanas escondidas. Cuento la
-  // distancia "en círculo" para que nunca haya un principio ni un final.
+  // de al lado mas chicas y giradas, y las lejanas escondidas. cuento la
+  // distancia "en circulo" asi nunca hay un principio ni un final.
   function activarCarruselDeLaTimeline() {
     if (!window.gsap) return;
 
@@ -543,7 +568,7 @@
     const slider = document.getElementById('tlSlider');
     if (!slides.length || !prev || !next) return;
 
-    // clono el vórtice del <template> dentro de cada hito, donde estaba .tl-art
+    // clono el vortice del <template> dentro de cada hito, donde estaba .tl-art
     const tpl = document.getElementById('tlVortexTpl');
     if (tpl) {
       slides.forEach((slide) => {
@@ -559,8 +584,8 @@
     let actual = 0;
     let animando = false;
 
-    // devuelve a qué distancia está la card "i" del centro, contando en
-    // círculo (da algo entre -total/2 y +total/2)
+    // devuelve a que distancia esta la card "i" del centro, contando en
+    // circulo (da algo entre -total/2 y +total/2)
     function offsetCircular(i) {
       let d = ((i - actual) % total + total) % total;
       if (d > total / 2) d -= total;
@@ -582,7 +607,7 @@
           x: pos * paso,
           scale: centro ? 1 : 0.72,
           rotationY: pos * -14,
-          opacity: dist > 1 ? 0 : (centro ? 1 : 0.38), // sólo se ve el centro y los 2 de al lado
+          opacity: dist > 1 ? 0 : (centro ? 1 : 0.38), // solo se ve el centro y los 2 de al lado
           zIndex: 100 - dist,
           overwrite: true
         });
@@ -590,7 +615,7 @@
         slide.classList.toggle('is-active', centro);
         slide.setAttribute('aria-hidden', centro ? 'false' : 'true');
 
-        // arranco el giro del vórtice del centro y freno los demás
+        // arranco el giro del vortice del centro y freno los demas
         if (slide._giros) slide._giros.forEach((g) => (centro ? g.play() : g.pause()));
       });
     }
@@ -605,7 +630,7 @@
 
     prev.addEventListener('click', () => irAlHito(-1));
     next.addEventListener('click', () => irAlHito(1));
-    prev.disabled = false; // como el loop es infinito nunca las apago
+    prev.disabled = false; // como el loop es infinito nunca las deshabilito
     next.disabled = false;
 
     if (slider) {
@@ -622,8 +647,8 @@
   activarCarruselDeLaTimeline();
 
 
-  // --- Timeline: los anillos del vórtice girando --------------------
-  // creo los giros de todos los hitos pero pausados. Guardo cada uno en
+  // --- timeline: los anillos del vortice girando ---------------
+  // creo los giros de todos los hitos pero pausados. guardo cada uno en
   // slide._giros para que el carrusel prenda el del centro y pause el resto.
   function activarVorticeDeLaTimeline() {
     if (!window.gsap) return;
@@ -633,7 +658,7 @@
       slide._giros = Array.from(anillos).map((anillo, i) =>
         gsap.to(anillo, {
           rotation: '+=' + (360 * (i % 2 === 0 ? 1 : -1)), // pares para un lado, impares para el otro
-          duration: 10 + i * 2,                            // cada anillo un poco más lento
+          duration: 10 + i * 2,                            // cada anillo un poco mas lento
           repeat: -1,
           ease: 'none',
           paused: true
@@ -647,10 +672,10 @@
   activarVorticeDeLaTimeline();
 
 
-  // --- Secuencias MIDI: la grilla de fichas que se dan vuelta -------
-  // son 7 columnas (una por color) y 4 filas. En reposo se ve el color,
-  // al pasar el mouse aparece el título y al hacer click gira y muestra
-  // el texto. Todo el contenido lo saco de este array.
+  // --- secuencias MIDI: la grilla de fichas que se dan vuelta ---
+  // son 7 columnas (una por color) y 4 filas. en reposo se ve el color,
+  // al pasar el mouse aparece el titulo y al hacer click gira y muestra
+  // el texto. todo el contenido lo saco de este array.
   const COLUMNAS_MIDI = [
     { tema: 'Modelos de IA', color: 'var(--midi-1)', pasos: [
       { t: 'Modelos de la IA', d: 'Magenta utiliza modelos avanzados como Redes Neuronales Recurrentes (RNN) o Transformadores.' },
@@ -703,7 +728,7 @@
 
     const filas = COLUMNAS_MIDI[0].pasos.length; // 4
 
-    // armo el encabezado: un título por columna
+    // armo el encabezado: un titulo por columna
     if (encabezado) {
       encabezado.innerHTML = '';
       COLUMNAS_MIDI.forEach((col) => {
@@ -714,7 +739,7 @@
       });
     }
 
-    // armo la grilla fila por fila, así cada columna me queda de un color
+    // armo la grilla fila por fila, asi cada columna me queda de un color
     grilla.innerHTML = '';
     for (let fila = 0; fila < filas; fila++) {
       COLUMNAS_MIDI.forEach((col) => {
@@ -731,7 +756,7 @@
             '<span class="midi-cell-face midi-cell-back"><span class="midi-cell-desc">' + paso.d + '</span></span>' +
           '</span></span></span>';
 
-        // con el click la doy vuelta, y al sacar el mouse vuelve sola
+        // con el click la doy vuelta, y al sacar el mouse vuelve sola al frente
         celda.addEventListener('click', () => celda.classList.toggle('is-flipped'));
         celda.addEventListener('mouseleave', () => celda.classList.remove('is-flipped'));
         celda.addEventListener('blur', () => celda.classList.remove('is-flipped'));
@@ -744,13 +769,13 @@
   activarSecuenciasMidi();
 
 
-  // --- Video de YouTube: muestro la miniatura y el iframe recién al click ---
+  // --- video de YouTube: se ve la miniatura y el iframe recien al click ---
   function activarVideoDeYouTube() {
     const tarjeta = document.getElementById('genieVideo');
     if (!tarjeta) return;
 
     // agarra el ID (11 caracteres) de cualquier formato de link de YouTube,
-    // o lo usa tal cual si ya le paso sólo el ID
+    // o lo usa tal cual si ya le paso solo el ID
     function obtenerIdDelVideo(texto) {
       if (!texto) return null;
       const formatos = [
@@ -780,7 +805,7 @@
           console.warn('Falta el link o ID de YouTube en data-youtube de #genieVideo.');
           return;
         }
-        // creo el reproductor de verdad y reemplazo toda la tarjeta
+        // creo el reproductor de verdad y reemplazo toda la tarjeta con el
         const iframe = document.createElement('iframe');
         iframe.className = 'video-iframe';
         iframe.src = 'https://www.youtube.com/embed/' + idDelVideo + '?autoplay=1&rel=0';
@@ -797,10 +822,10 @@
   activarVideoDeYouTube();
 
 
-  // --- Acordeón de las dos tarjetas de abajo del video --------------
-  // arrancan las dos angostas con el nombre en vertical. Al tocar una la
+  // --- acordeon de las dos tarjetas de abajo del video ---------
+  // arrancan las dos angostas con el nombre en vertical. al tocar una la
   // ensancho con GSAP (la otra se achica), aparece su texto y el nombre
-  // pasa a horizontal abajo. Si toco la que ya está abierta, se cierra.
+  // pasa a horizontal abajo. si toco la que ya esta abierta, se cierra.
   function activarAcordeonDeInteraccion() {
     if (!window.gsap) return;
     const contenedor = document.getElementById('genieAccordion');
@@ -833,7 +858,7 @@
 
     function alternar(actual) {
       const yaAbierta = actual.item.classList.contains('is-open');
-      // overwrite:'auto' hace que si toco rápido dos veces no se pisen las animaciones
+      // overwrite:'auto' hace que si toco rapido dos veces no se pisen las animaciones
       const tl = gsap.timeline({ defaults: { overwrite: 'auto' } });
 
       tarjetas.forEach((t) => {
@@ -848,7 +873,7 @@
           duration: 0.7, ease: 'power3.inOut'
         }, 0);
 
-        // el nombre pasa a horizontal recién cuando casi terminó de abrirse
+        // el nombre pasa a horizontal recien cuando casi termino de abrirse
         if (!abrir) t.item.classList.remove('label-flip');
         tl.to(t.label, {
           top: abrir ? altoTotal - altoFranja : 0,
@@ -870,10 +895,10 @@
   activarAcordeonDeInteraccion();
 
 
-  // --- Comparación "88 teclas vs 8 botones": aparece al scrollear ----
-  // primero fade del título, después una tarjeta entra desde la izquierda
-  // y la otra desde la derecha. La llamo DESPUÉS de armar las secciones
-  // apiladas para que mida el bloque en su posición final.
+  // --- comparacion "88 teclas vs 8 botones": aparece al scrollear ---
+  // primero el fade del titulo, despues una tarjeta entra desde la
+  // izquierda y la otra desde la derecha. la llamo despues de armar las
+  // secciones apiladas asi mide el bloque en su posicion final.
   function activarComparacionDeTeclas() {
     const bloque = document.querySelector('.compare-block');
     if (!bloque || !window.gsap || !window.ScrollTrigger) return;
@@ -896,9 +921,9 @@
   }
 
 
-  // --- Sonido: hago las notas con Web Audio, sin archivos de audio ---
-  // cada nota junta varios tonos (armónicos), un filtro que se va cerrando
-  // y un volumen que pega fuerte y baja de a poco: suena parecido a un piano.
+  // --- sonido: hago las notas con Web Audio, sin archivos de audio ---
+  // cada nota junta varios tonos, un filtro que se va cerrando y un
+  // volumen que pega fuerte y baja de a poco: suena parecido a un piano.
   let contextoDeAudio = null;
 
   function obtenerContextoDeAudio() {
@@ -914,7 +939,7 @@
     if (!ctx) return;
     const t0 = ctx.currentTime;
 
-    // el volumen: pega fuerte, baja rápido y después se apaga de a poco
+    // el volumen: pega fuerte, baja rapido y despues se apaga de a poco
     const salida = ctx.createGain();
     salida.gain.setValueAtTime(0.0001, t0);
     salida.gain.exponentialRampToValueAtTime(0.2, t0 + 0.006);
@@ -929,7 +954,7 @@
     filtro.Q.value = 0.6;
     filtro.connect(salida).connect(ctx.destination);
 
-    // el tono principal + otros más flojos encima (el 5.02 desafina un toque)
+    // el tono principal + otros mas flojos encima (el 5.02 desafina un toque)
     const parciales = [
       { mult: 1,    vol: 1.00, tipo: 'triangle' },
       { mult: 2,    vol: 0.42, tipo: 'sine' },
@@ -957,7 +982,7 @@
   }
 
 
-  // --- Pianos: el color de la tecla lo hace el CSS, acá el sonido -----
+  // --- pianos: el color de la tecla lo hace el CSS, aca el sonido ---
   function activarPianoInteractivo() {
     const teclados = document.querySelectorAll('.piano-teclado');
     if (!teclados.length) return;
@@ -986,7 +1011,7 @@
   activarPianoInteractivo();
 
 
-  // --- Piano Genie: cada botón toca una melodía corta (todo en Do mayor) ---
+  // --- Piano Genie: cada boton toca una melodia corta (todo en Do mayor) ---
   const MELODIAS_GENIE = [
     [261.63, 329.63, 392.00],                  // Do - Mi - Sol
     [329.63, 392.00, 523.25],                  // Mi - Sol - Do agudo
@@ -1024,21 +1049,21 @@
   activarGenieInteractivo();
 
 
-  // --- Gráfico de la sección "De la espera a la interacción" ---------
-  // el dibujo (la línea, los puntos, el "−93%") va atado al scroll: se va
-  // dibujando a medida que scrolleo por esa sección.
+  // --- el grafico de la seccion "de la espera a la interaccion" ---
+  // el dibujo (la linea, los puntos, el "-93%") va atado al scroll: se
+  // va dibujando a medida que scrolleo por esa seccion.
   function activarGraficoDeLatencia() {
     const linea = document.querySelector('.chart-line');
     if (!linea || !window.gsap || !window.ScrollTrigger) return;
 
-    // truco para dibujar la línea: la corto con guiones del largo total
-    // (queda invisible) y la animación baja ese corte hasta 0
+    // truco para dibujar la linea: la corto con guiones del largo total
+    // (queda invisible) y la animacion baja ese corte hasta 0
     const largo = linea.getTotalLength();
     gsap.set(linea, { strokeDasharray: largo, strokeDashoffset: largo });
     gsap.set('.chart-point-a, .chart-point-b', { opacity: 0, scale: 0 });
     gsap.set('.chart-annotation', { opacity: 0, y: 10 });
 
-    // armo la animación pausada; el scroll la va reproduciendo
+    // armo la animacion pausada; el scroll la va reproduciendo
     dibujoGrafico = gsap.timeline({ paused: true });
     dibujoGrafico
       .fromTo('.chart-point-a', { opacity: 0, scale: 0 }, { opacity: 1, scale: 1, duration: 0.6, ease: 'power2.out' }, 0)
@@ -1047,8 +1072,8 @@
       .fromTo('.chart-annotation', { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.6 }, 2.6);
 
     if (modoApilado) {
-      // calculo dónde arranca y termina el scroll a mano, con offsetTop,
-      // porque esa sección es sticky y las medidas normales me daban mal
+      // calculo a mano donde arranca y termina, con offsetTop, porque
+      // esa seccion es sticky y las medidas normales me daban mal
       const topDeRealtime = () => {
         let y = 0;
         let el = document.querySelector('.realtime-section');
@@ -1064,7 +1089,7 @@
         invalidateOnRefresh: true
       });
     } else {
-      // en mobile la sección es scroll normal, uso una ventana simple
+      // en mobile la seccion es scroll normal, uso una ventana simple
       stRealtime = ScrollTrigger.create({
         animation: dibujoGrafico,
         trigger: '.chart-card',
@@ -1078,10 +1103,10 @@
   activarGraficoDeLatencia();
 
 
-  // --- Secciones que se apilan al scrollear ------------------------
-  // le agrego a cada sección la clase y un z-index más alto que la
+  // --- las secciones que se apilan al scrollear ----------------
+  // le agrego a cada seccion la clase y un z-index mas alto que la
   // anterior; todo el efecto de "pegarse y taparse" lo hace el CSS.
-  // En mobile no hago nada: las secciones van una abajo de la otra.
+  // en mobile no hago nada: las secciones van una abajo de la otra.
   function activarSlidesDeSecciones() {
     if (!modoApilado) return;
 
@@ -1098,15 +1123,15 @@
 
   activarSlidesDeSecciones();
 
-  // llamo la comparación acá, después de apilar, para que mida bien su lugar
+  // llamo la comparacion aca, despues de apilar, asi mide bien su lugar
   activarComparacionDeTeclas();
 
 
-  // --- Links del footer: llevan suave a cada sección --------------
-  // calculo a qué scroll tengo que ir (con offsetTop, que no se marea con
-  // el sticky) y voy suave con Lenis. Si el camino pasa por el gráfico de
-  // RealTime, apago un ratito su ScrollTrigger para que no se ponga a
-  // redibujar mientras planeo, y lo vuelvo a prender al llegar.
+  // --- los links del footer: llevan suave a cada seccion ------
+  // calculo a que scroll tengo que ir (con offsetTop, que no se marea con
+  // el sticky) y voy suave con Lenis. si el camino pasa por el grafico
+  // de RealTime, apago un ratito su ScrollTrigger asi no se pone a
+  // redibujar mientras voy, y lo vuelvo a prender al llegar.
   function activarLinksDelFooter() {
     const links = document.querySelectorAll('.site-footer a[href^="#"]');
     if (!links.length) return;
@@ -1114,14 +1139,14 @@
     const lenis = window.__lenis;
     let navegando = false;
 
-    // suma el offsetTop de un elemento y de todos sus padres = su posición real
+    // suma el offsetTop del elemento y de todos sus padres = su posicion real
     function offsetDocumento(el) {
       let y = 0;
       while (el) { y += el.offsetTop; el = el.offsetParent; }
       return y;
     }
 
-    // curva de aceleración: arranca y frena suave (easeInOutCubic)
+    // curva de aceleracion: arranca y frena suave (easeInOutCubic)
     function suave(t) { return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; }
 
     function planear(y, dur, alTerminar) {
@@ -1139,7 +1164,7 @@
       return el ? Math.max(0, offsetDocumento(el)) : 0;
     }
 
-    // ¿el camino de scroll pasa por donde se dibuja el gráfico?
+    // el camino de scroll, pasa por donde se dibuja el grafico?
     function cruzaRealtime(desde, hasta) {
       if (!stRealtime) return false;
       return Math.min(desde, hasta) < stRealtime.end - 2 &&
@@ -1159,10 +1184,10 @@
         const yActual = window.pageYOffset;
         const objetivo = Math.max(0, scrollDestino(id));
         const dist = Math.abs(yActual - objetivo);
-        // cuanto más lejos, un toque más de tiempo (entre 0,7 y 1,9 s)
+        // cuanto mas lejos, un toque mas de tiempo (entre 0,7 y 1,9 s)
         const dur = Math.max(0.7, Math.min(1.9, 0.55 + (dist / vh) * 0.12));
 
-        // si ya estoy parado justo en el tramo del gráfico no lo toco
+        // si ya estoy parado justo en el tramo del grafico no lo toco
         const dentroDelScrub = stRealtime &&
           yActual >= stRealtime.start - 2 && yActual <= stRealtime.end + 2;
         const apagarRealtime = !dentroDelScrub && cruzaRealtime(yActual, objetivo);

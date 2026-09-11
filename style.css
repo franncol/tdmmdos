@@ -1,20 +1,20 @@
 /* =========================================================================
-   ESTILOS DEL SITIO
+   estilos del sitio
 
-   Dos cosas que uso todo el tiempo:
-   · var(--c): varios elementos comparten la misma regla y les cambio el
+   dos cosas que uso todo el tiempo:
+   - var(--c): varios elementos comparten la misma regla y les cambio el
      color desde el HTML con style="--c:var(--magenta)".
-   · clamp(mín, ideal, máx): un tamaño que se agranda/achica solo según el
+   - clamp(min, ideal, max): un tamaño que se agranda/achica solo segun el
      ancho de la pantalla.
 
-   Orden: 1 variables · 2 reset · 3 utilidades · 4 header · 5 hero ·
-   6 intro · 7 timeline · 8 gráfico · 9 cómo funciona · 10 cómo interactúa ·
-   11 footer · 12 accesibilidad · 13 responsive · 14 secciones apiladas
+   orden: 1 variables - 2 reset - 3 utilidades - 4 header - 5 hero -
+   6 intro - 7 timeline - 8 grafico - 9 como funciona - 10 como interactua -
+   11 footer - 12 accesibilidad - 13 responsive - 14 secciones apiladas
    ========================================================================= */
 
 
 /* -------------------------------------------------------------------------
-   1. VARIABLES GLOBALES
+   1. variables globales
    ------------------------------------------------------------------------- */
 :root{
   /* superficies */
@@ -23,7 +23,7 @@
   --bg-panel:      #17151f;
   --line:          rgba(255,255,255,.09);
 
-  /* un fondo casi igual pero un poco distinto para cada sección, así se
+  /* un fondo casi igual pero un poco distinto para cada seccion, asi se
      nota cuando una tapa a la otra */
   --sec-intro:     #0a0a0f;
   --sec-timeline:  #12111c;
@@ -36,7 +36,7 @@
   --ink-dim:       #a9a7b8;
   --ink-faint:     #726f82;
 
-  /* colores fuertes que uso en toda la página (timeline, botones, tags) */
+  /* colores fuertes que uso en toda la pagina (timeline, botones, tags) */
   --magenta:       #fd3db5;
   --cyan:          #26c3d1;
   --green:         #70fd3d;
@@ -46,7 +46,7 @@
   --purple:        #8a38f5;
   --coral:         #ff5a5d;
 
-  /* los mismos colores pero más apagados, para las fichas MIDI */
+  /* los mismos colores pero mas apagados, para las fichas MIDI */
   --midi-1:        #a1408c;
   --midi-2:        #2f9e93;
   --midi-3:        #b2a53f;
@@ -55,7 +55,7 @@
   --midi-6:        #5c3f97;
   --midi-7:        #2b3e8f;
 
-  /* tipografía */
+  /* tipografia */
   --font-display:  'Jersey 10', ui-sans-serif, sans-serif;
   --font-pixel:    'Silkscreen', ui-monospace, monospace;
   --font-body:     'Roboto Condensed', ui-sans-serif, sans-serif;
@@ -68,7 +68,7 @@
 }
 
 /* -------------------------------------------------------------------------
-   2. RESET Y ESTILOS BASE
+   2. reset y estilos base
    ------------------------------------------------------------------------- */
 *, *::before, *::after{ box-sizing:border-box; }
 html{
@@ -82,7 +82,7 @@ body{
   font-family:var(--font-body);
   font-size:17px;
   line-height:1.6;
-  overflow-x:clip;   /* uso clip y no hidden porque hidden me rompía el sticky */
+  overflow-x:clip;   /* uso clip y no hidden porque hidden me rompia el sticky */
 }
 h1,h2,h3,p,ul{ margin:0; }
 ul{ padding:0; list-style:none; }
@@ -99,7 +99,7 @@ button:focus-visible{
 }
 
 /* -------------------------------------------------------------------------
-   3. UTILIDADES COMPARTIDAS
+   3. utilidades compartidas
    ------------------------------------------------------------------------- */
 
 /* contenedor centrado que usan casi todas las secciones */
@@ -192,7 +192,7 @@ button:focus-visible{
 
 
 /* -------------------------------------------------------------------------
-   4. ENCABEZADO
+   4. encabezado
    ------------------------------------------------------------------------- */
 .site-header{
   position:sticky;
@@ -250,7 +250,7 @@ button:focus-visible{
 }
 
 /* -------------------------------------------------------------------------
-   5. HERO
+   5. hero
    ------------------------------------------------------------------------- */
 .hero{
   position:relative;
@@ -264,12 +264,12 @@ button:focus-visible{
   padding:78px 0 60px;
 }
 
-/* fondo decorativo: la imagen se pone con background-image en el HTML;
-   acá sólo cómo se acomoda dentro del hero */
+/* fondo decorativo: la imagen la pongo con background-image en el HTML;
+   aca solo digo como se acomoda dentro del hero */
 .hero-bg-slot{
   position:absolute;
   inset:0;                 /* ocupa todo el alto y ancho del hero */
-  z-index:0;                /* queda atrás del texto */
+  z-index:0;                /* queda atras del texto */
   pointer-events:none;      /* que no moleste al hacer clic */
   background-size:cover;
   background-position:center;
@@ -301,7 +301,7 @@ button:focus-visible{
   color:var(--ink);
 }
 
-/* teclado superpuesto: el margen negativo lo solapa con el texto, a propósito */
+/* teclado superpuesto: el margen negativo lo solapa con el texto, a proposito */
 .hero-keyboard-slot{
   width:min(560px, 70%);
   height:clamp(90px, 13vw, 160px);
@@ -319,7 +319,7 @@ button:focus-visible{
   font-weight:500;
   font-size:1.05rem;
 }
-/* el puntito rosa entre palabras (COMPONER • PRODUCIR • ...) */
+/* el puntito rosa que separa las palabras del hero */
 .hero-tags li:not(:last-child)::after{
   content:'';
   display:inline-block;
@@ -345,7 +345,7 @@ button:focus-visible{
 
 
 /* -------------------------------------------------------------------------
-   6. SECCIÓN INTRO — el texto aparece con un fade (lo mueve el JS)
+   6. seccion intro — el texto aparece con un fade (lo mueve el JS)
    ------------------------------------------------------------------------- */
 .intro{ padding-block:130px; background:var(--sec-intro); }
 .intro-inner{ max-width:880px; margin-inline:auto; text-align:center; }
@@ -367,10 +367,10 @@ button:focus-visible{
 
 
 /* -------------------------------------------------------------------------
-   7. SECCIÓN TIMELINE — "Una década de evolución"
-   Un carrusel que muestra un hito por vez (todas las cards están una
-   encima de otra y sólo se ve la que tiene .is-active). Detrás de cada
-   una está el vórtice: anillos (.vortex-ring) que giran con GSAP.
+   7. seccion timeline — "una decada de evolucion"
+   un carrusel que muestra un hito por vez (todas las cards estan una
+   encima de otra y solo se ve la que tiene .is-active). detras de cada
+   una esta el vortice: anillos (.vortex-ring) que giran con GSAP.
    ------------------------------------------------------------------------- */
 .timeline-section{
   padding-block:120px;
@@ -427,11 +427,11 @@ button:focus-visible{
   width:100%;
   max-width:760px;         /* deja lugar a los lados para las flechas */
   min-height:560px;
-  overflow:visible;        /* los vórtices de los costados se ven completos */
+  overflow:visible;        /* los vortices de los costados se ven completos */
   perspective:1100px;      /* profundidad para el rotationY de las cards */
 }
-/* cada hito = vórtice + año + título + descripción; GSAP anima el bloque
-   entero (transform/opacity/zIndex) al cambiar de hito */
+/* cada hito = vortice + año + titulo + texto; GSAP anima el bloque entero
+   (transform/opacity/zIndex) al cambiar de hito */
 .tl-slide{
   position:absolute;
   top:50%;
@@ -448,9 +448,9 @@ button:focus-visible{
 }
 .tl-slide.is-active{ pointer-events:auto; }
 
-.tl-art{ display:none; } /* placeholder viejo; el JS mete acá el vórtice */
+.tl-art{ display:none; } /* placeholder viejo; el JS mete aca el vortice */
 
-/* el vórtice: una copia por hito (la mete el JS), arriba del año */
+/* el vortice: una copia por hito (la mete el JS), arriba del año */
 .tl-vortex{
   position:relative;
   margin:0 auto 6px;
@@ -473,7 +473,7 @@ button:focus-visible{
   height:100%;
 }
 
-/* el centro no gira y va chico y centrado (el "ojo" del vórtice) */
+/* el centro no gira y va chico y centrado (el "ojo" del vortice) */
 .vortex-center{
   top:50%;
   left:50%;
@@ -507,10 +507,10 @@ button:focus-visible{
 
 
 /* -------------------------------------------------------------------------
-   8. SECCIÓN DEL GRÁFICO
-   El dibujo lo anima el JS; acá sólo digo cómo se ve cada parte.
+   8. seccion del grafico
+   el dibujo lo anima el JS; aca solo digo como se ve cada parte.
    ------------------------------------------------------------------------- */
-/* fondo sin transparencia, así tapa del todo a la sección de atrás */
+/* fondo sin transparencia, asi tapa del todo a la seccion de atras */
 .realtime-section{
   background:var(--sec-realtime);
   border-block:1px solid var(--line);
@@ -541,14 +541,14 @@ button:focus-visible{
 
 
 /* -------------------------------------------------------------------------
-   9. SECCIÓN CÓMO FUNCIONA — la grilla MIDI y la comparación de pianos
+   9. seccion como funciona — la grilla MIDI y la comparacion de pianos
    ------------------------------------------------------------------------- */
 .how-works{
   background:var(--sec-works);
   border-block:1px solid var(--line);
 }
 
-.section-stack-inner{ position:relative; } /* para poder ubicar el vórtice adentro */
+.section-stack-inner{ position:relative; } /* para poder ubicar el vortice adentro */
 
 .midi-block{ margin-top:48px; text-align:center; }
 .midi-label{
@@ -559,11 +559,11 @@ button:focus-visible{
   font-weight:600;
 }
 
-/* fila de títulos: mismas columnas/gap/ancho que .midi-grid */
+/* fila de titulos: mismas columnas/gap/ancho que .midi-grid */
 .midi-header{
   display:grid;
   grid-template-columns:repeat(7, 1fr);
-  align-items:end;          /* títulos de 1 y 2 líneas, todos pegados abajo */
+  align-items:end;          /* titulos de 1 y 2 lineas, todos pegados abajo */
   gap:14px;
   max-width:620px;
   margin:0 auto 12px;
@@ -595,23 +595,23 @@ button:focus-visible{
   cursor:pointer;
   padding:0;
   overflow:visible;       /* deja salir la ficha agrandada */
-  outline:none;           /* el indicador de foco es el agrandado + el título */
+  outline:none;           /* el foco se ve por el agrandado + el titulo */
 }
 .midi-cell:hover,
 .midi-cell:focus-visible{ z-index:3; }
 .midi-cell.is-flipped{ z-index:6; }
 
-/* la ficha la dibujo directamente grande (240px) y con transform la achico
-   cuando está chica o en hover. Dada vuelta queda en scale(1), o sea tamaño
-   real, y así el texto se ve nítido (agrandar con scale lo pixelaba). El
-   scale va en esta capa y la perspective en la de adentro. */
+/* la ficha la dibujo grande (240px) y con transform la achico cuando esta
+   chica o en hover. dada vuelta queda en scale(1), o sea tamaño real, y
+   ahi el texto se ve nitido (agrandar con scale lo pixelaba). el scale va
+   en esta capa y la perspective en la de adentro. */
 .midi-cell-box{
   position:absolute;
   left:50%; top:50%;
   width:240px;
   height:240px;
   transform-origin:center center;
-  transform:translate(-50%, -50%) scale(.315);   /* 240 × .315 ≈ 76px = celda */
+  transform:translate(-50%, -50%) scale(.315);   /* 240 x .315 = ~76px = una celda */
   transition:transform .3s var(--ease);
 }
 .midi-cell:hover .midi-cell-box,
@@ -619,12 +619,12 @@ button:focus-visible{
   transform:translate(-50%, -50%) scale(.62);
 }
 .midi-cell.is-flipped .midi-cell-box{
-  transform:translate(-50%, -50%) scale(1);      /* tamaño real → nítido */
+  transform:translate(-50%, -50%) scale(1);      /* tamaño real = nitido */
 }
 
 /* .midi-cell-3d pone la profundidad, .midi-cell-inner es la que gira.
-   El frente y el dorso están uno encima del otro; con backface-visibility
-   se ve sólo el que mira hacia mí. El dorso arranca girado 180°. */
+   el frente y el dorso estan uno encima del otro; con backface-visibility
+   se ve solo el que mira hacia mi. el dorso arranca girado 180 grados. */
 .midi-cell-3d{
   position:absolute;
   inset:0;
@@ -650,7 +650,7 @@ button:focus-visible{
   overflow:hidden;
 }
 
-/* el frente: el color de la columna y el título, que sale al pasar el mouse */
+/* el frente: el color de la columna y el titulo, que sale al pasar el mouse */
 .midi-cell-front{ padding:16px; }
 .midi-cell-title{
   font-family:var(--font-body);
@@ -668,7 +668,7 @@ button:focus-visible{
 .midi-cell:hover .midi-cell-title,
 .midi-cell:focus-visible .midi-cell-title{ opacity:1; }
 
-/* el dorso: fondo oscuro con un toque del color, así el texto se lee bien */
+/* el dorso: fondo oscuro con un toque del color, asi el texto se lee bien */
 .midi-cell-back{
   transform:rotateY(180deg);
   padding:22px 20px;
@@ -685,11 +685,11 @@ button:focus-visible{
 }
 
 /* -------------------------------------------------------------------------
-   Comparación "De las 88 teclas a 8": tarjeta con piano SVG vs. 8 botones
-   de Piano Genie. Entra con un fade al scrollear (activarComparacionDeTeclas).
+   comparacion "de las 88 teclas a 8": tarjeta con piano SVG vs. 8 botones
+   de Piano Genie. entra con un fade al scrollear (activarComparacionDeTeclas).
    ------------------------------------------------------------------------- */
-/* pongo un margin-top grande a propósito: cuando entro a la sección primero
-   quiero ver el video y el acordeón, y esto que aparezca un poco más abajo */
+/* pongo un margin-top grande a proposito: cuando entro a la seccion primero
+   quiero ver el video y el acordeon, y esto que aparezca un poco mas abajo */
 .compare-block{ margin-top:clamp(200px, 23vh, 231px); text-align:center; }
 .compare-title{
   font-family:var(--font-body);
@@ -761,10 +761,10 @@ button:focus-visible{
 
 
 /* -------------------------------------------------------------------------
-   10. SECCIÓN CÓMO INTERACTÚA — video + Piano Genie
+   10. seccion como interactua — video + Piano Genie
    ------------------------------------------------------------------------- */
-/* esta sección no se apila: sube con el scroll normal y tapa a la última
-   sección apilada. Le pongo z-index alto (20) e isolation para que sus
+/* esta seccion no se apila: sube con el scroll normal y tapa a la ultima
+   seccion apilada. le pongo z-index alto (20) e isolation para que sus
    hijos no se mezclen con el z-index de las otras secciones. */
 .how-interacts{
   position:relative;
@@ -784,8 +784,8 @@ button:focus-visible{
   align-items:start;
 }
 
-/* las dos tarjetas del acordeón. Acá dejo lo fijo (colores, caja); el
-   ancho y el texto los mueve GSAP. Sólo una puede estar abierta. */
+/* las dos tarjetas del acordeon. aca dejo lo fijo (colores, caja); el
+   ancho y el texto los mueve GSAP. solo una puede estar abierta. */
 .genie-accordion{
   display:flex;
   gap:14px;
@@ -807,7 +807,7 @@ button:focus-visible{
   font:inherit;
 }
 
-/* lo pongo absolute así, por más largo que sea el texto, la tarjeta no crece */
+/* lo pongo absolute asi, por mas largo que sea el texto, la tarjeta no crece */
 .genie-item-body{
   position:absolute;
   inset:0;
@@ -854,8 +854,8 @@ button:focus-visible{
   .genie-item-label{ font-size:.88rem; }
 }
 
-/* la tarjeta del video: se ve la miniatura y el botón de play; el iframe
-   de YouTube lo crea el JS recién cuando hago click */
+/* la tarjeta del video: se ve la miniatura y el boton de play; el iframe
+   de YouTube lo crea el JS recien cuando hago click */
 .video-card{
   position:relative;
   width:100%;
@@ -899,7 +899,7 @@ button:focus-visible{
 .video-iframe{ width:100%; height:100%; border:0; display:block; }
 
 /* el piano ancho de abajo (dibujado en SVG): teclas pegadas y un marco
-   magenta con brillo. Blancas oscuras, negras cian. */
+   magenta con brillo. blancas oscuras, negras cian. */
 .piano-banner-wrap{
   margin:clamp(40px, 7vh, 80px) 0 clamp(12px, 2vh, 22px);
 }
@@ -920,7 +920,7 @@ button:focus-visible{
 }
 
 /* -------------------------------------------------------------------------
-   11. FOOTER — logo + nav + redes, y los links legales debajo
+   11. footer — logo + nav + redes, y los links legales debajo
    ------------------------------------------------------------------------- */
 .site-footer{
   position:relative;
@@ -974,7 +974,7 @@ button:focus-visible{
 
 
 /* -------------------------------------------------------------------------
-   12. ANIMACIONES Y ACCESIBILIDAD DE MOVIMIENTO
+   12. animaciones y accesibilidad de movimiento
    ------------------------------------------------------------------------- */
 @keyframes bob{
   0%, 100%{ transform:translateY(0); }
@@ -993,7 +993,7 @@ button:focus-visible{
 
 
 /* -------------------------------------------------------------------------
-   13. RESPONSIVE
+   13. responsive
    ------------------------------------------------------------------------- */
 @media (max-width:980px){
   .interacts-grid{ grid-template-columns:1fr; }
@@ -1063,9 +1063,10 @@ button:focus-visible{
 }
 
 /* -------------------------------------------------------------------------
-   13.b VIEWPORTS DE POCA ALTURA (laptops tipo 1440×900)
-   Las capas apiladas son height:100vh; overflow:hidden. Acá comprimimos el
-   ritmo vertical para que el contenido de RealTime/Timeline entre sin recortes.
+   13.b pantallas de poca altura (tipo laptop 1440x900)
+   las capas apiladas son height:100vh; overflow:hidden. aca achico un
+   poco los espacios verticales asi el contenido de RealTime/Timeline no
+   se recorta.
    ------------------------------------------------------------------------- */
 @media (min-width:761px) and (max-height:920px){
   .slide-section > *{ padding-block:clamp(12px, 2.4vh, 44px); }
@@ -1090,11 +1091,11 @@ button:focus-visible{
 
 
 /* -------------------------------------------------------------------------
-   14. SECCIONES QUE SE APILAN AL SCROLLEAR
-   Cada una mide una pantalla y se pega arriba (position:sticky). La que
-   sigue tiene z-index más alto (se lo pone el JS) y sube tapándola.
-   El JS sólo agrega la clase; el resto es todo CSS.
-   Estas reglas van al final para que le ganen a los otros padding.
+   14. las secciones que se apilan al scrollear
+   cada una mide una pantalla y se pega arriba (position:sticky). la que
+   sigue tiene z-index mas alto (se lo pone el JS) y sube tapandola.
+   el JS solo agrega la clase; el resto es todo CSS.
+   estas reglas van al final asi le ganan a los otros padding.
    ------------------------------------------------------------------------- */
 .slide-section{
   position:sticky;
@@ -1116,9 +1117,9 @@ button:focus-visible{
   padding-block:clamp(28px, 6vh, 80px);
 }
 
-/* le doy a la sección del gráfico un margen extra abajo para que quede
-   quieta un rato más (mientras el gráfico termina de dibujarse) antes de
-   que la tape la sección siguiente */
+/* le doy a la seccion del grafico un margen extra abajo asi queda quieta
+   un rato mas (mientras el grafico termina de dibujarse) antes de que la
+   tape la seccion siguiente */
 .realtime-section.slide-section{ margin-bottom:80vh; }
 
 @media (max-width:760px){
@@ -1131,7 +1132,7 @@ button:focus-visible{
   }
 }
 
-/* ---- Lenis (scroll suave) ---- */
+/* ---- lenis (scroll suave) ---- */
 html.lenis, html.lenis body{ height:auto; }
 .lenis.lenis-smooth{ scroll-behavior:auto !important; }
 .lenis.lenis-smooth [data-lenis-prevent]{ overscroll-behavior:contain; }
