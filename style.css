@@ -46,15 +46,6 @@
   --purple:        #8a38f5;
   --coral:         #ff5a5d;
 
-  /* los mismos colores pero mas apagados, para las fichas MIDI */
-  --midi-1:        #a1408c;
-  --midi-2:        #2f9e93;
-  --midi-3:        #b2a53f;
-  --midi-4:        #5a9c3a;
-  --midi-5:        #b5651d;
-  --midi-6:        #5c3f97;
-  --midi-7:        #2b3e8f;
-
   /* tipografia */
   --font-display:  'Jersey 10', ui-sans-serif, sans-serif;
   --font-pixel:    'Silkscreen', ui-monospace, monospace;
@@ -346,8 +337,11 @@ button:focus-visible{
 
 /* -------------------------------------------------------------------------
    6. seccion intro — el texto aparece con un fade (lo mueve el JS)
+   vuelve a medir una sola pantalla (es una .slide-section otra vez, ver
+   activarSlidesDeSecciones): las 3 caracteristicas que antes iban aca se
+   mudaron arriba de la timeline.
    ------------------------------------------------------------------------- */
-.intro{ padding-block:130px; background:var(--sec-intro); }
+.intro{ padding-block:200px 130px; background:var(--sec-intro); } /* mas aire arriba, respecto al "hace click para comenzar" del hero */
 .intro-inner{ max-width:880px; margin-inline:auto; text-align:center; }
 .intro-question{
   font-family:var(--font-display);
@@ -365,12 +359,65 @@ button:focus-visible{
 }
 .intro-body strong{ color:var(--ink); font-weight:700; }
 
+/* -------------------------------------------------------------------------
+   6.b las 3 caracteristicas de Magenta (sigue siendo "tema" intro, pero
+   en su propia seccion). la intro no queda pegada (sticky) detras: esta
+   seccion no tiene que "tapar" nada, sube con el scroll normal como
+   cualquier otra, y las 3 caracteristicas van apareciendo solas.
+   ------------------------------------------------------------------------- */
+.intro-features-section{
+  padding-block:260px 120px; /* bastante aire arriba, antes de la primera caracteristica */
+  background:var(--sec-intro);
+}
+/* bien separadas una de la otra para que cada una entre en pantalla por
+   separado al scrollear, en vez de venir todas juntas por estar muy
+   pegadas — el JS las anima igual que a las cards de los hitos (ver
+   activarCaracteristicasDeMagenta) */
+.intro-features{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:clamp(120px, 20vh, 220px);
+}
+/* cada bloque centrado (icono, titulo y texto, todo al medio); el icono
+   ya viene como <img> directo (lo puso el usuario), lo centro aca en vez
+   de depender de una clase en el HTML */
+.intro-feature{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  text-align:center;
+}
+/* sin forzar un tamaño parejo: cada imagen mantiene su ancho y alto
+   originales. el max-width es solo para que una imagen enorme no rompa
+   el diseño, no para emparejarlas entre si */
+.intro-feature img{
+  display:block;
+  max-width:160px;
+  height:auto;
+  margin-bottom:22px;
+}
+.intro-feature-title{
+  font-family:var(--font-body);
+  font-weight:700;
+  font-size:1.5rem;
+  color:var(--ink);
+}
+.intro-feature-desc{
+  margin-top:8px;
+  color:var(--ink-dim);
+  font-size:1rem;
+}
+
 
 /* -------------------------------------------------------------------------
    7. seccion timeline — "una decada de evolucion"
-   un carrusel que muestra un hito por vez (todas las cards estan una
-   encima de otra y solo se ve la que tiene .is-active). detras de cada
-   una esta el vortice: anillos (.vortex-ring) que giran con GSAP.
+   timeline vertical de verdad, dentro del flujo normal del documento (no
+   es una .slide-section: necesita mas de una pantalla de alto para los 7
+   hitos). justo antes va .intro-features-section, que tampoco es sticky,
+   asi que esta no necesita z-index especial para taparla: eso solo hace
+   falta cuando una seccion nueva tiene que cubrir a una sticky que quedo
+   pegada detras (como pasa entre la intro y .intro-features-section).
    ------------------------------------------------------------------------- */
 .timeline-section{
   padding-block:120px;
@@ -378,131 +425,164 @@ button:focus-visible{
   border-block:1px solid var(--line);
 }
 .timeline-head{ text-align:center; }
-.timeline-head .section-lede{ margin-inline:auto; }
 
-.tl-wrap{
-  margin-top:clamp(40px, 7vh, 96px);
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  gap:18px;
-}
-/* flechas + escenario en una fila */
-.tl-slider{
-  position:relative;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:0;
-  width:100%;
+/* dos columnas: a la izquierda el texto fijo, a la derecha la linea con
+   las cards. en mobile se pierde la columna izquierda y queda solo la
+   lista, una abajo de la otra */
+.timeline-layout{
+  margin-top:clamp(40px, 7vh, 80px);
+  display:grid;
+  grid-template-columns:minmax(220px, 340px) 1fr;
+  gap:clamp(24px, 5vw, 64px);
+  align-items:start;
 }
 
-.tl-arrow{
+/* columna izquierda: siempre el mismo texto, no se anima ni cambia. se
+   queda pegado (sticky) mientras bajo por las cards de la derecha */
+.timeline-visual{
+  position:sticky;
+  top:120px;
+}
+.timeline-visual-text{
+  font-size:1.15rem;
+  line-height:1.65;
+  color:var(--ink);
+}
+.timeline-visual-text .mg-hl{ color:var(--magenta); font-weight:700; }
+
+/* columna derecha: la linea + un punto y una card por hito, todas del
+   mismo lado (a la derecha de la linea) */
+.timeline-wrap{ position:relative; }
+
+/* la linea de fondo, detras de todos los puntos */
+.timeline-line{
   position:absolute;
-  top:50%;
-  transform:translateY(-50%);
-  flex:0 0 auto;
-  z-index:200;
-  width:52px;
-  height:52px;
-  border-radius:50%;
-  border:none;
-  background:transparent;
-  color:var(--magenta);
-  cursor:pointer;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  transition:color .2s, transform .2s, opacity .2s;
+  left:9px;
+  top:6px;
+  bottom:6px;
+  width:2px;
+  background:var(--line);
 }
-/* a mitad de camino entre el contenedor y el borde de la ventana */
-.tl-prev{ left:calc((50% - 50vw) / 2 + clamp(4px, 2vw, 24px)); }
-.tl-next{ right:calc((50% - 50vw) / 2 + clamp(4px, 2vw, 24px)); }
-.tl-arrow:hover{ color:var(--cyan); transform:translateY(-50%) scale(1.12); }
-.tl-arrow:disabled{ opacity:0; pointer-events:none; }
-
-.tl-stage{
-  position:relative;
-  flex:1 1 auto;
-  width:100%;
-  max-width:760px;         /* deja lugar a los lados para las flechas */
-  min-height:560px;
-  overflow:visible;        /* los vortices de los costados se ven completos */
-  perspective:1100px;      /* profundidad para el rotationY de las cards */
-}
-/* cada hito = vortice + año + titulo + texto; GSAP anima el bloque entero
-   (transform/opacity/zIndex) al cambiar de hito */
-.tl-slide{
+/* la linea de progreso: arranca "vacia" (scaleY 0) y se va llenando de
+   arriba hacia abajo a medida que recorro la lista (la anima el JS) */
+.timeline-line-fill{
   position:absolute;
-  top:50%;
-  left:50%;
-  width:min(340px, 86vw);
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  text-align:center;
-  transform-style:preserve-3d;
-  backface-visibility:hidden;
-  will-change:transform, opacity;
-  pointer-events:none;         /* las cards laterales no interceptan clicks */
-}
-.tl-slide.is-active{ pointer-events:auto; }
-
-.tl-art{ display:none; } /* placeholder viejo; el JS mete aca el vortice */
-
-/* el vortice: una copia por hito (la mete el JS), arriba del año */
-.tl-vortex{
-  position:relative;
-  margin:0 auto 6px;
-  width:min(300px, 78vw);
-  aspect-ratio:1 / 1;
-  height:auto;
-  pointer-events:none;
-}
-
-/* los anillos ocupan todo el cuadro, superpuestos = un solo dibujo */
-.vortex-ring,
-.vortex-center{
-  position:absolute;
-  display:block;
-  transform-origin:center;
-}
-.vortex-ring{
   inset:0;
   width:100%;
-  height:100%;
+  background:linear-gradient(var(--magenta), var(--cyan));
+  transform-origin:top;
+  transform:scaleY(0);
 }
 
-/* el centro no gira y va chico y centrado (el "ojo" del vortice) */
-.vortex-center{
-  top:50%;
-  left:50%;
-  width:34%;
-  height:34%;
+.timeline-list{
+  /* es un <ol>, y el reset global (arriba del todo) solo le saca el
+     padding y la numeracion por defecto a los <ul>, no a los <ol> — sin
+     esto el navegador le agrega su propio padding-inline-start y los
+     numeritos "1. 2. 3.", y ademas corre todo el contenido a la derecha
+     (por eso los puntos no quedaban sobre la linea) */
+  list-style:none;
+  margin:0;
+  padding:0;
+  position:relative;
+  display:flex;
+  flex-direction:column;
+  gap:clamp(90px, 16vh, 160px); /* mucho mas aire entre un hito y el siguiente */
+}
+
+.timeline-item{
+  position:relative;
+  padding-left:40px;
+}
+
+/* el punto: cian (var(--cyan) = #26c3d1), asi no es todo rosa. left:9px
+   para quedar exactamente centrado sobre la linea (que esta en ese mismo x) */
+.timeline-dot{
+  position:absolute;
+  left:9px;
+  top:26px;
   transform:translate(-50%, -50%);
+  width:18px;
+  height:18px;
+  border-radius:50%;
+  background:var(--cyan);
+  box-shadow:0 0 14px color-mix(in srgb, var(--cyan) 65%, transparent);
+  transition:transform .3s var(--ease), box-shadow .3s var(--ease);
 }
-.vortex-ring image,
-.vortex-center image{
-  display:block;
+.timeline-item.is-active .timeline-dot{
+  transform:translate(-50%, -50%) scale(1.25);
+  box-shadow:0 0 0 8px color-mix(in srgb, var(--cyan) 22%, transparent),
+             0 0 18px color-mix(in srgb, var(--cyan) 75%, transparent);
 }
 
+/* la card: menos ancha y mas alta que antes (max-width + mas padding
+   arriba/abajo que a los costados), y el fondo bastante mas oscuro que el
+   --bg-panel de siempre. el marco magenta, mas fino que antes (1.5px en
+   vez de 2px). is-active solo le suma el brillo fuerte de afuera
+   mientras esta a la altura del centro de la pantalla */
+.timeline-card{
+  position:relative; /* para poder ubicar el icono adentro, arriba a la derecha */
+  max-width:380px;
+  padding:clamp(30px, 4vw, 42px) clamp(18px, 2.4vw, 26px);
+  border-radius:var(--radius-lg);
+  border:1.5px solid var(--magenta);
+  background:color-mix(in srgb, var(--bg-panel) 50%, black);
+  transition:box-shadow .35s var(--ease);
+}
+.timeline-item.is-active .timeline-card{
+  box-shadow:0 0 30px color-mix(in srgb, var(--magenta) 35%, transparent);
+}
+/* el icono de cada hito, adentro de la card, arriba a la derecha. la
+   imagen la pega el usuario (ver los <img> en el HTML) */
+.timeline-card-icon{
+  position:absolute;
+  top:16px;
+  right:16px;
+  width:64px;
+  height:64px;
+  object-fit:contain;
+}
+/* 2023 lo usa un poco mas grande que el resto */
+.timeline-card-icon-lg{
+  top:10px;
+  right:10px;
+  width:80px;
+  height:80px;
+}
+/* 2025 y 2026 van mas grandes todavia */
+.timeline-card-icon-xl{
+  top:6px;
+  right:6px;
+  width:104px;
+  height:104px;
+}
 .timeline-year{
+  display:block;
   font-family:var(--font-pixel);
-  font-size:1rem;
-  color:var(--c, #fff);           /* cada hito con su color de la paleta */
-}
-.tl-slide h3{
-  margin-top:10px;
   font-size:1.3rem;
-  font-weight:700;
-  color:var(--c, #fff);           /* mismo color que el año */
+  color:var(--magenta);
 }
-.tl-slide p{
+.timeline-card h3{
+  margin-top:4px;
+  font-size:1.25rem;
+  font-weight:700;
+  color:var(--magenta); /* mismo color que el año */
+}
+.timeline-card p{
   margin-top:10px;
-  max-width:360px;
-  color:var(--ink-dim);
+  color:var(--ink);
   font-size:1rem;
   line-height:1.55;
+}
+/* las palabras clave de la explicacion, en cian: asi contrastan con el
+   magenta del marco y no queda todo del mismo color */
+.timeline-card p strong{
+  color:var(--cyan);
+  font-weight:700;
+}
+
+@media (max-width:760px){
+  .timeline-layout{ grid-template-columns:1fr; }
+  .timeline-visual{ display:none; }
 }
 
 
@@ -542,36 +622,36 @@ button:focus-visible{
 
 /* -------------------------------------------------------------------------
    9. seccion como funciona — la grilla MIDI y la comparacion de pianos
+   la grilla crecio bastante (800px, cards y fuentes mas grandes) y ya no
+   entra en una sola pantalla, asi que esta seccion salio del sistema de
+   paneles apilados (ver activarSlidesDeSecciones): con overflow:hidden le
+   cortaba el contenido y el link del footer llevaba a una vista recortada.
+   ahora es flujo normal, y como .realtime-section (la de antes) sigue
+   siendo sticky, necesita position:relative + z-index para subir y taparla
+   al scrollear, igual que hace .how-interacts mas abajo.
    ------------------------------------------------------------------------- */
 .how-works{
+  position:relative;
+  z-index:20;
   background:var(--sec-works);
   border-block:1px solid var(--line);
 }
 
-.section-stack-inner{ position:relative; } /* para poder ubicar el vortice adentro */
-
 .midi-block{ margin-top:48px; text-align:center; }
-.midi-label{
-  display:block;
-  margin-bottom:16px;
-  font-size:.85rem;
-  color:var(--ink-dim);
-  font-weight:600;
-}
 
 /* fila de titulos: mismas columnas/gap/ancho que .midi-grid */
 .midi-header{
   display:grid;
-  grid-template-columns:repeat(7, 1fr);
+  grid-template-columns:repeat(4, 1fr);
   align-items:end;          /* titulos de 1 y 2 lineas, todos pegados abajo */
   gap:14px;
-  max-width:620px;
-  margin:0 auto 12px;
+  max-width:800px;
+  margin:0 auto 14px;
 }
 .midi-header-item{
   font-family:var(--font-body);
   font-weight:700;
-  font-size:.68rem;
+  font-size:1.05rem;        /* mas grande que antes (.68rem) */
   line-height:1.2;
   letter-spacing:.02em;
   text-transform:uppercase;
@@ -581,15 +661,15 @@ button:focus-visible{
 
 .midi-grid{
   display:grid;
-  grid-template-columns:repeat(7, 1fr);
+  grid-template-columns:repeat(4, 1fr);
   gap:14px;
-  max-width:620px;
+  max-width:800px; /* un 25% mas grande que el tamaño original (era 640px) */
   margin-inline:auto;
 }
 .midi-cell{
   position:relative;      /* ancla de .midi-cell-box (position:absolute) */
   z-index:1;
-  aspect-ratio:1;         /* ocupa su celda de la grilla (~76px) */
+  aspect-ratio:1;         /* ocupa su celda de la grilla (~189px) */
   border:none;
   background:none;
   cursor:pointer;
@@ -611,15 +691,14 @@ button:focus-visible{
   width:240px;
   height:240px;
   transform-origin:center center;
-  transform:translate(-50%, -50%) scale(.315);   /* 240 x .315 = ~76px = una celda */
+  transform:translate(-50%, -50%) scale(.79);   /* 240 x .79 = ~189px = una celda */
   transition:transform .3s var(--ease);
 }
+/* el agrandado es solo con hover/foco, este dada vuelta o no — asi no
+   pierde nitidez ni opacidad solo por estar mostrando la descripcion */
 .midi-cell:hover .midi-cell-box,
 .midi-cell:focus-visible .midi-cell-box{
-  transform:translate(-50%, -50%) scale(.62);
-}
-.midi-cell.is-flipped .midi-cell-box{
-  transform:translate(-50%, -50%) scale(1);      /* tamaño real = nitido */
+  transform:translate(-50%, -50%) scale(.95); /* no puede pasarse de 1 o el texto se pixela */
 }
 
 /* .midi-cell-3d pone la profundidad, .midi-cell-inner es la que gira.
@@ -648,9 +727,15 @@ button:focus-visible{
   background:var(--c);
   backface-visibility:hidden;
   overflow:hidden;
+  transition:filter .3s var(--ease);
 }
+/* una vez que la clickeo (la "leo"), el FRENTE queda un poco mas oscuro
+   para siempre, asi se nota cuales ya mire. el dorso (la descripcion)
+   nunca se oscurece: siempre se ve con el color puro */
+.midi-cell.is-read .midi-cell-front{ filter:brightness(.68); }
 
-/* el frente: el color de la columna y el titulo, que sale al pasar el mouse */
+/* el frente: el color de la columna y el titulo, siempre visible (antes
+   solo aparecia en hover) */
 .midi-cell-front{ padding:16px; }
 .midi-cell-title{
   font-family:var(--font-body);
@@ -662,19 +747,22 @@ button:focus-visible{
   color:#fff;
   text-align:center;
   text-shadow:0 2px 10px rgba(0,0,0,.55);
-  opacity:0;
-  transition:opacity .16s var(--ease);
 }
-.midi-cell:hover .midi-cell-title,
-.midi-cell:focus-visible .midi-cell-title{ opacity:1; }
 
-/* el dorso: fondo oscuro con un toque del color, asi el texto se lee bien */
+/* el dorso: el diseño es distinto al frente a proposito — fondo medio
+   negro (con solo un toque del color) y un borde solido del color
+   correspondiente, para que la descripcion se lea comoda y no sea todo
+   el mismo bloque de color fuerte. el titulo se repite arriba (un poco
+   mas chico) asi tambien se ve dado vuelta, y abajo va la descripcion */
 .midi-cell-back{
+  flex-direction:column;
+  gap:8px;
   transform:rotateY(180deg);
   padding:22px 20px;
   background:color-mix(in srgb, var(--c) 20%, #0d0a12);
-  border:2px solid color-mix(in srgb, var(--c) 55%, transparent);
+  border:2px solid var(--c);
 }
+.midi-cell-title-back{ font-size:1rem; }
 .midi-cell-desc{
   font-family:var(--font-body);
   font-size:.92rem;             /* grande de verdad (se ve a scale 1 cuando gira) */
@@ -685,238 +773,215 @@ button:focus-visible{
 }
 
 /* -------------------------------------------------------------------------
-   comparacion "de las 88 teclas a 8": tarjeta con piano SVG vs. 8 botones
-   de Piano Genie. entra con un fade al scrollear (activarComparacionDeTeclas).
-   ------------------------------------------------------------------------- */
-/* pongo un margin-top grande a proposito: cuando entro a la seccion primero
-   quiero ver el video y el acordeon, y esto que aparezca un poco mas abajo */
-.compare-block{ margin-top:clamp(200px, 23vh, 231px); text-align:center; }
-.compare-title{
-  font-family:var(--font-body);
-  font-weight:400;
-  font-size:clamp(1.15rem, 2.2vw, 1.5rem);
-  color:var(--ink);
-  margin-bottom:30px;
-}
-.compare-grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:28px;
-  max-width:760px;
-  margin-inline:auto;
-}
-.compare-card{
-  background:var(--bg-panel);
-  border:2px solid var(--magenta);
-  border-radius:var(--radius-lg);
-  padding:28px 22px;
-  box-shadow:0 0 28px rgba(253,61,181,.2);
-}
-.compare-card-title, .compare-card-caption{
-  display:block;
-  font-family:var(--font-pixel);
-  font-weight:700;
-  font-size:.95rem;
-  letter-spacing:.03em;
-  color:var(--ink);
-  text-transform:uppercase;
-}
-.compare-card-title{ margin-bottom:26px; }
-.compare-card-caption{ margin-top:26px; }
-
-.piano-strip{ display:block; width:100%; max-width:280px; margin-inline:auto; }
-.piano-strip .white-key{ fill:#e9e9ee; stroke:#0a0a0f; stroke-width:1.5; }
-.piano-strip .black-key{ fill:#0a0a0f; }
-.piano-key{ cursor:pointer; transition:fill .15s, stroke .15s; outline:none; }
-/* al pasar el mouse o tocar, la tecla se pone lila (relleno y borde, para
-   que no quede una linea clara alrededor) */
-.piano-teclado .piano-key:hover,
-.piano-teclado .piano-key:focus-visible,
-.piano-teclado .piano-key.is-active{ fill:#4d488d; stroke:#4d488d; }
-
-.compare-buttons{
-  display:grid;
-  grid-template-columns:repeat(4, 1fr);
-  gap:16px;
-  max-width:220px;
-  margin-inline:auto;
-}
-.compare-buttons span{
-  aspect-ratio:1;
-  border-radius:50%;
-  background:var(--c);
-  box-shadow:0 0 18px var(--c);
-  cursor:pointer;
-  transition:transform .15s, box-shadow .15s;
-}
-.compare-buttons span:hover{ transform:scale(1.08); }
-.compare-buttons span.is-active{
-  transform:scale(1.22);
-  box-shadow:0 0 32px var(--c);
-}
-
-@media (max-width:640px){
-  .compare-grid{ grid-template-columns:1fr; gap:20px; }
-}
-
-
-/* -------------------------------------------------------------------------
-   10. seccion como interactua — video + Piano Genie
+   10. seccion como interactua — infografia con click
+   reemplaza al viejo acordeon + comparacion + piano ancho. las 7 escenas
+   van una abajo de la otra, en el flujo normal de la pagina; cada una
+   aparece entera con un fade simple al scrollear hasta ella (ver
+   activarInfografiaInteractua). los pianos, botones y demos no tienen
+   ninguna animacion de scroll: quedan quietos y solo reaccionan al click.
    ------------------------------------------------------------------------- */
 /* esta seccion no se apila: sube con el scroll normal y tapa a la ultima
-   seccion apilada. le pongo z-index alto (20) e isolation para que sus
+   seccion apilada. le pongo z-index alto (40) e isolation para que sus
    hijos no se mezclen con el z-index de las otras secciones. */
 .how-interacts{
   position:relative;
-  z-index:20;
+  z-index:40;
   isolation:isolate;
   background:var(--sec-interacts);
   border-block:1px solid var(--line);
 }
-.how-interacts.section-pad{ padding-block:64px; }
-.how-interacts .section-head{ margin-bottom:28px; }
 
-.interacts-grid{
-  margin-top:28px;
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:32px 40px;
-  align-items:start;
+.ix{
+  --ix-pad:clamp(24px, 5vw, 48px);
+  --pill:#22e8f2; /* color de las "pastillas" de notas, un cyan mas fuerte que var(--cyan) */
+  padding-block:clamp(56px, 9vh, 96px);
 }
-
-/* las dos tarjetas del acordeon. aca dejo lo fijo (colores, caja); el
-   ancho y el texto los mueve GSAP. solo una puede estar abierta. */
-.genie-accordion{
-  display:flex;
-  gap:14px;
-  height:360px;
-}
-
-.genie-item{
-  position:relative;
-  flex:0 0 auto;   /* el ancho lo pone GSAP (inline style) */
-  min-width:0;
-  border:none;
-  border-radius:var(--radius-lg);
-  background:var(--bg-panel);
-  overflow:hidden;
-  cursor:pointer;
-  padding:0;
-  text-align:left;
-  color:inherit;
-  font:inherit;
-}
-
-/* lo pongo absolute asi, por mas largo que sea el texto, la tarjeta no crece */
-.genie-item-body{
-  position:absolute;
-  inset:0;
+.ix-scenes{
+  width:100%;
+  max-width:var(--container);
+  margin-inline:auto;
+  padding-inline:var(--ix-pad);
   display:flex;
   flex-direction:column;
-  justify-content:center;
-  gap:16px;
-  padding:32px 30px 68px;
-  font-size:.95rem;
-  line-height:1.55;
-  color:var(--ink-dim);
+  gap:clamp(80px, 12vh, 130px);
 }
-.genie-item:not(.is-open) .genie-item-body{ pointer-events:none; }
-.genie-item-line strong{ color:var(--c); }
 
-.genie-item-label{
-  position:absolute;
-  inset:0;
+/* ---- escenas centradas (piano tradicional, genie, duet) ---- */
+.ix-center{ display:flex; flex-direction:column; align-items:center; text-align:center; gap:clamp(12px, 2.4vh, 22px); }
+/* mismo tamaño/interlineado que el texto fijo de la timeline (.timeline-visual-text)
+   y el .section-lede de las demas secciones, en vez del clamp gigante que tenia */
+.ix-lead{ max-width:820px; color:var(--ink-dim); font-size:1.15rem; line-height:1.5; }
+.ix-lead b{ color:var(--cyan); font-weight:700; }
+
+.ix-panel{
+  width:min(540px, 100%);
+  border:2.5px solid var(--magenta);
+  border-radius:34px;
+  padding:clamp(18px, 3vh, 30px) clamp(20px, 3vw, 36px);
   display:flex;
+  flex-direction:column;
   align-items:center;
-  justify-content:center;
-  padding:14px 8px;
+  gap:clamp(14px, 2.6vh, 26px);
+}
+.ix-label{
   font-family:var(--font-pixel);
   font-weight:700;
-  font-size:1rem;
+  font-size:clamp(.85rem, 1.3vw, 1.15rem); /* un poco mas chico que antes */
   letter-spacing:.03em;
-  color:#0a0a0f;
+  text-transform:uppercase;
+  color:var(--ink);
+}
+
+/* piano tradicional (lo dibuja el JS en SVG) */
+.ix-piano-trad svg{ display:block; width:auto; height:clamp(110px, 24vh, 190px); }
+.ix-kw{ fill:#d9d9d9; stroke:#000; stroke-width:1.5; }
+.ix-kb{ fill:#000; }
+
+/* piano de AI Duet (SVG): teclas oscuras, negras en cyan, marco magenta */
+.ix-piano-duet{
+  width:min(1100px, 100%);
+  border:2px solid var(--magenta);
+  border-radius:18px;
+  overflow:hidden;
+  background:#211f33;
+  box-shadow:0 0 28px rgba(253,61,181,.5), inset 0 0 28px rgba(253,61,181,.14);
+}
+.ix-piano-duet svg{ display:block; width:100%; height:auto; max-height:34vh; }
+.ix-dw{ fill:#211f33; stroke:#000; stroke-width:2; }
+.ix-db{ fill:#33b5d5; filter:drop-shadow(0 0 7px rgba(34,232,242,.7)); }
+
+/* los 8 botones de piano genie */
+.ix-orbs{ display:grid; grid-template-columns:repeat(4, auto); gap:clamp(14px, 2.4vh, 24px) clamp(18px, 3vw, 34px); }
+.ix-orb{
+  width:clamp(52px, 8vh, 76px);
+  height:clamp(52px, 8vh, 76px);
+  border-radius:50%;
   background:var(--c);
-  writing-mode:vertical-rl;
-  transform:rotate(180deg);
-  white-space:nowrap;
+  box-shadow:0 0 16px var(--c);
 }
-/* GSAP agrega .label-flip para pasar el nombre de vertical a horizontal */
-.genie-item.label-flip .genie-item-label{
-  writing-mode:horizontal-tb;
-  transform:none;
-  padding:0 24px;
+
+/* ---- escenas con tarjeta a la izquierda y dibujo a la derecha ---- */
+.ix-split{
+  display:grid;
+  grid-template-columns:minmax(0, 1.05fr) minmax(0, 1fr);
+  gap:clamp(24px, 5vw, 80px);
+  align-items:center;
 }
-.genie-item:hover .genie-item-label{ filter:brightness(1.1); }
+.ix-card{
+  background:#000;
+  border:1px solid var(--magenta);
+  border-radius:34px;
+  padding:clamp(24px, 4vh, 40px) clamp(24px, 3.4vw, 46px);
+  max-width:560px;
+  justify-self:center;
+}
+/* mismo tamaño/color que el resto de los titulos y textos de card del
+   sitio (.timeline-card h3/p, .intro-feature-title): antes esta card
+   tenia una tipografia mucho mas grande que las demas */
+.ix-card h3{
+  margin:0 0 10px;
+  font-family:var(--font-body);
+  font-weight:700;
+  font-size:1.5rem;
+  line-height:1.2;
+  text-align:center;
+  color:var(--magenta);
+}
+.ix-card p{ font-size:1rem; line-height:1.55; color:var(--ink); }
+.ix-card em{ font-style:normal; color:var(--cyan); }
+.ix-card .ix-eg{ margin-top:16px; }
+.ix-card .ix-t{ margin-top:8px; }
+.ix-card ul{ margin:0 0 4px; color:var(--ink) }
+.ix-card li{ font-size:1rem; line-height:1.55; }
+.ix-card li::before{ content:'→ '; }
+
+.ix-demo{ display:flex; flex-direction:column; align-items:center; gap:clamp(10px, 2vh, 18px); }
+.ix-demo h4{ margin:0; font-family:var(--font-body); font-weight:700; font-size:clamp(1.7rem, 2.8vw, 2.4rem); color:var(--ink); }
+
+/* las "pastillas" de notas */
+.ix-pills{ display:flex; gap:11px; }
+.ix-pill{ display:block; width:26px; height:44px; border-radius:14px; background:var(--pill); }
+.ix-pill.pk{ background:var(--magenta); }
+.ix-pill.mix{ background:radial-gradient(closest-side, #ff3fb4 0 32%, #8f9be0 100%); }
+.ix-pill.glow{ background:#00f0ff; box-shadow:0 0 16px #00f0ff; filter:blur(.7px); }
+.ix-ab{ display:flex; align-items:center; gap:22px; }
+.ix-plus{ font-size:1.6rem; font-weight:700; color:var(--ink); }
+.ix-arrow{ width:20px; height:46px; fill:none; stroke:#fff; stroke-width:1.6; stroke-linecap:round; stroke-linejoin:round; overflow:visible; }
+.ix-arrow-sm{ height:34px; }
+
+/* temperature: dos columnas, baja y alta */
+.ix-temp{ flex-direction:row; justify-content:center; align-items:flex-start; gap:clamp(40px, 6vw, 90px); }
+.ix-col{ display:flex; flex-direction:column; align-items:center; gap:10px; }
+.ix-field{ position:relative; width:100px; height:202px; }
+.ix-field .ix-pill{ position:absolute; }
 
 @media (max-width:760px){
-  .genie-accordion{ height:300px; }
-  .genie-item-body{ font-size:.85rem; padding:24px 22px 56px; }
-  .genie-item-label{ font-size:.88rem; }
+  .ix-split{ grid-template-columns:1fr; }
 }
 
-/* la tarjeta del video: se ve la miniatura y el boton de play; el iframe
-   de YouTube lo crea el JS recien cuando hago click */
-.video-card{
-  position:relative;
-  width:100%;
-  aspect-ratio:16/9;
-  border-radius:var(--radius-lg);
-  overflow:hidden;
-  background:#000;
-  border:1px solid var(--line);
-}
-.video-play{
-  position:absolute; inset:0;
-  width:100%; height:100%;
-  border:none; padding:0;
-  background:#000;
-  cursor:pointer;
-}
-.video-thumb{ width:100%; height:100%; object-fit:cover; opacity:.7; }
-.video-play-icon{
-  position:absolute; inset:0;
-  display:flex; align-items:center; justify-content:center;
-  color:#fff;
-}
-.video-play-icon .icon{
-  width:64px; height:64px;
-  filter:drop-shadow(0 4px 16px rgba(0,0,0,.55));
-  transition:transform .2s;
-}
-.video-play:hover .icon{ transform:scale(1.1); }
-.video-meta{
-  position:absolute; left:0; right:0; bottom:0;
-  padding:16px 18px;
-  background:linear-gradient(0deg, rgba(0,0,0,.8), transparent);
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:10px;
+/* ---- movimiento propio + click ----
+   nada queda quieto del todo: todo respira o flota un poco (con
+   "translate" y "box-shadow", asi no pisa las animaciones de scroll de
+   GSAP), y cada escena tiene algo para tocar, señalado con un cursor
+   animado. */
+
+/* lo que se puede tocar */
+.ix-piano-trad, .ix-piano-duet, .ix-orbs, .ix-pills, .ix-alta{ position:relative; }
+.ix-kw, .ix-kb, .ix-dw, .ix-db, .ix-tap{ cursor:pointer; }
+.ix-kw, .ix-kb, .ix-dw, .ix-db{ outline:none; }
+.ix-kw:focus-visible, .ix-kb:focus-visible, .ix-dw:focus-visible, .ix-db:focus-visible{ stroke:var(--cyan); stroke-width:3; }
+button.ix-orb{ border:0; padding:0; cursor:pointer; }
+.ix-tap:focus-visible, .ix-orb:focus-visible{ outline:2px solid var(--cyan); outline-offset:6px; border-radius:18px; }
+.ix-res .ix-pill, .ix-out .ix-pill.glow{ position:relative; } /* para poder subirlas y bajarlas segun la nota */
+
+/* el cursor guia (decorativo, solo para mostrar donde tocar) */
+.ix-cursor{
+  position:absolute;
+  left:var(--cx, 60%);
+  top:var(--cy, 60%);
+  width:0; height:0;
+  z-index:5;
   pointer-events:none;
 }
-.video-title{ font-weight:700; font-size:.95rem; color:#fff; }
-.video-channel{ display:flex; align-items:center; gap:6px; font-size:.8rem; color:#ddd; flex-shrink:0; }
-.video-iframe{ width:100%; height:100%; border:0; display:block; }
+.ix-cursor svg{
+  position:absolute; left:-2px; top:-2px;
+  width:22px; height:28px;
+  fill:#fff; stroke:#0a0a0f; stroke-width:1.6; stroke-linejoin:round;
+  filter:drop-shadow(0 2px 4px rgba(0,0,0,.5));
+}
+.ix-ring{
+  position:absolute; left:-17px; top:-17px;
+  width:34px; height:34px;
+  border:2px solid var(--cyan);
+  border-radius:50%;
+  animation:ixRing 1.8s ease-out infinite;
+}
+@keyframes ixRing{ 0%{ transform:scale(.3); opacity:.9; } 100%{ transform:scale(1.7); opacity:0; } }
 
-/* el piano ancho de abajo (dibujado en SVG): teclas pegadas y un marco
-   magenta con brillo. blancas oscuras, negras cian. */
-.piano-banner-wrap{
-  margin:clamp(40px, 7vh, 80px) 0 clamp(12px, 2vh, 22px);
-}
-.piano-banner{
-  display:block;
-  width:100%;
-  max-width:900px;
-  margin-inline:auto;
-  background:#141327;              /* rellena los micro-huecos entre teclas */
-  border:2px solid var(--magenta);
-  border-radius:12px;
-  box-shadow:0 0 26px rgba(253,61,181,.42);
-}
-.piano-banner .white-key{ fill:#141327; stroke:#2b2846; stroke-width:1.5; }
-.piano-banner .black-key{
-  fill:var(--cyan);
-  filter:drop-shadow(0 0 5px color-mix(in srgb, var(--cyan) 70%, transparent));
+/* idle: los botones de genie respiran */
+.ix-orb{ animation:ixBreath 2.6s ease-in-out infinite; }
+.ix-orb:nth-child(2){ animation-delay:-.3s; } .ix-orb:nth-child(3){ animation-delay:-.6s; }
+.ix-orb:nth-child(4){ animation-delay:-.9s; } .ix-orb:nth-child(5){ animation-delay:-1.2s; }
+.ix-orb:nth-child(6){ animation-delay:-1.5s; } .ix-orb:nth-child(7){ animation-delay:-1.8s; }
+.ix-orb:nth-child(8){ animation-delay:-2.1s; }
+@keyframes ixBreath{ 50%{ box-shadow:0 0 34px 5px var(--c); } }
+
+/* idle: las pastillas flotan; las "glow" ademas pulsan */
+.ix-demo .ix-pill{ animation:ixFloat 3.4s ease-in-out infinite; }
+.ix-pill:nth-child(2){ animation-delay:-.7s; } .ix-pill:nth-child(3){ animation-delay:-1.4s; }
+.ix-pill:nth-child(4){ animation-delay:-2.1s; } .ix-pill:nth-child(5){ animation-delay:-2.8s; }
+.ix-pill:nth-child(6){ animation-delay:-.35s; }
+@keyframes ixFloat{ 50%{ translate:0 -4px; } }
+.ix-pill.glow{ animation:ixFloat 3.4s ease-in-out infinite, ixGlow 1.8s ease-in-out infinite; }
+@keyframes ixGlow{ 50%{ box-shadow:0 0 30px 4px #00f0ff; } }
+/* temperatura: baja = queda quieta y ordenada; alta = inquieta */
+.ix-baja .ix-pill{ animation:none; }
+.ix-alta .ix-pill{ animation:ixJitter 1.6s ease-in-out infinite; }
+.ix-alta .ix-pill:nth-child(even){ animation-duration:2.1s; animation-direction:reverse; }
+@keyframes ixJitter{ 25%{ translate:4px -6px; } 50%{ translate:-3px 3px; } 75%{ translate:5px 5px; } }
+
+@media (prefers-reduced-motion:reduce){
+  .ix *, .ix *::before, .ix *::after{ animation:none !important; }
 }
 
 /* -------------------------------------------------------------------------
@@ -995,13 +1060,6 @@ button:focus-visible{
 /* -------------------------------------------------------------------------
    13. responsive
    ------------------------------------------------------------------------- */
-@media (max-width:980px){
-  .interacts-grid{ grid-template-columns:1fr; }
-  .genie-visual{ flex-direction:column; }
-  .genie-arrow{ transform:rotate(90deg); }
-  /* .midi-grid se deja en 620px para que el scale de .midi-cell-box calce */
-}
-
 @media (max-width:760px){
   .main-nav{
     position:absolute;
@@ -1025,10 +1083,7 @@ button:focus-visible{
   .hero-tags li:not(:last-child)::after{ display:none; }
   .hero-tags li{ padding-right:0; }
 
-  .tl-arrow{ width:40px; height:40px; }
-  .tl-slider{ gap:clamp(8px, 3vw, 20px); }
-  .tl-vortex{ width:min(220px, 70vw); }
-  .tl-stage{ min-height:480px; }
+  .timeline-list{ gap:clamp(16px, 4vh, 28px); }
 
   .midi-header{ gap:6px; }
   .midi-header-item{ font-size:.5rem; }
@@ -1065,8 +1120,8 @@ button:focus-visible{
 /* -------------------------------------------------------------------------
    13.b pantallas de poca altura (tipo laptop 1440x900)
    las capas apiladas son height:100vh; overflow:hidden. aca achico un
-   poco los espacios verticales asi el contenido de RealTime/Timeline no
-   se recorta.
+   poco los espacios verticales asi el contenido de RealTime no se
+   recorta (la timeline ya no es una capa apilada, no necesita esto).
    ------------------------------------------------------------------------- */
 @media (min-width:761px) and (max-height:920px){
   .slide-section > *{ padding-block:clamp(12px, 2.4vh, 44px); }
@@ -1082,10 +1137,6 @@ button:focus-visible{
   .realtime-section .chart-footnotes{ margin-top:14px; gap:8px; }
   .realtime-section .chart-footnotes p{ font-size:.82rem; }
 
-  .timeline-section .tl-wrap{ margin-top:clamp(14px, 3vh, 44px); }
-  .timeline-section .tl-stage{ min-height:min(560px, 58vh); }
-  .timeline-section .tl-vortex{ width:min(300px, 42vh); }
-
   .midi-block{ margin-top:clamp(16px, 3vh, 40px); }
 }
 
@@ -1100,7 +1151,7 @@ button:focus-visible{
 .slide-section{
   position:sticky;
   top:0;
-  z-index:1;          /* el JS lo cambia a 10, 11, 12, 13 */
+  z-index:1;          /* el JS lo cambia a 10, 20, 30 (ver activarSlidesDeSecciones) */
   isolation:isolate;  /* que el z-index de adentro no se mezcle con otras secciones */
   height:100vh;
   overflow:hidden;    /* corta lo que no entra en la pantalla */

@@ -10,7 +10,10 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Jersey+10&family=Silkscreen:wght@400;700&family=Roboto+Condensed:wght@300..900&display=swap" rel="stylesheet">
 
-<link rel="stylesheet" href="style.css">
+<!-- el "?v=" al final es a proposito: si el navegador o el Live Server
+     dejan una copia vieja del CSS guardada (cacheada), cambiar este
+     numero fuerza a que la vuelva a descargar entera -->
+<link rel="stylesheet" href="style.css?v=30">
 </head>
 <body>
 
@@ -23,14 +26,11 @@
   <symbol id="icon-external" viewBox="0 0 24 24"><path d="M9 5h10v10"/><path d="M19 5 6 18"/><path d="M8 5H6a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2v-2"/></symbol>
   <symbol id="icon-menu" viewBox="0 0 24 24"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></symbol>
   <symbol id="icon-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
-  <symbol id="icon-chevron-double-left" viewBox="0 0 24 24"><path d="M18 5l-6 7 6 7"/><path d="M11 5l-6 7 6 7"/></symbol>
-  <symbol id="icon-chevron-double-right" viewBox="0 0 24 24"><path d="M6 5l6 7-6 7"/><path d="M13 5l6 7-6 7"/></symbol>
-  <symbol id="icon-play" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></symbol>
   <symbol id="icon-instagram" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"/></symbol>
   <symbol id="icon-x" viewBox="0 0 24 24"><path d="M5 5l14 14M19 5 5 19"/></symbol>
 </svg>
 
-<!-- (el encabezado / nav todavia no esta armado) -->
+
 
 <main id="contenido">
 
@@ -72,7 +72,11 @@
   <!-- ===================================================================
        6. intro — la pregunta y que es Magenta.
        los dos parrafos aparecen con un fade cuando llego scrolleando
-       (lo hace activarTextoDeIntro mas abajo).
+       (lo hace activarTextoDeIntro mas abajo). seccion de scroll normal,
+       sin nada pineado: sube y se va como cualquier otra. las 3
+       caracteristicas van justo despues, en su propia seccion (sigue
+       siendo parte del "tema" intro, solo que separada para que el JS
+       les pueda dar su propio scroll individual a cada una).
        =================================================================== -->
   <section class="intro" id="intro">
     <div class="wrap intro-inner">
@@ -90,103 +94,140 @@
 
 
   <!-- ===================================================================
-       7. timeline — una decada de evolucion
-       muestra un hito por vez. con las flechas cambio el hito activo y
-       todo se anima con GSAP. detras de cada uno va el "vortice": varios
-       anillos que giran (.vortex-ring) y una imagen fija en el centro.
-       ver activarCarruselDeLaTimeline y activarVorticeDeLaTimeline abajo.
+       6.b las 3 caracteristicas de Magenta (sigue siendo parte de la
+       intro). nada pineado aca tampoco: la intro de arriba se va para
+       arriba con el scroll normal, y estas 3 van apareciendo solas a
+       medida que bajo, cada una con su propio trigger — el mismo
+       tratamiento que las cards de la timeline (ver
+       activarCaracteristicasDeMagenta en el JS).
        =================================================================== -->
-  <section class="timeline-section" id="historia">
-   <div class="section-stack-inner">
-    <div class="wrap timeline-head">
-      <h2 class="section-title">Una década de evolución</h2>
-      <p class="section-lede">De un laboratorio de investigación a un modelo que responde mientras tocás. Usá las flechas para recorrer los hitos.</p>
-    </div>
+  <section class="intro-features-section">
+    <div class="wrap intro-features">
+      <div class="intro-feature">
+        <img src="imagenes/Frame 195.png" alt="descripción">
+        <h3 class="intro-feature-title">Código abierto</h3>
+        <p class="intro-feature-desc">Cualquiera puede usarlo, estudiarlo o construir sobre él.</p>
+      </div>
 
-    <div class="wrap tl-wrap">
-      <div class="tl-slider" id="tlSlider" tabindex="0" aria-roledescription="carrusel" aria-label="Línea de tiempo de Magenta">
+      <div class="intro-feature">
+        <img src="imagenes/Frame 196.png" alt="descripción">
+        <h3 class="intro-feature-title">Machine Learning</h3>
+        <p class="intro-feature-desc">Investiga nuevas formas de crear música y arte</p>
+      </div>
 
-        <button type="button" class="tl-arrow tl-prev" id="tlPrev" aria-label="Hito anterior">
-          <svg class="icon icon-lg"><use href="#icon-chevron-double-left"></use></svg>
-        </button>
-
-        <div class="tl-stage" aria-live="polite">
-
-          <!-- el vortice esta aca como <template>. el JS lo copia dentro
-               de cada hito para que gire junto con el año y el titulo.
-               las Group-N.png van en cualquier orden; image_7.png es la
-               del centro y no gira. -->
-          <template id="tlVortexTpl">
-            <div class="tl-vortex" aria-hidden="true">
-              <svg class="vortex-ring" viewBox="0 0 500 500"><image href="imagenes/Group.png" x="0" y="0" width="500" height="500"></image></svg>
-              <svg class="vortex-ring" viewBox="0 0 500 500"><image href="imagenes/Group-1.png" x="0" y="0" width="500" height="500"></image></svg>
-              <svg class="vortex-ring" viewBox="0 0 500 500"><image href="imagenes/Group-2.png" x="0" y="0" width="500" height="500"></image></svg>
-              <svg class="vortex-ring" viewBox="0 0 500 500"><image href="imagenes/Group-3.png" x="0" y="0" width="500" height="500"></image></svg>
-              <svg class="vortex-ring" viewBox="0 0 500 500"><image href="imagenes/Group-4.png" x="0" y="0" width="500" height="500"></image></svg>
-              <svg class="vortex-ring" viewBox="0 0 500 500"><image href="imagenes/Group-5.png" x="0" y="0" width="500" height="500"></image></svg>
-              <svg class="vortex-ring" viewBox="0 0 500 500"><image href="imagenes/Group-6.png" x="0" y="0" width="500" height="500"></image></svg>
-              <svg class="vortex-ring" viewBox="0 0 500 500"><image href="imagenes/Group-7.png" x="0" y="0" width="500" height="500"></image></svg>
-              <svg class="vortex-center" viewBox="0 0 500 500"><image href="imagenes/image_7.png" x="0" y="0" width="500" height="500"></image></svg>
-            </div>
-          </template>
-
-          <article class="tl-slide is-active" data-index="0" style="--c:var(--magenta)" role="group" aria-roledescription="slide" aria-label="Hito 1 de 7 — 2016, Nace Magenta">
-            <div class="tl-art"></div>
-            <span class="timeline-year">2016</span>
-            <h3>Nace Magenta</h3>
-            <p>Douglas Eck funda el proyecto dentro de Google Brain para investigar el cruce entre inteligencia artificial y creatividad</p>
-          </article>
-
-          <article class="tl-slide" data-index="1" style="--c:var(--cyan)" role="group" aria-roledescription="slide" aria-label="Hito 2 de 7 — 2017, NSynth">
-            <div class="tl-art"></div>
-            <span class="timeline-year">2017</span>
-            <h3>NSynth</h3>
-            <p>Una red neuronal aprende a combinar el timbre de distintos instrumentos y genera sonidos que no existían antes</p>
-          </article>
-
-          <article class="tl-slide" data-index="2" style="--c:var(--green)" role="group" aria-roledescription="slide" aria-label="Hito 3 de 7 — 2018, Piano Genie">
-            <div class="tl-art"></div>
-            <span class="timeline-year">2018</span>
-            <h3>Piano Genie</h3>
-            <p>Ocho botones numerados bastan para improvisar en un piano completo, sin necesidad de saber tocarlo</p>
-          </article>
-
-          <article class="tl-slide" data-index="3" style="--c:var(--orange)" role="group" aria-roledescription="slide" aria-label="Hito 4 de 7 — 2019, Magenta Studio">
-            <div class="tl-art"></div>
-            <span class="timeline-year">2019</span>
-            <h3>Magenta Studio</h3>
-            <p>Los modelos salen del laboratorio en forma de plugins gratuitos para Ableton Live</p>
-          </article>
-
-          <article class="tl-slide" data-index="4" style="--c:var(--yellow)" role="group" aria-roledescription="slide" aria-label="Hito 5 de 7 — 2023, MusicLM">
-            <div class="tl-art"></div>
-            <span class="timeline-year">2023</span>
-            <h3>MusicLM</h3>
-            <p>Google explora la generación de música a partir de simples descripciones de texto</p>
-          </article>
-
-          <article class="tl-slide" data-index="5" style="--c:var(--blue)" role="group" aria-roledescription="slide" aria-label="Hito 6 de 7 — 2025, Magenta RealTime">
-            <div class="tl-art"></div>
-            <span class="timeline-year">2025</span>
-            <h3>Magenta RealTime</h3>
-            <p>Primer modelo abierto que genera audio en streaming, con unos 3 segundos de respuesta</p>
-          </article>
-
-          <article class="tl-slide" data-index="6" style="--c:var(--purple)" role="group" aria-roledescription="slide" aria-label="Hito 7 de 7 — 2026, Magenta RealTime 2">
-            <div class="tl-art"></div>
-            <span class="timeline-year">2026</span>
-            <h3>Magenta RealTime 2</h3>
-            <p>La latencia baja a 0,2 segundos y el modelo corre en dispositivos locales, como una laptop</p>
-          </article>
-
-        </div>
-
-        <button type="button" class="tl-arrow tl-next" id="tlNext" aria-label="Hito siguiente">
-          <svg class="icon icon-lg"><use href="#icon-chevron-double-right"></use></svg>
-        </button>
+      <div class="intro-feature">
+        <img src="imagenes/Frame 197.png" alt="descripción">
+        <h3 class="intro-feature-title">Amplía, no reemplaza</h3>
+        <p class="intro-feature-desc">Más posibilidades para explorar melodías, estructuras y ritmos.</p>
       </div>
     </div>
-   </div>
+  </section>
+
+
+  <!-- ===================================================================
+       7. timeline — una decada de evolucion
+       ya no es un carrusel con flechas: ahora es una timeline vertical de
+       verdad, dentro del flujo normal de la pagina. una linea central con
+       un punto por hito, y el año + la card debajo de cada uno. a medida
+       que hago scroll, cada hito va apareciendo (fade + un empujoncito
+       hacia arriba) y el que esta a la altura del centro se destaca; la
+       linea se va llenando de arriba hacia abajo, como si fuera marcando
+       el recorrido. no hay ninguna seccion pineada: el scroll es 100%
+       natural, esto solo escucha la posicion.
+       ver activarTimelineScrolleable mas abajo.
+       =================================================================== -->
+  <section class="timeline-section" id="historia">
+    <div class="wrap timeline-head">
+      <h2 class="section-title">Una década de evolución</h2>
+    </div>
+
+    <div class="wrap timeline-layout">
+
+      <!-- columna izquierda: texto fijo, siempre el mismo, se queda
+           pegado (sticky) mientras bajo por las cards de la derecha -->
+      <div class="timeline-visual">
+        <p class="timeline-visual-text">A lo largo de una década, <strong class="mg-hl">Magenta</strong> fue incorporando nuevas tecnologías para explorar cómo la inteligencia artificial puede participar en el proceso creativo. Cada año representa un paso en esta evolución.</p>
+      </div>
+
+      <!-- columna derecha: la linea + un punto y una card por hito -->
+      <div class="timeline-wrap">
+        <span class="timeline-line" aria-hidden="true"><span class="timeline-line-fill" id="timelineLineFill"></span></span>
+
+        <ol class="timeline-list" id="timelineList">
+
+          <li class="timeline-item is-active" aria-label="2016, Nace Magenta">
+            <span class="timeline-dot" aria-hidden="true"></span>
+            <div class="timeline-card">
+              <img class="timeline-card-icon" src="imagenes/2016.png" alt="">
+              <span class="timeline-year">2016</span>
+              <h3>Nace Magenta</h3>
+              <p><strong>Douglas Eck</strong> funda el proyecto dentro de <strong>Google Brain</strong> para investigar el cruce entre <strong>inteligencia artificial</strong> y <strong>creatividad</strong></p>
+            </div>
+          </li>
+
+          <li class="timeline-item" aria-label="2017, NSynth">
+            <span class="timeline-dot" aria-hidden="true"></span>
+            <div class="timeline-card">
+              <img class="timeline-card-icon" src="imagenes/2017.png" alt="">
+              <span class="timeline-year">2017</span>
+              <h3>NSynth</h3>
+              <p>Una <strong>red neuronal</strong> aprende a combinar el <strong>timbre</strong> de distintos instrumentos y genera <strong>sonidos que no existían antes</strong></p>
+            </div>
+          </li>
+
+          <li class="timeline-item" aria-label="2018, Piano Genie">
+            <span class="timeline-dot" aria-hidden="true"></span>
+            <div class="timeline-card">
+              <img class="timeline-card-icon" src="imagenes/2018.png" alt="">
+              <span class="timeline-year">2018</span>
+              <h3>Piano Genie</h3>
+              <p><strong>Ocho botones numerados</strong> bastan para <strong>improvisar</strong> en un <strong>piano completo</strong>, sin necesidad de saber tocarlo</p>
+            </div>
+          </li>
+
+          <li class="timeline-item" aria-label="2019, Magenta Studio">
+            <span class="timeline-dot" aria-hidden="true"></span>
+            <div class="timeline-card">
+              <img class="timeline-card-icon" src="imagenes/2019.png" alt="">
+              <span class="timeline-year">2019</span>
+              <h3>Magenta Studio</h3>
+              <p>Los modelos salen del laboratorio en forma de <strong>plugins gratuitos</strong> para <strong>Ableton Live</strong></p>
+            </div>
+          </li>
+
+          <li class="timeline-item" aria-label="2023, MusicLM">
+            <span class="timeline-dot" aria-hidden="true"></span>
+            <div class="timeline-card">
+              <img class="timeline-card-icon timeline-card-icon-lg" src="imagenes/2023.png" alt="">
+              <span class="timeline-year">2023</span>
+              <h3>MusicLM</h3>
+              <p><strong>Google</strong> explora la <strong>generación de música</strong> a partir de simples <strong>descripciones de texto</strong></p>
+            </div>
+          </li>
+
+          <li class="timeline-item" aria-label="2025, Magenta RealTime">
+            <span class="timeline-dot" aria-hidden="true"></span>
+            <div class="timeline-card">
+              <img class="timeline-card-icon timeline-card-icon-xl" src="imagenes/2025.png" alt="">
+              <span class="timeline-year">2025</span>
+              <h3>Magenta RealTime</h3>
+              <p>Primer <strong>modelo abierto</strong> que genera audio en <strong>streaming</strong>, con unos <strong>3 segundos</strong> de respuesta</p>
+            </div>
+          </li>
+
+          <li class="timeline-item" aria-label="2026, Magenta RealTime 2">
+            <span class="timeline-dot" aria-hidden="true"></span>
+            <div class="timeline-card">
+              <img class="timeline-card-icon timeline-card-icon-xl" src="imagenes/2026.png" alt="">
+              <span class="timeline-year">2026</span>
+              <h3>Magenta RealTime 2</h3>
+              <p>La latencia baja a <strong>0,2 segundos</strong> y el modelo corre en <strong>dispositivos locales</strong>, como una <strong>laptop</strong></p>
+            </div>
+          </li>
+
+        </ol>
+      </div>
+    </div>
   </section>
 
 
@@ -262,8 +303,6 @@
       </div>
 
       <div class="midi-block">
-        <span class="midi-label">Secuencias MIDI</span>
-
         <!-- el encabezado y la grilla los llena activarSecuenciasMidi()
              con el contenido de COLUMNAS_MIDI -->
         <div class="midi-header" id="midiHeader"></div>
@@ -275,131 +314,133 @@
 
 
   <!-- ===================================================================
-       10. como interactua — el video, las dos tarjetas del acordeon,
-           la comparacion de teclas y el piano ancho del final.
+       10. como interactua — infografia con click.
+       reemplaza al viejo acordeon + comparacion + piano ancho de una.
+       mantengo el id "como-interactua" porque lo usa el link del footer.
+
+       las 7 escenas van una abajo de la otra, en el flujo normal de la
+       pagina: cada una aparece entera con un fade simple al scrollear
+       hasta ella (ver activarInfografiaInteractua). los pianos, botones y
+       demos no tienen ninguna animacion de scroll — quedan quietos y
+       solo reaccionan al click (o al toque, en celular).
+       los dos pianos (SVG) los dibuja el JS.
        =================================================================== -->
-  <section class="how-interacts section-pad" id="como-interactua">
-    <div class="wrap">
-      <div class="section-head">
-        <h2 class="section-title">¿CÓMO INTERACTÚA?</h2>
+  <section class="how-interacts ix" id="como-interactua" aria-labelledby="ixTitulo">
+    <div class="ix-scenes">
 
-      </div>
+        <!-- 1 · piano tradicional -->
+        <article class="ix-scene ix-center" aria-label="Piano tradicional">
+          <h2 class="section-title" id="ixTitulo">¿CÓMO INTERACTÚA?</h2>
+          <p class="ix-lead">Del piano tradicional a nuevas formas de crear música.<br>Estas herramientas permiten <b>tocar, transformar y generar melodías</b> mediante modelos de <b>inteligencia artificial</b>.</p>
+          <div class="ix-panel">
+            <span class="ix-label">Piano tradicional</span>
+            <div class="ix-piano-trad" data-piano="trad" role="group" aria-label="Piano de 88 teclas: tocá una tecla para escucharla"><span class="ix-cursor" style="--cx:58%;--cy:62%" aria-hidden="true"><i class="ix-ring"></i><svg viewBox="0 0 20 28"><path d="M2 2v21l5.5-5 3.6 8 3.2-1.5-3.5-7.7H18z"/></svg></span></div>
+            <span class="ix-label">88 teclas</span>
+          </div>
+        </article>
 
-      <div class="interacts-grid">
+        <!-- 2 · piano genie -->
+        <article class="ix-scene ix-center" aria-label="Piano Genie">
+          <h3 class="section-title">Piano Genie</h3>
+          <p class="ix-lead">Convierte tus movimientos en notas de piano. <b>Podés tocar sin necesidad de conocer</b> las teclas exactas del instrumento.</p>
+          <div class="ix-panel">
+            <span class="ix-label">Piano Genie</span>
+            <div class="ix-orbs" role="group" aria-label="Ocho botones: tocá uno para escuchar su melodía">
+              <button type="button" class="ix-orb" style="--c:var(--magenta)" aria-label="Botón 1"></button>
+              <button type="button" class="ix-orb" style="--c:var(--cyan)" aria-label="Botón 2"></button>
+              <button type="button" class="ix-orb" style="--c:var(--yellow)" aria-label="Botón 3"></button>
+              <button type="button" class="ix-orb" style="--c:var(--green)" aria-label="Botón 4"></button>
+              <button type="button" class="ix-orb" style="--c:var(--orange)" aria-label="Botón 5"></button>
+              <button type="button" class="ix-orb" style="--c:var(--purple)" aria-label="Botón 6"></button>
+              <button type="button" class="ix-orb" style="--c:var(--blue)" aria-label="Botón 7"></button>
+              <button type="button" class="ix-orb" style="--c:var(--ink-dim)" aria-label="Botón 8"></button>
+              <span class="ix-cursor" style="--cx:62%;--cy:58%" aria-hidden="true"><i class="ix-ring"></i><svg viewBox="0 0 20 28"><path d="M2 2v21l5.5-5 3.6 8 3.2-1.5-3.5-7.7H18z"/></svg></span>
+            </div>
+            <span class="ix-label">8 botones</span>
+          </div>
+        </article>
 
-        <!-- el link de YouTube (o solo el ID) va en data-youtube; la
-             miniatura se arma sola con ese ID -->
-        <div class="genie-video">
-          <div class="video-card" id="genieVideo" data-youtube="https://www.youtube.com/watch?v=YRb0XAnUpIk">
-            <button type="button" class="video-play" aria-label="Reproducir video de demostración de Piano Genie">
-              <img class="video-thumb" alt="" src="" />
-              <span class="video-play-icon">
-                <svg class="icon icon-fill icon-lg"><use href="#icon-play"></use></svg>
-              </span>
-            </button>
-            <div class="video-meta">
-              <span class="video-title">Piano Genie — Improvisación en vivo</span>
-              <span class="video-channel">
-                <svg class="icon icon-fill icon-sm"><use href="#icon-play"></use></svg>
-                YouTube
-              </span>
+        <!-- 3 · ai duet -->
+        <article class="ix-scene ix-center" aria-label="AI Duet">
+          <h3 class="section-title">AI Duet</h3>
+          <p class="ix-lead">Tocás una melodía (más de 3 notas) y <b>la IA responde generando una segunda parte</b> que acompaña tu interpretación.</p>
+          <div class="ix-piano-duet" data-piano="duet" role="group" aria-label="Piano: tocá unas notas y la IA responde"><span class="ix-cursor" style="--cx:46%;--cy:52%" aria-hidden="true"><i class="ix-ring"></i><svg viewBox="0 0 20 28"><path d="M2 2v21l5.5-5 3.6 8 3.2-1.5-3.5-7.7H18z"/></svg></span></div>
+          
+        </article>
+
+        <!-- 4 · resumen: antes de interpolate / melody continue / temperature -->
+        <article class="ix-scene ix-center" data-escena="resumen" aria-label="Transformar y generar">
+          <h3 class="section-title">Transformar y generar</h3>
+          <p class="ix-lead">Estas herramientas viven en <b>Magenta Studio</b>, el plugin gratuito para Ableton Live. Cargás una melodía, apretás un botón y la IA te devuelve otra. La temperatura es un control deslizante que traen todas.</p>
+        </article>
+
+        <!-- 5 · interpolate -->
+        <article class="ix-scene ix-split" data-escena="interpolate" aria-label="Interpolate">
+          <div class="ix-card">
+            <h3>Interpolate</h3>
+            <p>Le das dos melodías o secuencias MIDI y Magenta <em>genera una serie</em> de melodías intermedias entre ambas.</p>
+            <p class="ix-eg">Por ejemplo:<br><span class="ix-step">Melodía A</span> → <span class="ix-step">A/B</span> → <span class="ix-step">intermedia</span> → <span class="ix-step">B/A</span> → <span class="ix-step">Melodía B</span></p>
+          </div>
+          <div class="ix-demo ix-tap" role="button" tabindex="0" aria-label="Interpolate: tocá para ver y escuchar las melodías intermedias">
+            <h4>Interpolate</h4>
+            <div class="ix-ab">
+              <div class="ix-pills ix-a"><i class="ix-pill pk"></i><i class="ix-pill pk"></i><i class="ix-pill pk"></i></div>
+              <span class="ix-plus">+</span>
+              <div class="ix-pills ix-b"><i class="ix-pill"></i><i class="ix-pill"></i><i class="ix-pill"></i></div>
+            </div>
+            <svg class="ix-arrow" viewBox="0 0 20 46" aria-hidden="true"><path d="M10 1v42M2 34l8 10 8-10"/></svg>
+            <div class="ix-pills ix-res"><i class="ix-pill mix"></i><i class="ix-pill mix"></i><i class="ix-pill mix"></i><span class="ix-cursor" style="--cx:82%;--cy:78%" aria-hidden="true"><i class="ix-ring"></i><svg viewBox="0 0 20 28"><path d="M2 2v21l5.5-5 3.6 8 3.2-1.5-3.5-7.7H18z"/></svg></span></div>
+          </div>
+        </article>
+
+        <!-- 6 · melody continue -->
+        <article class="ix-scene ix-split" data-escena="continue" aria-label="Melody continue">
+          <div class="ix-card">
+            <h3>Melody continue</h3>
+            <p>Magenta <em>analiza una melodía</em> como punto de partida y <em>genera material</em> melódico <em>nuevo</em> manteniendo las características musicales que se han ingresado.</p>
+            <p class="ix-eg">Por ejemplo:<br><span class="ix-step">Melodía inicial</span> → <span class="ix-step">Google Magenta</span> → <span class="ix-step">Nueva frase</span></p>
+          </div>
+          <div class="ix-demo ix-tap" role="button" tabindex="0" aria-label="Continue: tocá para generar una frase nueva">
+            <h4>Continue</h4>
+            <div class="ix-pills ix-in"><i class="ix-pill"></i><i class="ix-pill"></i><i class="ix-pill"></i><span class="ix-cursor" style="--cx:84%;--cy:80%" aria-hidden="true"><i class="ix-ring"></i><svg viewBox="0 0 20 28"><path d="M2 2v21l5.5-5 3.6 8 3.2-1.5-3.5-7.7H18z"/></svg></span></div>
+            <svg class="ix-arrow" viewBox="0 0 20 46" aria-hidden="true"><path d="M10 1v42M2 34l8 10 8-10"/></svg>
+            <div class="ix-pills ix-out">
+              <i class="ix-pill"></i><i class="ix-pill"></i><i class="ix-pill"></i>
+              <i class="ix-pill glow"></i><i class="ix-pill glow"></i><i class="ix-pill glow"></i>
             </div>
           </div>
-        </div>
+        </article>
 
-        <!-- acordeon: toco la tira angosta con el nombre y se abre; si
-             toco la otra, esta se cierra -->
-        <div class="genie-accordion" id="genieAccordion">
-          <button type="button" class="genie-item" data-genie="piano" style="--c:var(--magenta)" aria-expanded="false">
-            <span class="genie-item-body">
-              <span class="genie-item-line"><strong>Funcionamiento:</strong> Permite que cualquier persona toque un piano completo de 88 teclas usando únicamente 8 botones (o teclas numéricas).</span>
-              <span class="genie-item-line"><strong>Interacción:</strong> Funciona de forma similar a un juego estilo Guitar Hero. La red neuronal traduce tus pulsaciones simples en una ejecución compleja y coherente de piano clásico en tiempo real. No estás haciendo un dúo con la máquina; la máquina actúa como un traductor inteligente.</span>
-            </span>
-            <span class="genie-item-label">Piano Genie</span>
-          </button>
-
-          <button type="button" class="genie-item" data-genie="duet" style="--c:var(--cyan)" aria-expanded="false">
-            <span class="genie-item-body">
-              <span class="genie-item-line"><strong>Funcionamiento:</strong> El A.I. Duet creado por el equipo de Google Magenta y el Creative Lab es completamente diferente al asistente de productividad corporativa. Se trata de un experimento musical interactivo basado en inteligencia artificial que te permite tocar el piano a dúo con la computadora.</span>
-              <span class="genie-item-line"><strong>Interacción:</strong> Tocás una serie de notas y la inteligencia artificial te responde improvisando una melodía complementaria en tiempo real.</span>
-            </span>
-            <span class="genie-item-label">A.I. Duet</span>
-          </button>
-        </div>
-      </div>
-
-      <!-- comparacion 88 teclas vs 8 botones. aparece deslizandose al
-           scrollear (lo hace activarComparacionDeTeclas) -->
-      <div class="compare-block">
-        <h3 class="compare-title">De las 88 teclas a 8: Elegí tu forma de tocar</h3>
-        <div class="compare-grid">
-          <div class="compare-card">
-            <span class="compare-card-title">Piano tradicional</span>
-            <svg class="piano-strip piano-teclado" viewBox="0 0 490 200" role="group" aria-label="Teclado de piano tradicional: tocá una tecla para escuchar su nota">
-              <rect class="white-key piano-key" x="0"   y="0" width="68" height="200" rx="6" data-freq="261.63" aria-label="Do"/>
-              <rect class="white-key piano-key" x="70"  y="0" width="68" height="200" rx="6" data-freq="293.66" aria-label="Re"/>
-              <rect class="white-key piano-key" x="140" y="0" width="68" height="200" rx="6" data-freq="329.63" aria-label="Mi"/>
-              <rect class="white-key piano-key" x="210" y="0" width="68" height="200" rx="6" data-freq="349.23" aria-label="Fa"/>
-              <rect class="white-key piano-key" x="280" y="0" width="68" height="200" rx="6" data-freq="392.00" aria-label="Sol"/>
-              <rect class="white-key piano-key" x="350" y="0" width="68" height="200" rx="6" data-freq="440.00" aria-label="La"/>
-              <rect class="white-key piano-key" x="420" y="0" width="68" height="200" rx="6" data-freq="493.88" aria-label="Si"/>
-              <rect class="black-key piano-key" x="48"  y="0" width="40" height="120" rx="4" data-freq="277.18" aria-label="Do sostenido"/>
-              <rect class="black-key piano-key" x="118" y="0" width="40" height="120" rx="4" data-freq="311.13" aria-label="Re sostenido"/>
-              <rect class="black-key piano-key" x="258" y="0" width="40" height="120" rx="4" data-freq="369.99" aria-label="Fa sostenido"/>
-              <rect class="black-key piano-key" x="328" y="0" width="40" height="120" rx="4" data-freq="415.30" aria-label="Sol sostenido"/>
-              <rect class="black-key piano-key" x="398" y="0" width="40" height="120" rx="4" data-freq="466.16" aria-label="La sostenido"/>
-            </svg>
-            <span class="compare-card-caption">88 teclas</span>
+        <!-- 7 · temperature -->
+        <article class="ix-scene ix-split" data-escena="temperatura" aria-label="Temperature">
+          <div class="ix-card">
+            <h3>Temperature</h3>
+            <p>La temperatura es <em>qué tan predecible</em> o qué tan variada/arriesgada es la generación.</p>
+            <p class="ix-t">Temperatura <em>baja</em></p>
+            <ul><li>Resultados más predecibles</li><li>Más cercanos a los patrones que ya conoce</li><li>Menos variedad</li></ul>
+            <p class="ix-t">Temperatura <em>alta</em></p>
+            <ul><li>Resultados más variados</li><li>Más inesperados</li><li>Puede generar ideas más raras o no convencionales</li></ul>
           </div>
-
-          <div class="compare-card">
-            <span class="compare-card-title">Piano Genie</span>
-            <div class="compare-buttons" role="group" aria-label="Ocho botones de Piano Genie: tocá uno para escuchar una melodía">
-              <span style="--c:var(--magenta)"></span>
-              <span style="--c:var(--cyan)"></span>
-              <span style="--c:var(--yellow)"></span>
-              <span style="--c:var(--green)"></span>
-              <span style="--c:var(--orange)"></span>
-              <span style="--c:var(--purple)"></span>
-              <span style="--c:var(--blue)"></span>
-              <span style="--c:var(--ink-dim)"></span>
+          <div class="ix-demo ix-temp">
+            <div class="ix-col ix-col-baja ix-tap" role="button" tabindex="0" aria-label="Temperatura baja: tocá para escuchar notas ordenadas">
+              <h4>Baja</h4>
+              <svg class="ix-arrow ix-arrow-sm" viewBox="0 0 20 46" aria-hidden="true"><path d="M10 1v42M2 34l8 10 8-10"/></svg>
+              <div class="ix-field ix-baja">
+                <i class="ix-pill" style="left:0;top:0"></i><i class="ix-pill" style="left:37px;top:0"></i><i class="ix-pill" style="left:74px;top:0"></i>
+                <i class="ix-pill" style="left:0;top:68px"></i><i class="ix-pill" style="left:37px;top:68px"></i><i class="ix-pill" style="left:74px;top:68px"></i>
+              </div>
             </div>
-            <span class="compare-card-caption">8 botones</span>
+            <div class="ix-col ix-col-alta ix-tap" role="button" tabindex="0" aria-label="Temperatura alta: tocá para dispersar y escuchar otras notas">
+              <h4>Alta</h4>
+              <svg class="ix-arrow ix-arrow-sm" viewBox="0 0 20 46" aria-hidden="true"><path d="M10 1v42M2 34l8 10 8-10"/></svg>
+              <div class="ix-field ix-alta">
+                <i class="ix-pill" data-g="0,0"    style="left:0;top:22px"></i><i class="ix-pill" data-g="37,0"  style="left:37px;top:62px"></i><i class="ix-pill" data-g="74,0"  style="left:74px;top:0"></i>
+                <i class="ix-pill" data-g="0,68"   style="left:0;top:118px"></i><i class="ix-pill" data-g="37,68" style="left:37px;top:158px"></i><i class="ix-pill" data-g="74,68" style="left:74px;top:126px"></i><span class="ix-cursor" style="--cx:88%;--cy:82%" aria-hidden="true"><i class="ix-ring"></i><svg viewBox="0 0 20 28"><path d="M2 2v21l5.5-5 3.6 8 3.2-1.5-3.5-7.7H18z"/></svg></span>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
+        </article>
 
-      <!-- piano ancho dibujado en SVG (no es una imagen). las teclas se
-           tiñen con el mouse y suenan al click (activarPianoInteractivo).
-           son 2 octavas de Do mayor con sus sostenidos. -->
-      <div class="piano-banner-wrap">
-        <svg class="piano-banner piano-teclado" viewBox="0 0 980 200" role="group" aria-label="Piano — tocá una tecla para escuchar su nota">
-          <rect class="white-key piano-key" x="0"   y="0" width="66" height="200" rx="7" data-freq="261.63" aria-label="Do"/>
-          <rect class="white-key piano-key" x="70"  y="0" width="66" height="200" rx="7" data-freq="293.66" aria-label="Re"/>
-          <rect class="white-key piano-key" x="140" y="0" width="66" height="200" rx="7" data-freq="329.63" aria-label="Mi"/>
-          <rect class="white-key piano-key" x="210" y="0" width="66" height="200" rx="7" data-freq="349.23" aria-label="Fa"/>
-          <rect class="white-key piano-key" x="280" y="0" width="66" height="200" rx="7" data-freq="392.00" aria-label="Sol"/>
-          <rect class="white-key piano-key" x="350" y="0" width="66" height="200" rx="7" data-freq="440.00" aria-label="La"/>
-          <rect class="white-key piano-key" x="420" y="0" width="66" height="200" rx="7" data-freq="493.88" aria-label="Si"/>
-          <rect class="white-key piano-key" x="490" y="0" width="66" height="200" rx="7" data-freq="523.25" aria-label="Do agudo"/>
-          <rect class="white-key piano-key" x="560" y="0" width="66" height="200" rx="7" data-freq="587.33" aria-label="Re agudo"/>
-          <rect class="white-key piano-key" x="630" y="0" width="66" height="200" rx="7" data-freq="659.25" aria-label="Mi agudo"/>
-          <rect class="white-key piano-key" x="700" y="0" width="66" height="200" rx="7" data-freq="698.46" aria-label="Fa agudo"/>
-          <rect class="white-key piano-key" x="770" y="0" width="66" height="200" rx="7" data-freq="783.99" aria-label="Sol agudo"/>
-          <rect class="white-key piano-key" x="840" y="0" width="66" height="200" rx="7" data-freq="880.00" aria-label="La agudo"/>
-          <rect class="white-key piano-key" x="910" y="0" width="66" height="200" rx="7" data-freq="987.77" aria-label="Si agudo"/>
-          <rect class="black-key piano-key" x="50"  y="0" width="40" height="122" rx="5" data-freq="277.18" aria-label="Do sostenido"/>
-          <rect class="black-key piano-key" x="120" y="0" width="40" height="122" rx="5" data-freq="311.13" aria-label="Re sostenido"/>
-          <rect class="black-key piano-key" x="260" y="0" width="40" height="122" rx="5" data-freq="369.99" aria-label="Fa sostenido"/>
-          <rect class="black-key piano-key" x="330" y="0" width="40" height="122" rx="5" data-freq="415.30" aria-label="Sol sostenido"/>
-          <rect class="black-key piano-key" x="400" y="0" width="40" height="122" rx="5" data-freq="466.16" aria-label="La sostenido"/>
-          <rect class="black-key piano-key" x="540" y="0" width="40" height="122" rx="5" data-freq="554.37" aria-label="Do sostenido agudo"/>
-          <rect class="black-key piano-key" x="610" y="0" width="40" height="122" rx="5" data-freq="622.25" aria-label="Re sostenido agudo"/>
-          <rect class="black-key piano-key" x="750" y="0" width="40" height="122" rx="5" data-freq="739.99" aria-label="Fa sostenido agudo"/>
-          <rect class="black-key piano-key" x="820" y="0" width="40" height="122" rx="5" data-freq="830.61" aria-label="Sol sostenido agudo"/>
-          <rect class="black-key piano-key" x="890" y="0" width="40" height="122" rx="5" data-freq="932.33" aria-label="La sostenido agudo"/>
-        </svg>
-      </div>
     </div>
   </section>
 
@@ -530,7 +571,8 @@
 
   // --- el texto de la intro aparece con un fade al scrollear ----
   // uso gsap.from: los parrafos ya se ven de entrada y la animacion
-  // arranca desde invisible. el trigger es la seccion entera.
+  // arranca desde invisible. el trigger es la seccion entera (que ahora
+  // vuelve a medir una sola pantalla, como antes).
   function activarTextoDeIntro() {
     const seccion = document.getElementById('intro');
     if (!seccion || !window.gsap || !window.ScrollTrigger) return;
@@ -555,169 +597,118 @@
   activarTextoDeIntro();
 
 
-  // --- timeline: carrusel de hitos con loop infinito -----------
-  // al tocar una flecha muevo todas las cards: la activa al centro, las
-  // de al lado mas chicas y giradas, y las lejanas escondidas. cuento la
-  // distancia "en circulo" asi nunca hay un principio ni un final.
-  function activarCarruselDeLaTimeline() {
-    if (!window.gsap) return;
+  // --- timeline: vertical, controlada por scroll (sin flechas) --
+  // las 3 caracteristicas de Magenta entran igual que las cards de la
+  // timeline (fade + corrida de costado, atado al scroll con scrub): asi
+  // se sienten parte de la misma familia visual aunque vivan en su
+  // propia seccion, justo despues de la intro.
+  function activarCaracteristicasDeMagenta() {
+    if (!window.gsap || !window.ScrollTrigger) return;
 
-    const slides = gsap.utils.toArray('.tl-slide');
-    const prev = document.getElementById('tlPrev');
-    const next = document.getElementById('tlNext');
-    const slider = document.getElementById('tlSlider');
-    if (!slides.length || !prev || !next) return;
-
-    // clono el vortice del <template> dentro de cada hito, donde estaba .tl-art
-    const tpl = document.getElementById('tlVortexTpl');
-    if (tpl) {
-      slides.forEach((slide) => {
-        if (slide.querySelector('.tl-vortex')) return;
-        const copia = tpl.content.firstElementChild.cloneNode(true);
-        const spacer = slide.querySelector('.tl-art');
-        if (spacer) spacer.replaceWith(copia);
-        else slide.insertBefore(copia, slide.firstChild);
-      });
-    }
-
-    const total = slides.length;
-    let actual = 0;
-    let animando = false;
-
-    // devuelve a que distancia esta la card "i" del centro, contando en
-    // circulo (da algo entre -total/2 y +total/2)
-    function offsetCircular(i) {
-      let d = ((i - actual) % total + total) % total;
-      if (d > total / 2) d -= total;
-      return d;
-    }
-
-    function acomodar(inmediato) {
-      const paso = Math.min(240, window.innerWidth * 0.26);
-      slides.forEach((slide, i) => {
-        const pos = offsetCircular(i);
-        const dist = Math.abs(pos);
-        const centro = dist === 0;
-
-        gsap.to(slide, {
-          duration: inmediato ? 0 : 0.6,
-          ease: 'power3.out',
-          xPercent: -50,
-          yPercent: -50,
-          x: pos * paso,
-          scale: centro ? 1 : 0.72,
-          rotationY: pos * -14,
-          opacity: dist > 1 ? 0 : (centro ? 1 : 0.38), // solo se ve el centro y los 2 de al lado
-          zIndex: 100 - dist,
-          overwrite: true
-        });
-
-        slide.classList.toggle('is-active', centro);
-        slide.setAttribute('aria-hidden', centro ? 'false' : 'true');
-
-        // arranco el giro del vortice del centro y freno los demas
-        if (slide._giros) slide._giros.forEach((g) => (centro ? g.play() : g.pause()));
-      });
-    }
-
-    function irAlHito(dir) {
-      if (animando) return;
-      animando = true;
-      actual = ((actual + dir) % total + total) % total;
-      acomodar(false);
-      gsap.delayedCall(0.45, () => { animando = false; });
-    }
-
-    prev.addEventListener('click', () => irAlHito(-1));
-    next.addEventListener('click', () => irAlHito(1));
-    prev.disabled = false; // como el loop es infinito nunca las deshabilito
-    next.disabled = false;
-
-    if (slider) {
-      slider.addEventListener('keydown', (e) => {
-        if (e.key === 'ArrowRight') irAlHito(1);
-        if (e.key === 'ArrowLeft') irAlHito(-1);
-      });
-    }
-
-    acomodar(true);
-    window.addEventListener('resize', () => acomodar(true));
-  }
-
-  activarCarruselDeLaTimeline();
-
-
-  // --- timeline: los anillos del vortice girando ---------------
-  // creo los giros de todos los hitos pero pausados. guardo cada uno en
-  // slide._giros para que el carrusel prenda el del centro y pause el resto.
-  function activarVorticeDeLaTimeline() {
-    if (!window.gsap) return;
-
-    document.querySelectorAll('.tl-slide').forEach((slide) => {
-      const anillos = slide.querySelectorAll('.vortex-ring');
-      slide._giros = Array.from(anillos).map((anillo, i) =>
-        gsap.to(anillo, {
-          rotation: '+=' + (360 * (i % 2 === 0 ? 1 : -1)), // pares para un lado, impares para el otro
-          duration: 10 + i * 2,                            // cada anillo un poco mas lento
-          repeat: -1,
-          ease: 'none',
-          paused: true
-        })
+    gsap.utils.toArray('.intro-feature').forEach((feature) => {
+      gsap.fromTo(feature,
+        { autoAlpha: 0, x: 60, scale: 0.97 },
+        {
+          autoAlpha: 1, x: 0, scale: 1,
+          ease: 'power2.out',
+          scrollTrigger: { trigger: feature, start: 'top 88%', end: 'top 58%', scrub: 0.5 }
+        }
       );
-
-      if (slide.classList.contains('is-active')) slide._giros.forEach((g) => g.play());
     });
   }
 
-  activarVorticeDeLaTimeline();
+  activarCaracteristicasDeMagenta();
+
+
+  // cada hito (punto + card, con el año adentro de la card) arranca
+  // invisible; la card corrida hacia la derecha (entra "de costado") y el
+  // punto solo con un fade+escala (queda fijo sobre la linea, no se
+  // corre). a medida que lo alcanzo bajando, GSAP lo trae a su lugar con
+  // un scrub: la animacion queda literalmente atada a cuanto
+  // scrolleaste, asi responde igual de bien en scroll rapido, lento, o
+  // subiendo (no es un "juega una vez y listo"). aparte, el hito que esta
+  // a la altura del centro de la pantalla se destaca (is-active), y la
+  // linea de fondo se va llenando de arriba hacia abajo a medida que
+  // recorro toda la lista. el texto de la izquierda queda fijo (sticky)
+  // todo el tiempo, no se anima ni cambia.
+  function activarTimelineScrolleable() {
+    if (!window.gsap || !window.ScrollTrigger) return;
+
+    const items = gsap.utils.toArray('.timeline-item');
+    if (!items.length) return;
+
+    items.forEach((item) => {
+      const dot = item.querySelector('.timeline-dot');
+      const card = item.querySelector('.timeline-card');
+
+      // el punto no se corre de costado (queda fijo sobre la linea):
+      // solo hace un fade + una escala chiquita, como si se "prendiera"
+      const trigger = { trigger: item, start: 'top 88%', end: 'top 58%', scrub: 0.5 };
+      gsap.fromTo(dot,
+        { autoAlpha: 0, scale: 0.4 },
+        { autoAlpha: 1, scale: 1, ease: 'power2.out', scrollTrigger: { ...trigger } }
+      );
+
+      // la card si entra de costado: arranca corrida a la derecha y
+      // desliza hasta su lugar (el año va adentro de la card, se mueve
+      // solo con ella). con scrub (nada de duration fija) el progreso de
+      // la animacion ES el progreso del scroll, en los dos sentidos.
+      gsap.fromTo(card,
+        { autoAlpha: 0, x: 60, scale: 0.97 },
+        { autoAlpha: 1, x: 0, scale: 1, ease: 'power2.out', scrollTrigger: { ...trigger } }
+      );
+
+      // el hito activo (a la altura del centro) se destaca; los demas
+      // quedan en un segundo plano mas apagado. funciona en los dos
+      // sentidos del scroll.
+      ScrollTrigger.create({
+        trigger: item,
+        start: 'top 60%',
+        end: 'bottom 40%',
+        toggleClass: { targets: item, className: 'is-active' }
+      });
+    });
+
+    // la linea de fondo se va llenando a medida que recorro la lista
+    const relleno = document.getElementById('timelineLineFill');
+    const lista = document.getElementById('timelineList');
+    if (relleno && lista) {
+      gsap.fromTo(relleno, { scaleY: 0 }, {
+        scaleY: 1,
+        ease: 'none',
+        scrollTrigger: { trigger: lista, start: 'top 75%', end: 'bottom 75%', scrub: 0.5 }
+      });
+    }
+  }
+
+  activarTimelineScrolleable();
 
 
   // --- secuencias MIDI: la grilla de fichas que se dan vuelta ---
-  // son 7 columnas (una por color) y 4 filas. en reposo se ve el color,
-  // al pasar el mouse aparece el titulo y al hacer click gira y muestra
-  // el texto. todo el contenido lo saco de este array.
+  // son 4 columnas (una por color: rosa, cyan, amarillo, verde) y 3
+  // filas, 12 fichas en total. en reposo se ve el color, al pasar el
+  // mouse aparece el titulo y al hacer click gira y muestra el texto.
+  // todo el contenido lo saco de este array.
   const COLUMNAS_MIDI = [
-    { tema: 'Modelos de IA', color: 'var(--midi-1)', pasos: [
-      { t: 'Modelos de la IA', d: 'Magenta utiliza modelos avanzados como Redes Neuronales Recurrentes (RNN) o Transformadores.' },
-      { t: 'Entrenamiento', d: 'Los modelos aprenden a partir de datos musicales, como canciones, audio o secuencias MIDI.' },
-      { t: 'Predicción y muestreo', d: 'A partir del contexto, la IA calcula probabilidades para generar el siguiente evento musical.' },
-      { t: 'Temperatura y muestreo', d: 'La temperatura regula la variabilidad del resultado y, a partir de esas probabilidades, el modelo genera nuevos eventos musicales de forma progresiva.' }
+    { tema: 'Aprendizaje', color: '#fd3db5', pasos: [
+      { t: 'Modelos y entrenamiento', d: 'Los modelos de IA aprenden patrones y estructuras a partir de datos musicales como canciones, audio o secuencias MIDI.' },
+      { t: 'Predicción', d: 'A partir del contexto, la IA calcula probabilidades sobre qué evento musical podría continuar la secuencia.' },
+      { t: 'Generación y temperatura', d: 'El modelo genera nuevos eventos paso a paso. La temperatura permite controlar si el resultado es más predecible o experimental.' }
     ]},
-    { tema: 'MIDI', color: 'var(--midi-2)', pasos: [
+    { tema: 'MIDI', color: '#22bca4', pasos: [
       { t: '¿Qué es MIDI?', d: 'MIDI representa información musical de forma digital, sin almacenar el sonido en sí.' },
-      { t: 'Notas', d: 'Puede indicar qué nota se toca y cuándo comienza o termina.' },
-      { t: 'Expresión', d: 'También puede transmitir parámetros como intensidad, duración y otros controles musicales.' },
-      { t: 'Secuencia y control', d: 'Los eventos MIDI se organizan en el tiempo formando secuencias y, en sistemas como MRT2, pueden utilizarse para controlar la música generada en tiempo real.' }
+      { t: 'Secuencia', d: 'Las notas, duraciones y otros controles se organizan en el tiempo formando una secuencia musical.' },
+      { t: 'Control', d: 'En sistemas como Magenta RealTime 2, los eventos MIDI pueden utilizarse para controlar la música generada en tiempo real.' }
     ]},
-    { tema: 'Audio', color: 'var(--midi-3)', pasos: [
-      { t: 'Entrada de sonido', d: 'La IA también puede recibir audio como información de entrada.' },
-      { t: 'Representación', d: 'El sonido se transforma en una representación digital que el modelo puede procesar.' },
-      { t: 'Contexto', d: 'El modelo utiliza esa información para comprender características del sonido y la música.' },
-      { t: 'Generación y continuidad', d: 'A partir del contexto recibido, genera nuevo contenido sonoro y la generación puede continuar mientras recibe nueva información.' }
+    { tema: 'Audio', color: '#dad23a', pasos: [
+      { t: 'Entrada de sonido', d: 'La IA puede recibir sonido como entrada y transformarlo en una representación digital que pueda procesar.' },
+      { t: 'Interpretación', d: 'El modelo utiliza la representación como contexto para interpretar características del sonido y de la música.' },
+      { t: 'Generación', d: 'A partir del contexto genera nuevo contenido sonoro y puede continuar mientras recibe nueva información.' }
     ]},
-    { tema: 'Texto / prompt', color: 'var(--midi-4)', pasos: [
-      { t: 'Prompt', d: 'Acá empezamos a conectar mucho más con Magenta RealTime 2.' },
-      { t: 'Interpretación', d: 'El usuario puede describir con palabras el estilo musical que quiere generar.' },
-      { t: 'Estilo', d: 'El prompt condiciona características musicales del resultado.' },
-      { t: 'Combinación y resultados', d: 'El texto puede combinarse con otras entradas, como MIDI o audio, para generar música que responda tanto a la interpretación musical como al estilo indicado.' }
-    ]},
-    { tema: 'Tiempo real', color: 'var(--midi-5)', pasos: [
-      { t: 'Entrada', d: 'El músico toca, escribe o proporciona audio.' },
-      { t: 'Procesamiento', d: 'El modelo procesa continuamente la información recibida.' },
-      { t: 'Generación', d: 'La IA genera audio a medida que avanza la interpretación.' },
-      { t: 'Respuesta e interacción', d: 'Magenta RealTime 2 responde con baja latencia a los cambios del usuario, permitiendo integrar la IA en una interpretación musical en vivo.' }
-    ]},
-    { tema: 'Contexto', color: 'var(--midi-6)', pasos: [
-      { t: 'Historial', d: 'El modelo utiliza información previa de la secuencia para generar lo siguiente.' },
-      { t: 'Relaciones', d: 'Analiza cómo los eventos musicales se relacionan entre sí.' },
-      { t: 'Continuidad', d: 'El contexto ayuda a mantener coherencia durante la generación.' },
-      { t: 'Actualización y adaptación', d: 'A medida que recibe nueva información, el contexto se actualiza y la generación se adapta continuamente a lo que está ocurriendo.' }
-    ]},
-    { tema: 'Co-crear', color: 'var(--midi-7)', pasos: [
-      { t: 'Generar', d: 'La IA produce nuevo material musical a partir de las entradas recibidas.' },
-      { t: 'Responder', d: 'El resultado puede cambiar según las acciones del músico.' },
-      { t: 'Explorar', d: 'Una misma entrada puede dar lugar a distintas posibilidades musicales.' },
-      { t: 'Iterar y co-crear', d: 'El músico puede modificar sus entradas y orientar el resultado, utilizando la IA como una herramienta interactiva dentro del proceso creativo.' }
+    { tema: 'Estilo', color: '#70fd3d', pasos: [
+      { t: 'Prompt', d: 'El usuario puede describir con palabras el estilo musical que quiere generar.' },
+      { t: 'Interpretación', d: 'El modelo transforma esa descripción en información que puede utilizar durante la generación.' },
+      { t: 'Estilo', d: 'El prompt condiciona el resultado y puede combinarse con otras entradas, como MIDI o audio.' }
     ]}
   ];
 
@@ -726,7 +717,7 @@
     const encabezado = document.getElementById('midiHeader');
     if (!grilla) return;
 
-    const filas = COLUMNAS_MIDI[0].pasos.length; // 4
+    const filas = COLUMNAS_MIDI[0].pasos.length; // 3
 
     // armo el encabezado: un titulo por columna
     if (encabezado) {
@@ -750,16 +741,24 @@
         celda.className = 'midi-cell';
         celda.style.setProperty('--c', col.color); // el color de la columna
         celda.setAttribute('aria-label', col.tema + ' — ' + paso.t);
+        // el titulo va en las dos caras (asi se ve siempre, este dada
+        // vuelta o no); en el dorso queda mas chico, arriba de la descripcion
         celda.innerHTML =
           '<span class="midi-cell-box"><span class="midi-cell-3d"><span class="midi-cell-inner">' +
             '<span class="midi-cell-face midi-cell-front"><span class="midi-cell-title">' + paso.t + '</span></span>' +
-            '<span class="midi-cell-face midi-cell-back"><span class="midi-cell-desc">' + paso.d + '</span></span>' +
-          '</span></span></span>';
+            '<span class="midi-cell-face midi-cell-back">' +
+              '<span class="midi-cell-title midi-cell-title-back">' + paso.t + '</span>' +
+              '<span class="midi-cell-desc">' + paso.d + '</span>' +
+            '</span></span></span></span>';
 
-        // con el click la doy vuelta, y al sacar el mouse vuelve sola al frente
-        celda.addEventListener('click', () => celda.classList.toggle('is-flipped'));
-        celda.addEventListener('mouseleave', () => celda.classList.remove('is-flipped'));
-        celda.addEventListener('blur', () => celda.classList.remove('is-flipped'));
+        // con el click la doy vuelta, y se queda asi hasta que la vuelva
+        // a clickear (ya no se da vuelta sola al sacar el mouse). is-read
+        // se agrega (nunca se saca): una vez que la clickeaste queda
+        // marcada como "ya la leiste", mas oscura
+        celda.addEventListener('click', () => {
+          celda.classList.toggle('is-flipped');
+          celda.classList.add('is-read');
+        });
 
         grilla.appendChild(celda);
       });
@@ -767,158 +766,6 @@
   }
 
   activarSecuenciasMidi();
-
-
-  // --- video de YouTube: se ve la miniatura y el iframe recien al click ---
-  function activarVideoDeYouTube() {
-    const tarjeta = document.getElementById('genieVideo');
-    if (!tarjeta) return;
-
-    // agarra el ID (11 caracteres) de cualquier formato de link de YouTube,
-    // o lo usa tal cual si ya le paso solo el ID
-    function obtenerIdDelVideo(texto) {
-      if (!texto) return null;
-      const formatos = [
-        /youtu\.be\/([\w-]{11})/,
-        /youtube\.com\/watch\?v=([\w-]{11})/,
-        /youtube\.com\/embed\/([\w-]{11})/,
-        /youtube\.com\/shorts\/([\w-]{11})/
-      ];
-      for (const re of formatos) {
-        const m = texto.match(re);
-        if (m) return m[1];
-      }
-      return /^[\w-]{11}$/.test(texto.trim()) ? texto.trim() : null;
-    }
-
-    const idDelVideo = obtenerIdDelVideo(tarjeta.getAttribute('data-youtube'));
-    const miniatura = tarjeta.querySelector('.video-thumb');
-    const botonPlay = tarjeta.querySelector('.video-play');
-
-    if (idDelVideo && miniatura) {
-      miniatura.src = 'https://img.youtube.com/vi/' + idDelVideo + '/maxresdefault.jpg';
-    }
-
-    if (botonPlay) {
-      botonPlay.addEventListener('click', () => {
-        if (!idDelVideo) {
-          console.warn('Falta el link o ID de YouTube en data-youtube de #genieVideo.');
-          return;
-        }
-        // creo el reproductor de verdad y reemplazo toda la tarjeta con el
-        const iframe = document.createElement('iframe');
-        iframe.className = 'video-iframe';
-        iframe.src = 'https://www.youtube.com/embed/' + idDelVideo + '?autoplay=1&rel=0';
-        iframe.title = 'Reproductor de YouTube';
-        iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
-        iframe.allowFullscreen = true;
-
-        tarjeta.innerHTML = '';
-        tarjeta.appendChild(iframe);
-      });
-    }
-  }
-
-  activarVideoDeYouTube();
-
-
-  // --- acordeon de las dos tarjetas de abajo del video ---------
-  // arrancan las dos angostas con el nombre en vertical. al tocar una la
-  // ensancho con GSAP (la otra se achica), aparece su texto y el nombre
-  // pasa a horizontal abajo. si toco la que ya esta abierta, se cierra.
-  function activarAcordeonDeInteraccion() {
-    if (!window.gsap) return;
-    const contenedor = document.getElementById('genieAccordion');
-    if (!contenedor) return;
-
-    const items = Array.from(contenedor.querySelectorAll('.genie-item'));
-    if (!items.length) return;
-
-    const anchoCerrado = window.innerWidth < 480 ? 68 : 90;
-    const altoFranja = 56;
-    const altoTotal = contenedor.clientHeight;
-
-    const tarjetas = items.map((item) => ({
-      item: item,
-      body: item.querySelector('.genie-item-body'),
-      label: item.querySelector('.genie-item-label')
-    }));
-
-    // arranco: todas angostas, el nombre ocupando todo el alto, texto oculto
-    tarjetas.forEach((t) => {
-      gsap.set(t.item, { width: anchoCerrado });
-      gsap.set(t.body, { opacity: 0 });
-      gsap.set(t.label, { top: 0 });
-    });
-
-    function anchoAbierto() {
-      const gap = parseFloat(getComputedStyle(contenedor).columnGap) || 0;
-      return contenedor.clientWidth - (anchoCerrado + gap) * (tarjetas.length - 1);
-    }
-
-    function alternar(actual) {
-      const yaAbierta = actual.item.classList.contains('is-open');
-      // overwrite:'auto' hace que si toco rapido dos veces no se pisen las animaciones
-      const tl = gsap.timeline({ defaults: { overwrite: 'auto' } });
-
-      tarjetas.forEach((t) => {
-        const abrir = t === actual && !yaAbierta;
-
-        t.item.classList.toggle('is-open', abrir);
-        t.item.setAttribute('aria-expanded', abrir ? 'true' : 'false');
-
-        // ancho
-        tl.to(t.item, {
-          width: abrir ? anchoAbierto() : anchoCerrado,
-          duration: 0.7, ease: 'power3.inOut'
-        }, 0);
-
-        // el nombre pasa a horizontal recien cuando casi termino de abrirse
-        if (!abrir) t.item.classList.remove('label-flip');
-        tl.to(t.label, {
-          top: abrir ? altoTotal - altoFranja : 0,
-          duration: 0.6, ease: 'power3.inOut',
-          onStart: abrir ? () => t.item.classList.add('label-flip') : null
-        }, abrir ? 0.15 : 0);
-
-        // el texto entra/sale con un fade
-        tl.to(t.body, {
-          opacity: abrir ? 1 : 0,
-          duration: abrir ? 0.45 : 0.25, ease: 'power2.out'
-        }, abrir ? 0.3 : 0);
-      });
-    }
-
-    tarjetas.forEach((t) => t.item.addEventListener('click', () => alternar(t)));
-  }
-
-  activarAcordeonDeInteraccion();
-
-
-  // --- comparacion "88 teclas vs 8 botones": aparece al scrollear ---
-  // primero el fade del titulo, despues una tarjeta entra desde la
-  // izquierda y la otra desde la derecha. la llamo despues de armar las
-  // secciones apiladas asi mide el bloque en su posicion final.
-  function activarComparacionDeTeclas() {
-    const bloque = document.querySelector('.compare-block');
-    if (!bloque || !window.gsap || !window.ScrollTrigger) return;
-
-    const titulo = bloque.querySelector('.compare-title');
-    const tarjetas = bloque.querySelectorAll('.compare-card');
-    if (!titulo || tarjetas.length < 2) return;
-
-    const tl = gsap.timeline({
-      defaults: { ease: 'none' },
-      scrollTrigger: {
-        trigger: bloque, start: 'top 88%', end: 'top 38%',
-        scrub: 0.6, invalidateOnRefresh: true
-      }
-    });
-
-    tl.fromTo(titulo,      { opacity: 0, y: 28 },   { opacity: 1, y: 0, duration: 1 })
-      .fromTo(tarjetas[0], { opacity: 0, x: -120 }, { opacity: 1, x: 0, duration: 1.2 }, 0.5)
-      .fromTo(tarjetas[1], { opacity: 0, x: 120 },  { opacity: 1, x: 0, duration: 1.2 }, 1.1);
-  }
 
 
   // --- sonido: hago las notas con Web Audio, sin archivos de audio ---
@@ -982,71 +829,259 @@
   }
 
 
-  // --- pianos: el color de la tecla lo hace el CSS, aca el sonido ---
-  function activarPianoInteractivo() {
-    const teclados = document.querySelectorAll('.piano-teclado');
-    if (!teclados.length) return;
+  // --- ¿como interactua?: cada escena aparece de un tiron al scrollear,
+  // y despues es 100% al click ---------------------------------------
+  // usa reproducirNota()/reproducirMelodia() de aca arriba para el sonido.
+  //
+  // 1. dibuja los dos pianos (SVG); el resto ya esta armado en el HTML.
+  // 2. cada escena (la card + el piano/botones/dibujo que la acompaña)
+  //    aparece entera con un fade simple al scrollear hasta ella — nada
+  //    se arma "adentro" por su cuenta, ni hay texto que se escribe solo
+  //    ni teclas que se aprietan solas: es la misma animacion simple que
+  //    uso en el resto de la pagina (ver activarCaracteristicasDeMagenta,
+  //    por ejemplo).
+  // 3. los pianos y los botones NO tienen ninguna animacion de scroll:
+  //    estan ahi quietos y solo reaccionan al click (o al toque, en
+  //    celular). eso es lo unico que se anima "solo": el sonido + el
+  //    feedback visual de cada click (una tecla que se pinta, un boton
+  //    que crece, la IA respondiendo, etc).
+  function activarInfografiaInteractua() {
+    const seccion = document.getElementById('como-interactua');
+    if (!seccion) return;
 
-    teclados.forEach((teclado) => {
-      teclado.querySelectorAll('.piano-key').forEach((tecla) => {
-        tecla.setAttribute('role', 'button');
-        tecla.setAttribute('tabindex', '0');
+    const escenas = Array.from(seccion.querySelectorAll('.ix-scene'));
+    const hayGsap = !!(window.gsap && window.ScrollTrigger);
 
-        const tocar = () => {
-          const frecuencia = parseFloat(tecla.getAttribute('data-freq'));
-          if (!frecuencia) return;
-          reproducirNota(frecuencia, 0.55);
-          tecla.classList.add('is-active'); // le doy el color un ratito
-          setTimeout(() => tecla.classList.remove('is-active'), 200);
-        };
+    const NS = 'http://www.w3.org/2000/svg';
+    const ROSA = '#fd3db5', CIAN = '#26c3d1', TINTA = '#f5f4f8';
+    const $ = (raiz, sel) => Array.from(raiz.querySelectorAll(sel));
+    const azar = (a, b) => a + Math.random() * (b - a);
+    const elegir = (arr) => arr[Math.floor(Math.random() * arr.length)];
 
-        tecla.addEventListener('click', tocar);
-        tecla.addEventListener('keydown', (e) => {
-          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); tocar(); }
+    // ---------- musica: midi -> frecuencia, y la escala de Do mayor ----------
+    const freq = (m) => 440 * Math.pow(2, (m - 69) / 12);
+    const ESCALA = [0, 2, 4, 5, 7, 9, 11];
+    function alEscala(m) {
+      for (let d = 0; d <= 2; d++) {
+        if (ESCALA.indexOf(((m - d) % 12 + 12) % 12) !== -1) return m - d;
+        if (ESCALA.indexOf(((m + d) % 12 + 12) % 12) !== -1) return m + d;
+      }
+      return m;
+    }
+    // sonido: uso las funciones que ya tiene el sitio (si no estan, no suena y listo)
+    const tocarMidi = (m, dur) => { if (typeof reproducirNota === 'function') reproducirNota(freq(m), dur || 0.5); };
+    const tocarMidis = (ms, ms_) => { if (typeof reproducirMelodia === 'function') reproducirMelodia(ms.map(freq), ms_ || 130); };
+
+    // ---------- dibujo ----------
+    function el(tag, attrs, padre) {
+      const e = document.createElementNS(NS, tag);
+      Object.keys(attrs).forEach((k) => e.setAttribute(k, attrs[k]));
+      padre.appendChild(e);
+      return e;
+    }
+    const NOMBRES = ['Do', 'Do sostenido', 'Re', 'Re sostenido', 'Mi', 'Fa', 'Fa sostenido', 'Sol', 'Sol sostenido', 'La', 'La sostenido', 'Si'];
+
+    // una octava: 8 blancas + 5 negras (Do4 a Do5)
+    function pianoTradicional(cont) {
+      const svg = el('svg', { viewBox: '0 0 470 190', 'aria-hidden': 'false' }, cont);
+      const w = 470 / 8, teclas = [], blancas = [];
+      [60, 62, 64, 65, 67, 69, 71, 72].forEach((m, i) => {
+        const r = el('rect', { x: i * w, y: 0, width: w, height: 190, class: 'ix-kw' }, svg);
+        teclas.push({ el: r, midi: m, base: '#d9d9d9', blanca: true }); blancas.push(r);
+      });
+      [[0, 61], [1, 63], [3, 66], [4, 68], [5, 70]].forEach((n) => {
+        const r = el('rect', { x: (n[0] + 1) * w - 15, y: 0, width: 30, height: 100, class: 'ix-kb' }, svg);
+        teclas.push({ el: r, midi: n[1], base: '#000', blanca: false });
+      });
+      return { blancas: blancas, teclas: teclas };
+    }
+
+    // 18 blancas (desde Fa3) y 13 negras en cyan
+    function pianoDuet(cont) {
+      const svg = el('svg', { viewBox: '0 0 1184 270', 'aria-hidden': 'false' }, cont);
+      const paso = [2, 2, 2, 1, 2, 2, 1];
+      const w = 1184 / 18, blancas = [], teclas = [], midisBlancas = [];
+      let m = 53;
+      for (let i = 0; i < 18; i++) {
+        const r = el('rect', { x: i * w, y: 0, width: w, height: 270, class: 'ix-dw' }, svg);
+        blancas.push(r); midisBlancas.push(m);
+        teclas.push({ el: r, midi: m, base: '#211f33', blanca: true });
+        m += paso[i % 7];
+      }
+      for (let i = 0; i < 17; i++) {
+        if (paso[i % 7] === 2) {
+          const r = el('rect', { x: (i + 1) * w - 16, y: 0, width: 32, height: 125, class: 'ix-db' }, svg);
+          teclas.push({ el: r, midi: midisBlancas[i] + 1, base: '#33b5d5', blanca: false });
+        }
+      }
+      return { blancas: blancas, teclas: teclas, midisBlancas: midisBlancas };
+    }
+
+    const trad = pianoTradicional(seccion.querySelector('[data-piano="trad"]'));
+    const duet = pianoDuet(seccion.querySelector('[data-piano="duet"]'));
+
+
+    // ==================================================================
+    // click (siempre activo, este fijada la seccion o no)
+    // ==================================================================
+    function tocable(nodo, fn, etiqueta, sinFoco) {
+      if (etiqueta) nodo.setAttribute('aria-label', etiqueta);
+      nodo.setAttribute('role', 'button');
+      nodo.setAttribute('tabindex', sinFoco ? '-1' : '0');
+      nodo.addEventListener('pointerdown', (e) => { e.preventDefault(); fn(); });
+      nodo.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); fn(); } });
+    }
+    // la tecla se pinta y vuelve sola a su color
+    function destello(tecla, color) {
+      if (!window.gsap) return;
+      gsap.fromTo(tecla.el, { fill: color }, { fill: tecla.base, duration: 0.5, ease: 'power1.out', overwrite: 'auto' });
+    }
+    function ping(nodo, escala) {
+      if (!window.gsap) return;
+      gsap.fromTo(nodo, { scale: escala || 1.25 }, { scale: 1, duration: 0.35, ease: 'power2.out' });
+    }
+
+    // 1 · piano tradicional: cada tecla suena
+    trad.teclas.forEach((t) => tocable(t.el, () => { tocarMidi(t.midi, 0.7); destello(t, ROSA); }, NOMBRES[t.midi % 12], !t.blanca));
+
+    // 2 · piano genie: cada boton toca su melodia
+    const MELODIAS_GENIE = [[60, 64, 67], [64, 67, 72], [67, 64, 60], [60, 62, 64, 65], [67, 65, 64, 62], [60, 67, 64], [64, 65, 67, 72], [60, 64, 67, 72]];
+    $(seccion, '.ix-orb').forEach((orb, i) => {
+      orb.addEventListener('pointerdown', (e) => { e.preventDefault(); genie(orb, i); });
+      orb.addEventListener('click', (e) => { if (e.detail === 0) genie(orb, i); }); // teclado
+    });
+    function genie(orb, i) {
+      tocarMidis(MELODIAS_GENIE[i], 140);
+      if (window.gsap) gsap.fromTo(orb, { scale: 1.22, filter: 'brightness(1.5)' }, { scale: 1, filter: 'brightness(1)', duration: 0.5, ease: 'power2.out' });
+    }
+
+    // 3 · ai duet: tocas vos, y despues de una pausa responde la IA (cyan)
+    let frase = [], esperar = null, respondiendo = false;
+    duet.teclas.forEach((t) => tocable(t.el, () => {
+      if (respondiendo) return;
+      tocarMidi(t.midi, 0.7); destello(t, ROSA);
+      frase.push(t.midi);
+      clearTimeout(esperar); esperar = setTimeout(responder, 1000);
+    }, NOMBRES[t.midi % 12], !t.blanca));
+    function responder() {
+      if (frase.length < 2) { frase = []; return; }
+      respondiendo = true;
+      const desp = elegir([4, 7, -5, 3]);
+      const blancas = duet.teclas.filter((t) => t.blanca);
+      const resp = frase.slice(-5).map((m) => {
+        let mejor = blancas[0];
+        blancas.forEach((t) => { if (Math.abs(t.midi - (m + desp)) < Math.abs(mejor.midi - (m + desp))) mejor = t; });
+        return mejor;
+      });
+      resp.forEach((t, i) => setTimeout(() => { tocarMidi(t.midi, 0.7); destello(t, CIAN); }, 400 + i * 380));
+      setTimeout(() => { respondiendo = false; frase = []; }, 400 + resp.length * 380 + 300);
+    }
+
+    // 4 · interpolate: la melodia pasa de A a B por los 5 pasos del "por ejemplo"
+    const escInterp = seccion.querySelector('[data-escena="interpolate"]');
+    function mezcla(m) { // rosa -> cyan
+      const a = [255, 63, 180], b = [34, 232, 242];
+      return 'rgb(' + a.map((v, i) => Math.round(v + (b[i] - v) * m)).join(',') + ')';
+    }
+    function crearMorph(sep, conSonido, pausado) {
+      const pills = $(escInterp, '.ix-res .ix-pill'), pasos = $(escInterp, '.ix-step');
+      const A = [60, 67, 64], B = [72, 62, 69], st = { m: 0.5 };
+      function pintar() {
+        pills.forEach((p, i) => {
+          const pitch = A[i] + (B[i] - A[i]) * st.m;
+          p.style.background = 'radial-gradient(closest-side,' + mezcla(Math.pow(st.m, 3)) + ' 0 32%,' + mezcla(st.m) + ' 100%)';
+          p.style.top = (-(pitch - 60) * 1.6) + 'px';
+        });
+      }
+      const tl = gsap.timeline({ paused: !!pausado });
+      [0, 0.25, 0.5, 0.75, 1].forEach((m, k) => {
+        tl.to(st, { m: m, duration: sep * 0.6, ease: 'power1.inOut', onUpdate: pintar }, k * sep)
+          .to(pasos[k], { color: CIAN, duration: 0.15 }, k * sep)
+          .to(pasos[k], { color: TINTA, duration: 0.3 }, k * sep + sep * 0.75);
+        if (conSonido) tl.call(() => tocarMidis(pills.map((_, i) => alEscala(Math.round(A[i] + (B[i] - A[i]) * m))), 110), null, k * sep + sep * 0.5);
+      });
+      tl.to(st, { m: 0.5, duration: sep * 0.8, onUpdate: pintar }, 5 * sep); // vuelve al "intermedia"
+      return { tl: tl, pintar: pintar, st: st };
+    }
+
+    // 5 · melody continue: analiza la melodia y genera una frase nueva
+    const escCont = seccion.querySelector('[data-escena="continue"]');
+    const ENTRADA = [64, 67, 69];
+    let contOcupado = false;
+    function continuar() {
+      if (contOcupado || !window.gsap) return;
+      contOcupado = true;
+      const entrada = $(escCont, '.ix-in .ix-pill'), nuevas = $(escCont, '.ix-out .glow'), pasos = $(escCont, '.ix-step');
+      const flecha = escCont.querySelector('.ix-arrow');
+      // frase nueva: parte de la misma zona y se mueve por la escala
+      let p = elegir([67, 69, 72]);
+      const notas = nuevas.map(() => { p = Math.max(60, Math.min(76, alEscala(p + elegir([-4, -2, 2, 4])))); return p; });
+      const tl = gsap.timeline({ onComplete: () => { contOcupado = false; } });
+      tocarMidis(ENTRADA, 160);
+      entrada.forEach((e, i) => tl.fromTo(e, { scale: 1.3 }, { scale: 1, duration: 0.3 }, i * 0.16));
+      tl.to(pasos[0], { color: CIAN, duration: 0.15 }, 0).to(pasos[0], { color: TINTA, duration: 0.3 }, 0.6)
+        .to(pasos[1], { color: CIAN, duration: 0.15 }, 0.7).to(pasos[1], { color: TINTA, duration: 0.3 }, 1.3)
+        .fromTo(flecha, { opacity: 0.2 }, { opacity: 1, duration: 0.5 }, 0.7)
+        .call(() => tocarMidis(notas, 170), null, 1.3);
+      nuevas.forEach((n, i) => {
+        tl.fromTo(n, { scale: 0.3, opacity: 0.2 }, { scale: 1, opacity: 1, duration: 0.35, ease: 'back.out(2)' }, 1.3 + i * 0.17)
+          .to(n, { top: -(notas[i] - 67) * 1.6, duration: 0.35 }, 1.3 + i * 0.17);
+      });
+      tl.to(pasos[2], { color: CIAN, duration: 0.15 }, 1.3).to(pasos[2], { color: TINTA, duration: 0.3 }, 2.1);
+    }
+
+    // 6 · temperature: baja = ordenada y repetitiva; alta = se dispersa con otras notas
+    const escTemp = seccion.querySelector('[data-escena="temperatura"]');
+    function temperaturaBaja() {
+      const pills = $(escTemp, '.ix-baja .ix-pill');
+      const notas = [67, 67, 67, 64, 64, 64];
+      tocarMidis(notas, 170);
+      pills.forEach((p, i) => setTimeout(() => ping(p, 1.3), i * 170));
+    }
+    function temperaturaAlta() {
+      if (!window.gsap) return;
+      const pills = $(escTemp, '.ix-alta .ix-pill');
+      const pts = [];
+      for (let n = 0; n < 400 && pts.length < 6; n++) {
+        const x = azar(0, 74), y = azar(0, 158);
+        if (pts.every((q) => Math.hypot(q[0] - x, q[1] - y) > 44)) pts.push([x, y]);
+      }
+      while (pts.length < 6) pts.push([azar(0, 74), azar(0, 158)]);
+      pills.forEach((p, i) => gsap.to(p, { x: pts[i][0] - parseFloat(p.style.left), y: pts[i][1] - parseFloat(p.style.top), duration: 0.7, ease: 'power2.inOut', overwrite: 'auto' }));
+      // suenan de izquierda a derecha; mas arriba = mas agudo
+      const orden = pts.map((q, i) => i).sort((a, b) => pts[a][0] - pts[b][0]);
+      tocarMidis(orden.map((i) => alEscala(60 + Math.round((1 - pts[i][1] / 158) * 19))), 170);
+      orden.forEach((i, k) => setTimeout(() => ping(pills[i], 1.3), 700 + k * 170));
+    }
+    tocable(escTemp.querySelector('.ix-col-baja'), temperaturaBaja);
+    tocable(escTemp.querySelector('.ix-col-alta'), temperaturaAlta);
+
+    // interpolate y continue: click en todo el dibujo
+    if (hayGsap) {
+      const morphClick = crearMorph(0.55, true, true);
+      const demoI = escInterp.querySelector('.ix-demo'), demoC = escCont.querySelector('.ix-demo');
+      tocable(demoI, () => { if (!morphClick.tl.isActive()) morphClick.tl.restart(); });
+      tocable(demoC, continuar);
+    }
+
+
+    // ==================================================================
+    // aparicion: cada escena entera (fade + un empujoncito desde abajo),
+    // igual que las demas secciones de la pagina. sin GSAP, o si el
+    // usuario pidio "reducir movimiento", las escenas quedan visibles de
+    // una — el click funciona igual en los dos casos.
+    // ==================================================================
+    if (hayGsap && !reduceMovimiento) {
+      escenas.forEach((esc) => {
+        gsap.from(esc, {
+          opacity: 0, y: 30, duration: 0.7, ease: 'power2.out',
+          scrollTrigger: { trigger: esc, start: 'top 85%', toggleActions: 'play none none none' }
         });
       });
-    });
+    }
   }
 
-  activarPianoInteractivo();
-
-
-  // --- Piano Genie: cada boton toca una melodia corta (todo en Do mayor) ---
-  const MELODIAS_GENIE = [
-    [261.63, 329.63, 392.00],                  // Do - Mi - Sol
-    [329.63, 392.00, 523.25],                  // Mi - Sol - Do agudo
-    [392.00, 329.63, 261.63],                  // Sol - Mi - Do
-    [261.63, 293.66, 329.63, 349.23],          // Do - Re - Mi - Fa
-    [392.00, 349.23, 329.63, 293.66],          // Sol - Fa - Mi - Re
-    [261.63, 392.00, 329.63],                  // Do - Sol - Mi
-    [329.63, 349.23, 392.00, 523.25],          // Mi - Fa - Sol - Do agudo
-    [261.63, 329.63, 392.00, 523.25]           // Do - Mi - Sol - Do agudo
-  ];
-
-  function activarGenieInteractivo() {
-    const botones = document.querySelectorAll('.compare-buttons span');
-    if (!botones.length) return;
-
-    botones.forEach((boton, i) => {
-      boton.style.cursor = 'pointer';
-      boton.setAttribute('role', 'button');
-      boton.setAttribute('tabindex', '0');
-      boton.setAttribute('aria-label', 'Tocar melodía ' + (i + 1));
-
-      const tocar = () => {
-        reproducirMelodia(MELODIAS_GENIE[i % MELODIAS_GENIE.length], 150);
-        boton.classList.add('is-active');
-        setTimeout(() => boton.classList.remove('is-active'), 250);
-      };
-
-      boton.addEventListener('click', tocar);
-      boton.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); tocar(); }
-      });
-    });
-  }
-
-  activarGenieInteractivo();
+  activarInfografiaInteractua();
 
 
   // --- el grafico de la seccion "de la espera a la interaccion" ---
@@ -1107,15 +1142,19 @@
   // le agrego a cada seccion la clase y un z-index mas alto que la
   // anterior; todo el efecto de "pegarse y taparse" lo hace el CSS.
   // en mobile no hago nada: las secciones van una abajo de la otra.
+  // la intro no entra en esta lista: no queremos que quede pegada
+  // (sticky) — tiene que subir con el scroll normal, como cualquier otra
+  // seccion, para que las 3 caracteristicas de despues aparezcan solas
+  // sin ningun efecto de "tapado" de por medio.
   function activarSlidesDeSecciones() {
     if (!modoApilado) return;
 
     const paneles = Array.from(
-      document.querySelectorAll('.intro, .timeline-section, .realtime-section, .how-works')
+      document.querySelectorAll('.realtime-section')
     );
     paneles.forEach((seccion, i) => {
       seccion.classList.add('slide-section');
-      seccion.style.zIndex = String(10 + i);
+      seccion.style.zIndex = String(10 + i * 10);
     });
 
     if (window.ScrollTrigger) ScrollTrigger.refresh();
@@ -1123,9 +1162,14 @@
 
   activarSlidesDeSecciones();
 
-  // llamo la comparacion aca, despues de apilar, asi mide bien su lugar
-  activarComparacionDeTeclas();
-
+  // las tipografias (Jersey 10, Silkscreen) tardan un toque en cargar, y
+  // cuando entran de golpe corren el alto de los textos para abajo. eso
+  // podria desacomodar los triggers de scroll que ya se calcularon (por
+  // ejemplo los de la timeline). por eso, cuando termina de cargar TODO
+  // (fuentes incluidas), pido un refresh mas para que quede bien.
+  window.addEventListener('load', () => {
+    if (window.ScrollTrigger) ScrollTrigger.refresh();
+  });
 
   // --- los links del footer: llevan suave a cada seccion ------
   // calculo a que scroll tengo que ir (con offsetTop, que no se marea con
